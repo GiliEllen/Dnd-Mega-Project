@@ -50,7 +50,7 @@ function handleSaveNotes(ev) {
                 case 1:
                     _a.trys.push([1, 3, , 4]);
                     updatedNotes = ev.target.infoDump.value;
-                    return [4 /*yield*/, axios.post("/users/updateNotes", { userID: userID, updatedNotes: updatedNotes })];
+                    return [4 /*yield*/, axios.post('/users/updateNotes', { userID: userID, updatedNotes: updatedNotes })];
                 case 2:
                     data = (_a.sent()).data;
                     console.log(data);
@@ -74,4 +74,30 @@ function renderButtonsHandoutsLoot(userID) {
     sendLoot.href = "lootDm.html?" + userID + "\"";
     sendLoot.innerHTML = "<button>Send Loot</button>";
     buttonContainer.appendChild(sendLoot);
+}
+function handleChooseHandouts(event) {
+    event.preventDefault();
+    var handoutType = event.submitter.id;
+    if (handoutType === 'creatingHandout') {
+        renderCreateHandout();
+    }
+    else if (handoutType === 'creatingHandout') {
+        chooseHandout();
+    }
+}
+function renderCreateHandout() {
+    try {
+        var root = document.querySelector('#root');
+        var html = "<form onsubmit=\"handleCreatNewHandout(event)\">\n    <label for=\"nameOfHandout\">Enter Handout's name:</label>\n    <input name=\"nameOfHandout\" type=\"text\">\n    <label for=\"imgURL\">Enter Handout's image URL:</label>\n    <input name=\"imgURL\" type=\"url\">\n    <label for=\"userList\">Choose users to recive the handout:</label>\n    <div name=\"userList\" class=\"userList\" id=\"userList\"></div>\n    <button type=\"submit\">Send</button>\n    </form>";
+        root.innerHTML = html;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+function chooseHandout() {
+    var root = document.querySelector('#root');
+}
+// to be added
+function handleCreatNewHandout(event) {
 }
