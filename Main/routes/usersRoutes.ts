@@ -1,10 +1,10 @@
 import express from 'express';
-import { addRoom, room } from '../controllers/usersCont';
+import { addRoom, getRoom } from '../controllers/usersCont';
 
 const router = express.Router();
 
 router
-    .post('/new-room', addRoom)
-    .get('/room', room)
+    .post('/findRoom', getRoom)
+    .post('/new-room', addRoom);
 
 export default router;

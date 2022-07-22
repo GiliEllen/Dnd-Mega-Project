@@ -7,17 +7,19 @@ export async function addRoom(req, res) {
 	const room = new RoomModel({ name: newRoom });
 	const roomDB = await room.save();
 
+    res.cookie('roomID', roomDB._id)
 	res.send({ success: true, roomID: roomDB._id });
 }
 
-export async function room(req, res) {
+export async function getRoom(req, res) {
     try {
-        console.log(req.body)
-        // const { newRoom } = req.body;
-        // if(!newRoom) throw new Error(`didn't recive new room from req.body`);
-        // res.send({newRoom})
+        
+        const { existingRoom } = req.body;
+        if(!existingRoom) throw new Error(`didn't recive existing room from req.body`);
+        const roomDB = await RoomModel.findOne({ name: existingRoom });
+        res.cookie('roomID', roomDB._id)
+        res.send({success: true, roomDB})
 
-        res.send('successfuly get')
     } catch (error) {
         res.send({error:error.message})
     }

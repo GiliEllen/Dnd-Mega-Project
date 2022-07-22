@@ -13,8 +13,8 @@
         <input name="inputRoom" id="roomName" type="text">
         <button type="submit">Create new Game Room</button>
     </form>
-    <form onsubmit="HandleEnterRoom()" id="RoomForm">
-        <input type="text">
+    <form onsubmit="HandleEnterRoom(event)" id="RoomForm">
+        <input name="existingRoomName" type="text">
         <button type="submit">Enter</button>
     </form>
 </body>

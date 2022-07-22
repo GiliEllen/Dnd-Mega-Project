@@ -4,6 +4,6 @@ var express_1 = require("express");
 var usersCont_1 = require("../controllers/usersCont");
 var router = express_1["default"].Router();
 router
-    .post('/new-room', usersCont_1.addRoom)
-    .get('/room', usersCont_1.room);
+    .post('/findRoom', usersCont_1.getRoom)
+    .post('/new-room', usersCont_1.addRoom);
 exports["default"] = router;

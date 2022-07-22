@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.room = exports.addRoom = void 0;
+exports.getRoom = exports.addRoom = void 0;
 var roomModel_1 = require("./../models/roomModel");
 function addRoom(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -50,6 +50,7 @@ function addRoom(req, res) {
                     return [4 /*yield*/, room.save()];
                 case 1:
                     roomDB = _a.sent();
+                    res.cookie('roomID', roomDB._id);
                     res.send({ success: true, roomID: roomDB._id });
                     return [2 /*return*/];
             }
@@ -57,21 +58,29 @@ function addRoom(req, res) {
     });
 }
 exports.addRoom = addRoom;
-function room(req, res) {
+function getRoom(req, res) {
     return __awaiter(this, void 0, void 0, function () {
+        var existingRoom, roomDB, error_1;
         return __generator(this, function (_a) {
-            try {
-                console.log(req.body);
-                // const { newRoom } = req.body;
-                // if(!newRoom) throw new Error(`didn't recive new room from req.body`);
-                // res.send({newRoom})
-                res.send('successfuly get');
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    existingRoom = req.body.existingRoom;
+                    if (!existingRoom)
+                        throw new Error("didn't recive existing room from req.body");
+                    return [4 /*yield*/, roomModel_1["default"].findOne({ name: existingRoom })];
+                case 1:
+                    roomDB = _a.sent();
+                    res.cookie('roomID', roomDB._id);
+                    res.send({ success: true, roomDB: roomDB });
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_1 = _a.sent();
+                    res.send({ error: error_1.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
-            catch (error) {
-                res.send({ error: error.message });
-            }
-            return [2 /*return*/];
         });
     });
 }
-exports.room = room;
+exports.getRoom = getRoom;

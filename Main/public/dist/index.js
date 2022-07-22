@@ -39,7 +39,7 @@ var newRoomForm = document.querySelector('#NewRoomForm');
 var newRoomName = document.querySelector('#roomName');
 function HandleCreateNewRoom(ev) {
     return __awaiter(this, void 0, void 0, function () {
-        var newRoom, data, error_1;
+        var newRoom, data, roomID, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -52,11 +52,43 @@ function HandleCreateNewRoom(ev) {
                     return [4 /*yield*/, axios.post("/users/new-room", { newRoom: newRoom })];
                 case 2:
                     data = (_a.sent()).data;
-                    console.log(data);
+                    roomID = data.roomID;
+                    window.location.href = "./room.html?roomID=" + roomID;
+                    console.log(roomID);
                     return [3 /*break*/, 4];
                 case 3:
                     error_1 = _a.sent();
                     console.error(error_1);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+function HandleEnterRoom(ev) {
+    return __awaiter(this, void 0, void 0, function () {
+        var existingRoom, data, roomDB, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    //existingRoomName
+                    ev.preventDefault();
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    existingRoom = ev.target.elements.existingRoomName.value;
+                    console.log(existingRoom);
+                    return [4 /*yield*/, axios.post("/users/findRoom", { existingRoom: existingRoom })];
+                case 2:
+                    data = (_a.sent()).data;
+                    console.log(data);
+                    roomDB = data.roomDB;
+                    console.log(roomDB);
+                    window.location.href = "./room.html?roomID=" + roomDB._id;
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_2 = _a.sent();
+                    console.error(error_2);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
