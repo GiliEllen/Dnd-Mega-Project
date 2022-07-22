@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,7 +34,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
 console.log('this is app.ts');
 var userID = 123456;
 function loadBody() {
@@ -68,6 +66,12 @@ function handleSaveNotes(ev) {
 }
 function renderButtonsHandoutsLoot(userID) {
     var buttonContainer = document.querySelector('#buttonContainer');
-    var sendHandouts = "<a herf=\"handoutsDm.html?" + userID + "\">Send Handouts</a>";
-    "<a herf=\"lootDm.html?" + userID + "\">Send Loot</a>";
+    var sendHandouts = document.createElement('a');
+    var sendLoot = document.createElement('a');
+    sendHandouts.href = "handoutsDm.html?" + userID + "\"";
+    sendHandouts.innerHTML = "<button>Send Handouts</button>";
+    buttonContainer.appendChild(sendHandouts);
+    sendLoot.href = "lootDm.html?" + userID + "\"";
+    sendLoot.innerHTML = "<button>Send Loot</button>";
+    buttonContainer.appendChild(sendLoot);
 }
