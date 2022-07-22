@@ -19,7 +19,7 @@ var UserSchema = new mongoose_1["default"].Schema({
     },
     role: {
         "enum": ["user", "dm"],
-        defualt: "user",
+        "default": "user",
         type: String,
         required: true
     }
