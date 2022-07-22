@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getRoom = exports.addRoom = void 0;
+exports.updateNotes = exports.getRoom = exports.addRoom = void 0;
 var roomModel_1 = require("./../models/roomModel");
 function addRoom(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -84,3 +84,15 @@ function getRoom(req, res) {
     });
 }
 exports.getRoom = getRoom;
+function updateNotes(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, userID, updatedNotes;
+        return __generator(this, function (_b) {
+            _a = req.body, userID = _a.userID, updatedNotes = _a.updatedNotes;
+            console.log(userID, updatedNotes);
+            res.send({ succeses: true });
+            return [2 /*return*/];
+        });
+    });
+}
+exports.updateNotes = updateNotes;

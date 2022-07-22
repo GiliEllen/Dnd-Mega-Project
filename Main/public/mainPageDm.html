@@ -1,12 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dungeoun Master Home</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
-<body>
-    
+
+<body onload="loadBody()">
+    <h4>World Map</h4>
+    <h4>Current Map</h4>
+
+    <div class="userInfoList"></div>
+    <div id="buttonContainer"></div>
+    <label for="infoDump">Write here your notes:</label>
+    <form onsubmit="handleSaveNotes(event)">
+        <input type="text" name="infoDump" id="infoDump">
+        <button type="submit">Save</button>
+    </form>
+
+    <script src="./dist/app.js"></script>
 </body>
+
 </html>

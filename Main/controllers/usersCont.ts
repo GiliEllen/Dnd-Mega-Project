@@ -24,3 +24,9 @@ export async function getRoom(req, res) {
         res.send({error:error.message})
     }
 }
+
+export async function updateNotes(req, res) {
+    const {userID, updatedNotes} = req.body;
+    console.log(userID, updatedNotes)
+    res.send({succeses:true})
+}
