@@ -22,6 +22,9 @@ const UserSchema = new mongoose.Schema({
         defualt:"user",
         type:String,
         required:true
+    },
+    notes:{
+        type:String
     }
 })
 
@@ -33,5 +36,6 @@ export const UserValidation = Joi.object({
     username:Joi.string().required(),
     password:Joi.string().required(),
     roomID:Joi.string().required(),
-    role:Joi.string().required()
+    role:Joi.string().required(),
+    notes:Joi.string()
 })

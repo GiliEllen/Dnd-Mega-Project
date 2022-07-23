@@ -22,6 +22,9 @@ var UserSchema = new mongoose_1["default"].Schema({
         defualt: "user",
         type: String,
         required: true
+    },
+    notes: {
+        type: String
     }
 });
 var UserModel = mongoose_1["default"].model('users', UserSchema);
@@ -30,5 +33,6 @@ exports.UserValidation = joi_1["default"].object({
     username: joi_1["default"].string().required(),
     password: joi_1["default"].string().required(),
     roomID: joi_1["default"].string().required(),
-    role: joi_1["default"].string().required()
+    role: joi_1["default"].string().required(),
+    notes: joi_1["default"].string()
 });
