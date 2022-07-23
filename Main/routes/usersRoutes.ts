@@ -9,3 +9,7 @@ router
     .post('/updateNotes', updateNotes)
 
 export default router;
+
+.post('/register', handleRegister)
+.post('/login', userLogin)
+.post('/render-user-main-page', renderUserMainPage)

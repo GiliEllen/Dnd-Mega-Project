@@ -17,6 +17,16 @@
         <input name="existingRoomName" type="text">
         <button type="submit">Enter</button>
     </form>
+    <form onsubmit="openNewRoom(event)">
+        <button type="submit">New Room</button>
+    </form>
+    
+    <form onsubmit="goToRoomNum(event)">
+        <input type="text" name="roomNum" placeholder="Room Number">
+        <button type="submit">Enter Room</button>
+    </form>
+
+    <script src="./dist/index.js"></script>
 </body>
 
 <script src="./dist/index.js"></script>
