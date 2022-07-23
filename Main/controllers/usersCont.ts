@@ -8,6 +8,7 @@ export async function addRoom(req, res) {
 	const roomDB = await room.save();
 
     res.cookie('roomID', roomDB._id)
+    res.cookie('newRoom', true)
 	res.send({ success: true, roomID: roomDB._id });
 }
 
