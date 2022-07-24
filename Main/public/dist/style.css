@@ -1,4 +1,29 @@
 .rapper {
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
+  width: 50%;
+  margin: auto;
+  flex-direction: column;
+}
+.rapper .title {
+  padding: 10px;
+  width: 80%;
+  border: 5px solid black;
+  border-radius: 50px;
+  justify-content: center;
+}
+.rapper .maps {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+.rapper .maps .worldMap {
+  padding: 10px;
+}
+.rapper .maps .currentMap {
+  padding: 10px;
+}
+.rapper .userInfo {
+  padding: 10px;
 }
