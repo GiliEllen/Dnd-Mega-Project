@@ -8,13 +8,11 @@ async function HandleCreateNewRoom(ev: any) {
 	ev.preventDefault();
 	try {
 		const newRoom = ev.target.elements.roomName.value;
-		console.log(newRoom);
 		//@ts-ignore
 		// const { data } = await axios.get("/users/room")
 		const { data } = await axios.post('/users/new-room', { newRoom });
 		const { roomID } = data;
 		window.location.href = `./room.html?roomID=${roomID}`;
-		console.log(roomID);
 	} catch (error) {
 		console.error(error);
 	}
@@ -43,8 +41,8 @@ async function handleRegister(event: any) {
 	try {
 		const username = event.target.username.value;
 		const password = event.target.password.value;
-		const roomID = 'room1';
-		const role = 'user';
+		const roomID = getRoomIdByParams();
+		const role = getRoleByParams();
 		//@ts-ignore
 		const { data } = await axios.post('/users/register', { username, password, roomID, role });
 		const { register, error } = data;
@@ -54,8 +52,6 @@ async function handleRegister(event: any) {
 		console.error(error);
 	}
 }
-
-
 
 async function handleLogin(event: any) {
 	event.preventDefault();
@@ -97,31 +93,70 @@ async function loadUserMainPage() {
 	}
 }
 
-// function goToRoomNum(event) {
-//     event.preventDefault()
-//     try {
-//         console.log('heyyyyyyyyyyy')
-//         const roomNum = event.target.elements.roomNum.value
-//         console.log(roomNum)
-//         window.location.href = `room.html?roomnum=${roomNum}`;
-
-//     } catch(error){
-//       console.error(error)
-//     }
-//   }
-
-// function enterRoom(){
-//     try {
-//         console.log('hello')
-//         const searchParams = new URLSearchParams(window.location.href)
-//         const roomNum = searchParams.get('roomnum')
-//         console.log(roomNum)
-//     } catch (error) {
-
-//       console.error(error)
-//     }
-//   }
-
 function loadRoom() {
-  console.log('this is room')
+	console.log('this is room');
+	//   checkRoomIDAndIfNew()
+	const roomID = getRoomIdByParams();
+	getRoomById(roomID)
+}
+
+function getRoleByParams() {
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const role = urlParams.get('role');
+	console.log(role)
+	return role;
+}
+
+function getRoomIdByParams() {
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const roomID = urlParams.get('roomID');
+	return roomID;
+}
+
+async function getRoomById(roomID) {
+		//@ts-ignore
+	const { data } = await axios.post('/users/getRoomByID', {roomID});
+	const {room} = data;
+	if (room.userListID.length === 0){
+		const userlist = 0;
+		renderRoom( userlist, room);
+	} else if (room.userListID.length > 0){
+		const userlist = getRoomUsers(roomID);
+		renderRoom(userlist, room)
+	}
+}
+async function getRoomUsers(roomID) {
+	const { data } = await axios.post('/users/getRoomUsers', {roomID});
+	console.log(data)
+}
+
+function renderRoom( userlist, room) {
+	const roomContainer = document.querySelector('.room_container');
+	let html = "";
+	if(userlist){
+
+	} else {
+		html = `<h1>Room name: ${room.name}</h1>
+        <div class="room_container__userContainer">
+            <div class="room_container__dmContainer">
+                <a href="register.html?roomID=${room._id}&role=dm">Dm Register</a>
+            </div>
+			<h3>User List is empty. Tell your user to enter the room and register!</h3>
+        </div>
+        <a href="login.html?roomID=${room._id}"><button>Register New Player</button></a>
+`
+	}
+	roomContainer.innerHTML = html;
+}
+
+
+
+// Ask Tal about cookies
+async function checkRoomIDAndIfNew() {
+	//@ts-ignore
+	const { data } = await axios.get('/users/getRoomID');
+	const { newRoom, roomID } = data;
+	console.log(newRoom, roomID);
 }

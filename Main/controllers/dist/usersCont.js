@@ -36,17 +36,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.renderUserMainPage = exports.userLogin = exports.handleRegister = exports.updateNotes = exports.getRoom = exports.addRoom = void 0;
+exports.getRoomID = exports.getRoomUsers = exports.getRoomByID = exports.renderUserMainPage = exports.userLogin = exports.handleRegister = exports.updateNotes = exports.getRoom = exports.addRoom = void 0;
 var roomModel_1 = require("./../models/roomModel");
 function addRoom(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var newRoom, room, roomDB;
+        var newRoom, isRoomNew, userListID, room, roomDB;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     console.log(req.body);
                     newRoom = req.body.newRoom;
-                    room = new roomModel_1["default"]({ name: newRoom });
+                    isRoomNew = true;
+                    userListID = [];
+                    room = new roomModel_1["default"]({ name: newRoom, isNew: isRoomNew, userListID: userListID });
                     return [4 /*yield*/, room.save()];
                 case 1:
                     roomDB = _a.sent();
@@ -73,6 +75,7 @@ function getRoom(req, res) {
                 case 1:
                     roomDB = _a.sent();
                     res.cookie('roomID', roomDB._id);
+                    res.cookie('newRoom', false);
                     res.send({ success: true, roomDB: roomDB });
                     return [3 /*break*/, 3];
                 case 2:
@@ -181,3 +184,57 @@ function renderUserMainPage(req, res) {
     });
 }
 exports.renderUserMainPage = renderUserMainPage;
+function getRoomByID(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var roomID, room, error_5;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    roomID = req.body.roomID;
+                    return [4 /*yield*/, roomModel_1["default"].findById(roomID)];
+                case 1:
+                    room = _a.sent();
+                    res.send({ room: room });
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_5 = _a.sent();
+                    res.send({ error: error_5.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getRoomByID = getRoomByID;
+function getRoomUsers(res, req) {
+    return __awaiter(this, void 0, void 0, function () {
+        var roomID, user, error_6;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    roomID = req.body.roomID;
+                    return [4 /*yield*/, usersModel_1["default"].find({ roomID: roomID })];
+                case 1:
+                    user = _a.sent();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_6 = _a.sent();
+                    res.send({ error: error_6.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getRoomUsers = getRoomUsers;
+function getRoomID(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            console.log(req.cookies);
+            return [2 /*return*/];
+        });
+    });
+}
+exports.getRoomID = getRoomID;
