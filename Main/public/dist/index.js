@@ -96,7 +96,7 @@ function HandleEnterRoom(ev) {
 }
 function handleRegister(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var username, password, roomID, role, data, register, error, error_3;
+        var username, password, roomID, role, data, register, user, error, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -111,7 +111,10 @@ function handleRegister(event) {
                     return [4 /*yield*/, axios.post('/users/register', { username: username, password: password, roomID: roomID, role: role })];
                 case 2:
                     data = (_a.sent()).data;
-                    register = data.register, error = data.error;
+                    register = data.register, user = data.user, error = data.error;
+                    if (role === "dm") {
+                        window.location.href = "./mainPageDm.html?roomID=" + roomID + "&userID=" + user._id;
+                    }
                     if (error)
                         throw error;
                     console.log(data);
@@ -250,9 +253,18 @@ function renderRoom(userlist, room) {
     var roomContainer = document.querySelector('.room_container');
     var html = "";
     if (userlist) {
+        // 		html = `<h1>Room name: ${room.name}</h1>
+        //         <div class="room_container__userContainer">
+        //             <div class="room_container__dmContainer">
+        //                 <a href="login.html?roomID=${room._id}&role=dm">Dm Login</a>
+        //             </div>
+        // 			<h3>Soon a function will fill this with users</h3>
+        //         </div>
+        //         <a href="login.html?roomID=${room._id}"><button>Register New Player</button></a>
+        // `
     }
     else {
-        html = "<h1>Room name: " + room.name + "</h1>\n        <div class=\"room_container__userContainer\">\n            <div class=\"room_container__dmContainer\">\n                <a href=\"register.html?roomID=" + room._id + "&role=dm\">Dm Register</a>\n            </div>\n\t\t\t<h3>User List is empty. Tell your user to enter the room and register!</h3>\n        </div>\n        <a href=\"login.html?roomID=" + room._id + "\"><button>Register New Player</button></a>\n";
+        html = "<h1>Room name: " + room.name + "</h1>\n        <div class=\"room_container__userContainer\">\n            <div class=\"room_container__dmContainer\">\n                <a href=\"register.html?roomID=" + room._id + "&role=dm\">Dm Register</a>\n            </div>\n\t\t\t<h3>User List is empty. Tell your user to enter the room and register!</h3>\n        </div>\n        <a href=\"register.html?roomID=" + room._id + "&role=user\"><button>Register New Player</button></a>\n";
     }
     roomContainer.innerHTML = html;
 }

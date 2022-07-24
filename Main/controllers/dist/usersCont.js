@@ -110,15 +110,17 @@ function handleRegister(req, res) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
                     _a = req.body, username = _a.username, password = _a.password, roomID = _a.roomID, role = _a.role;
-                    console.log(username, password, roomID);
                     error = usersModel_1.UserValidation.validate({ username: username, password: password, roomID: roomID, role: role }).error;
                     if (error)
                         throw error;
                     user = new usersModel_1["default"]({ username: username, password: password, roomID: roomID, role: role });
-                    return [4 /*yield*/, user.save()];
+                    return [4 /*yield*/, user.save()
+                        // saveUserToRoom(username, roomID)
+                    ];
                 case 1:
                     _b.sent();
-                    res.send({ register: true });
+                    // saveUserToRoom(username, roomID)
+                    res.send({ register: true, user: user });
                     return [3 /*break*/, 3];
                 case 2:
                     error_2 = _b.sent();
@@ -130,6 +132,15 @@ function handleRegister(req, res) {
     });
 }
 exports.handleRegister = handleRegister;
+// export async function saveUserToRoom(username, roomID) {
+//   const user = await UserModel.findOne({ username, roomID});
+//   const room = await RoomModel.findById({roomID});
+//   const usetID = user._id
+//   const userArr = room.userListID;
+//   userArr.push(usetID);
+//   room.userListID = userArr;
+//   await room.save();
+// }
 function userLogin(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var _a, username, password, roomID, role, error, user, error_3;
@@ -209,7 +220,7 @@ function getRoomByID(req, res) {
 exports.getRoomByID = getRoomByID;
 function getRoomUsers(res, req) {
     return __awaiter(this, void 0, void 0, function () {
-        var roomID, user, error_6;
+        var roomID, userlist, error_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -217,7 +228,9 @@ function getRoomUsers(res, req) {
                     roomID = req.body.roomID;
                     return [4 /*yield*/, usersModel_1["default"].find({ roomID: roomID })];
                 case 1:
-                    user = _a.sent();
+                    userlist = _a.sent();
+                    console.log(userlist);
+                    res.send(userlist);
                     return [3 /*break*/, 3];
                 case 2:
                     error_6 = _a.sent();

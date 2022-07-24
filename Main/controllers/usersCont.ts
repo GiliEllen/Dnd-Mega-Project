@@ -40,18 +40,29 @@ import UserModel, {UserValidation} from "../models/usersModel";
 export async function handleRegister(req, res) {
     try {
       const { username, password, roomID, role } = req.body;
-      console.log(username, password, roomID)
       const { error } = UserValidation.validate({ username, password, roomID, role });
       if (error) throw error;
       
       const user = new UserModel({ username, password, roomID, role });
       await user.save()
+
+      // saveUserToRoom(username, roomID)
         
-      res.send({ register: true });
+      res.send({ register: true, user });
     } catch (error) {
       res.send({ error: error.message });
     }
   }
+
+  // export async function saveUserToRoom(username, roomID) {
+  //   const user = await UserModel.findOne({ username, roomID});
+  //   const room = await RoomModel.findById({roomID});
+  //   const usetID = user._id
+  //   const userArr = room.userListID;
+  //   userArr.push(usetID);
+  //   room.userListID = userArr;
+  //   await room.save();
+  // }
 
 
   export async function userLogin(req, res) {
@@ -97,7 +108,9 @@ export async function handleRegister(req, res) {
   export async function getRoomUsers(res, req){
     try {
       const { roomID } = req.body;
-      const user = await UserModel.find({roomID:roomID})
+      const userlist = await UserModel.find({roomID:roomID})
+      console.log(userlist)
+      res.send(userlist)
     } catch (error) {
       res.send({ error: error.message });
     }

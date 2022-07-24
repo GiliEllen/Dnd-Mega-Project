@@ -45,7 +45,11 @@ async function handleRegister(event: any) {
 		const role = getRoleByParams();
 		//@ts-ignore
 		const { data } = await axios.post('/users/register', { username, password, roomID, role });
-		const { register, error } = data;
+		const { register, user, error } = data;
+		if(role === "dm"){
+			window.location.href = `./mainPageDm.html?roomID=${roomID}&userID=${user._id}`;
+		}
+		
 		if (error) throw error;
 		console.log(data);
 	} catch (error) {
@@ -136,7 +140,15 @@ function renderRoom( userlist, room) {
 	const roomContainer = document.querySelector('.room_container');
 	let html = "";
 	if(userlist){
-
+// 		html = `<h1>Room name: ${room.name}</h1>
+//         <div class="room_container__userContainer">
+//             <div class="room_container__dmContainer">
+//                 <a href="login.html?roomID=${room._id}&role=dm">Dm Login</a>
+//             </div>
+// 			<h3>Soon a function will fill this with users</h3>
+//         </div>
+//         <a href="login.html?roomID=${room._id}"><button>Register New Player</button></a>
+// `
 	} else {
 		html = `<h1>Room name: ${room.name}</h1>
         <div class="room_container__userContainer">
@@ -145,7 +157,7 @@ function renderRoom( userlist, room) {
             </div>
 			<h3>User List is empty. Tell your user to enter the room and register!</h3>
         </div>
-        <a href="login.html?roomID=${room._id}"><button>Register New Player</button></a>
+        <a href="register.html?roomID=${room._id}&role=user"><button>Register New Player</button></a>
 `
 	}
 	roomContainer.innerHTML = html;
