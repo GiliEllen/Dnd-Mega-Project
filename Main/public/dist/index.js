@@ -34,13 +34,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-console.log('this is index.ts');
 var newRoomForm = document.querySelector('#NewRoomForm');
 var newRoomName = document.querySelector('#roomName');
 var adiv = document.querySelector('div');
 function HandleCreateNewRoom(ev) {
     return __awaiter(this, void 0, void 0, function () {
-        var newRoom, data, roomDB, error_1;
+        var newRoom, data, roomDB, role, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -53,7 +52,8 @@ function HandleCreateNewRoom(ev) {
                 case 2:
                     data = (_a.sent()).data;
                     roomDB = data.roomDB;
-                    window.location.href = "./mainPageDm.html?roomID=" + roomDB;
+                    role = "dm";
+                    handleCreateMember(roomDB, role);
                     return [3 /*break*/, 4];
                 case 3:
                     error_1 = _a.sent();
@@ -66,39 +66,55 @@ function HandleCreateNewRoom(ev) {
 }
 function handleCreateMember(roomDB, role) {
     return __awaiter(this, void 0, void 0, function () {
-        var user, data;
+        var userDB, data, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    user = getUserFromCookies();
-                    return [4 /*yield*/, axios.post('/users/create-Member', { roomDB: roomDB, user: user, role: role })];
+                    _a.trys.push([0, 3, , 4]);
+                    console.log("enter creat member function");
+                    return [4 /*yield*/, getUserFromCookies()];
                 case 1:
+                    userDB = _a.sent();
+                    console.log(userDB);
+                    return [4 /*yield*/, axios.post('/users/create-Member', { roomDB: roomDB, userDB: userDB, role: role })];
+                case 2:
                     data = (_a.sent()).data;
-                    return [2 /*return*/];
+                    console.log("index.js thinks member was created");
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_2 = _a.sent();
+                    console.error(error_2);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });
 }
 function getUserFromCookies() {
     return __awaiter(this, void 0, void 0, function () {
-        var data, user;
+        var data, userDB, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    _a.trys.push([0, 2, , 3]);
                     console.log('loading room cookies');
                     return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
                 case 1:
                     data = (_a.sent()).data;
-                    console.log(data);
-                    user = data.user;
-                    return [2 /*return*/, user];
+                    userDB = data.userDB;
+                    return [2 /*return*/, userDB];
+                case 2:
+                    error_3 = _a.sent();
+                    console.error(error_3);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     });
 }
 function HandleEnterRoom(ev) {
     return __awaiter(this, void 0, void 0, function () {
-        var existingRoom, data, roomDB, error_2;
+        var existingRoom, data, roomDB, error_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -115,11 +131,10 @@ function HandleEnterRoom(ev) {
                     console.log(data);
                     roomDB = data.roomDB;
                     console.log(roomDB);
-                    window.location.href = "./room.html?roomID=" + roomDB._id;
                     return [3 /*break*/, 4];
                 case 3:
-                    error_2 = _a.sent();
-                    console.error(error_2);
+                    error_4 = _a.sent();
+                    console.error(error_4);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -128,7 +143,7 @@ function HandleEnterRoom(ev) {
 }
 function handleRegister(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var username, password, data, register, user, error, error_3;
+        var username, password, data, register, user, error, error_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -141,6 +156,7 @@ function handleRegister(event) {
                     return [4 /*yield*/, axios.post('/users/register', { username: username, password: password })];
                 case 2:
                     data = (_a.sent()).data;
+                    console.log(data);
                     register = data.register, user = data.user, error = data.error;
                     if (register) {
                         window.location.href = 'room.html';
@@ -150,8 +166,8 @@ function handleRegister(event) {
                     console.log(data);
                     return [3 /*break*/, 4];
                 case 3:
-                    error_3 = _a.sent();
-                    console.error(error_3);
+                    error_5 = _a.sent();
+                    console.error(error_5);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -160,7 +176,7 @@ function handleRegister(event) {
 }
 function handleLogin(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var username, password, data, login, user, error, error_4;
+        var username, password, data, login, user, error, error_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -183,8 +199,8 @@ function handleLogin(event) {
                     }
                     return [3 /*break*/, 4];
                 case 3:
-                    error_4 = _a.sent();
-                    console.error(error_4);
+                    error_6 = _a.sent();
+                    console.error(error_6);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -193,7 +209,7 @@ function handleLogin(event) {
 }
 function loadUserMainPage() {
     return __awaiter(this, void 0, void 0, function () {
-        var searchParams, userid, data, user, error, pageTitle, error_5;
+        var searchParams, userid, data, user, error, pageTitle, error_7;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -208,8 +224,8 @@ function loadUserMainPage() {
                     pageTitle.innerHTML = "Welcome " + user.username;
                     return [3 /*break*/, 3];
                 case 2:
-                    error_5 = _a.sent();
-                    console.error(error_5);
+                    error_7 = _a.sent();
+                    console.error(error_7);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -218,17 +234,17 @@ function loadUserMainPage() {
 }
 function loadRoom() {
     return __awaiter(this, void 0, void 0, function () {
-        var data, user;
+        var data, userDB, roomContainer;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log('loading room cookies');
+                    console.log('loading user cookies');
                     return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
                 case 1:
                     data = (_a.sent()).data;
-                    console.log(data);
-                    user = data.user;
-                    console.log("hello user: " + user.username);
+                    userDB = data.userDB;
+                    roomContainer = document.querySelector('.room_container');
+                    roomContainer.innerHTML = "<h1>Hello " + userDB.username + "</h1>";
                     return [2 /*return*/];
             }
         });

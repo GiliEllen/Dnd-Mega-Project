@@ -39,9 +39,11 @@ exports.__esModule = true;
 exports.getRoomID = exports.getRoomUsers = exports.getRoomByID = exports.renderUserMainPage = exports.userLogin = exports.handleRegister = exports.updateNotes = exports.getRoom = exports.getUserFromCookies = exports.createMember = exports.addRoom = void 0;
 var roomModel_1 = require("./../models/roomModel");
 var memberModel_1 = require("../models/memberModel");
+var usersModel_1 = require("../models/usersModel");
+var jwt_simple_1 = require("jwt-simple");
 function addRoom(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var newRoom, room, roomDB;
+        var newRoom, room, roomDB, cookie, secret, JWTCookie;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -51,7 +53,12 @@ function addRoom(req, res) {
                     return [4 /*yield*/, room.save()];
                 case 1:
                     roomDB = _a.sent();
-                    res.cookie('roomID', roomDB._id);
+                    cookie = { roomDB: roomDB._id };
+                    secret = process.env.JWT_SECRET;
+                    if (!secret)
+                        throw new Error("Couldn't find secret");
+                    JWTCookie = jwt_simple_1["default"].encode(cookie, secret);
+                    res.cookie("Room", JWTCookie);
                     res.send({ success: true, roomDB: roomDB });
                     return [2 /*return*/];
             }
@@ -61,13 +68,13 @@ function addRoom(req, res) {
 exports.addRoom = addRoom;
 function createMember(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, roomDB, user, role, member, memberDB, error_1;
+        var _a, roomDB, userDB, role, member, memberDB, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    _a = req.body, roomDB = _a.roomDB, user = _a.user, role = _a.role;
-                    member = new memberModel_1["default"]({ roomDB: roomDB, user: user, role: role });
+                    _a = req.body, roomDB = _a.roomDB, userDB = _a.userDB, role = _a.role;
+                    member = new memberModel_1["default"]({ room: roomDB, user: userDB, role: role });
                     return [4 /*yield*/, member.save()];
                 case 1:
                     memberDB = _b.sent();
@@ -85,28 +92,29 @@ function createMember(req, res) {
 exports.createMember = createMember;
 function getUserFromCookies(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var userID, user, error_2;
+        var secret, userId, decodedUserId, userID, userDB, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, console.log(req.cookies)];
+                    _a.trys.push([0, 2, , 3]);
+                    secret = process.env.JWT_SECRET;
+                    if (!secret)
+                        throw new Error("couldn't load secret from .env");
+                    userId = req.cookies.userId;
+                    if (!userId)
+                        throw new Error("couldn't get userID from cookies");
+                    decodedUserId = jwt_simple_1["default"].decode(userId, secret);
+                    userID = decodedUserId.userID;
+                    return [4 /*yield*/, usersModel_1["default"].findById(userID)];
                 case 1:
-                    _a.sent();
-                    userID = req.cookies.userID;
-                    console.log(userID);
-                    return [4 /*yield*/, usersModel_1["default"].findById({ userID: userID })];
+                    userDB = _a.sent();
+                    res.send({ userDB: userDB });
+                    return [3 /*break*/, 3];
                 case 2:
-                    user = _a.sent();
-                    if (!user)
-                        throw new Error("couldnt find user by id");
-                    res.send({ foundUser: true, user: user });
-                    return [3 /*break*/, 4];
-                case 3:
                     error_2 = _a.sent();
                     res.send({ error: error_2.message });
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     });
@@ -152,10 +160,9 @@ function updateNotes(req, res) {
 }
 exports.updateNotes = updateNotes;
 console.log('this is usersCont.ts');
-var usersModel_1 = require("../models/usersModel");
 function handleRegister(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, username, password, error, user, error_4;
+        var _a, username, password, error, user, cookie, secret, JWTCookie, error_4;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -168,7 +175,12 @@ function handleRegister(req, res) {
                     return [4 /*yield*/, user.save()];
                 case 1:
                     _b.sent();
-                    res.cookie("user", user);
+                    cookie = { userID: user._id };
+                    secret = process.env.JWT_SECRET;
+                    if (!secret)
+                        throw new Error("Couldn't find secret");
+                    JWTCookie = jwt_simple_1["default"].encode(cookie, secret);
+                    res.cookie('userId', JWTCookie);
                     res.send({ register: true, user: user });
                     return [3 /*break*/, 3];
                 case 2:
@@ -192,7 +204,7 @@ exports.handleRegister = handleRegister;
 // }
 function userLogin(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, username, password, error, user, error_5;
+        var _a, username, password, error, user, cookie, secret, JWTCookie, error_5;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -208,7 +220,12 @@ function userLogin(req, res) {
                         res.send({ login: false });
                     }
                     else {
-                        res.cookie("userID", user._id);
+                        cookie = { userID: user._id };
+                        secret = process.env.JWT_SECRET;
+                        if (!secret)
+                            throw new Error("Couldn't find secret");
+                        JWTCookie = jwt_simple_1["default"].encode(cookie, secret);
+                        res.cookie('userId', JWTCookie);
                         res.send({ login: true, user: user });
                     }
                     return [3 /*break*/, 3];

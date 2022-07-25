@@ -2,6 +2,7 @@ console.log('this is server.ts')
 
 import express from "express";
 import mongoose from "mongoose";
+import cookieParser from 'cookie-parser';
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
@@ -10,6 +11,7 @@ const io = new Server(server);
 
 require('dotenv').config()
 
+app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.json());
 

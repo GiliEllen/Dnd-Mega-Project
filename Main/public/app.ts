@@ -1,7 +1,7 @@
 console.log('this is app.ts');
 
 function loadBody() {
-	renderButtonsHandoutsLoot(userID);
+	// renderButtonsHandoutsLoot(userID);
 }
 
 async function handleSaveNotes(ev) {

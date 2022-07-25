@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 console.log('this is app.ts');
 function loadBody() {
-    renderButtonsHandoutsLoot(userID);
+    // renderButtonsHandoutsLoot(userID);
 }
 function handleSaveNotes(ev) {
     return __awaiter(this, void 0, void 0, function () {

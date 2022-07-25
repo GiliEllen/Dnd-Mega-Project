@@ -1,5 +1,3 @@
-console.log('this is index.ts');
-
 const newRoomForm = document.querySelector('#NewRoomForm');
 const newRoomName = document.querySelector('#roomName') as HTMLInputElement;
 const adiv: HTMLElement = document.querySelector('div');
@@ -9,28 +7,41 @@ async function HandleCreateNewRoom(ev: any) {
 	try {
 		const newRoom = ev.target.elements.roomName.value;
 		//@ts-ignore
-		// const { data } = await axios.get("/users/room")
 		const { data } = await axios.post('/users/new-room', { newRoom });
 		const { roomDB } = data;
-		window.location.href = `./mainPageDm.html?roomID=${roomDB}`;
+		const role = "dm";
+		handleCreateMember(roomDB, role)
+		//  window.location.href = `./mainPageDm.html`;
 	} catch (error) {
 		console.error(error);
 	}
 }
 
 async function handleCreateMember(roomDB, role) {
-	const user = getUserFromCookies();
+	try {
+		console.log("enter creat member function")
+	 const userDB = await getUserFromCookies();
+	console.log(userDB)
+	// console.log(`creating member from user ${user.username} and `)
 	//@ts-ignore
-	const { data } = await axios.post('/users/create-Member', {roomDB, user, role});
+	const { data } = await axios.post('/users/create-Member', {roomDB, userDB, role});
+	console.log("index.js thinks member was created")
+	} catch (error) {
+		console.error(error)
+	}
 }
 
 async function getUserFromCookies() {
-	console.log('loading room cookies');
+	try {
+		console.log('loading room cookies');
 	//@ts-ignore
 	const { data } = await axios.get('/users/get-user-from-cookies');
-	console.log(data);
-	const {user} = data;
-	return user
+	const {userDB} = data;
+	return userDB
+	} catch (error) {
+		console.error(error)
+	}
+	
 }
 
 async function HandleEnterRoom(ev: any) {
@@ -44,7 +55,7 @@ async function HandleEnterRoom(ev: any) {
 		console.log(data);
 		const { roomDB } = data;
 		console.log(roomDB);
-		window.location.href = `./room.html?roomID=${roomDB._id}`;
+		// window.location.href = `./room.html?roomID=${roomDB._id}`;
 		// console.log(roomID)
 	} catch (error) {
 		console.error(error);
@@ -58,12 +69,11 @@ async function handleRegister(event: any) {
 		const password = event.target.password.value;
 		//@ts-ignore
 		const { data } = await axios.post('/users/register', { username, password });
+		console.log(data)
 		const { register, user, error } = data;
-
 		if (register) {
 			window.location.href = 'room.html';
 		}
-
 		if (error) throw error;
 		console.log(data);
 	} catch (error) {
@@ -107,13 +117,12 @@ async function loadUserMainPage() {
 }
 
 async function loadRoom() {
-	console.log('loading room cookies');
+	console.log('loading user cookies');
 	//@ts-ignore
 	const { data } = await axios.get('/users/get-user-from-cookies');
-	console.log(data);
-	const {user} = data;
-	console.log(`hello user: ${user.username}`)
-
+	const {userDB} = data;
+	const roomContainer = document.querySelector('.room_container');
+	roomContainer.innerHTML = `<h1>Hello ${userDB.username}</h1>`
 }
 
 function getRoomIdByParams() {
