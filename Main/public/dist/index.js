@@ -49,13 +49,11 @@ function HandleCreateNewRoom(ev) {
                 case 1:
                     _a.trys.push([1, 3, , 4]);
                     newRoom = ev.target.elements.roomName.value;
-                    console.log(newRoom);
                     return [4 /*yield*/, axios.post('/users/new-room', { newRoom: newRoom })];
                 case 2:
                     data = (_a.sent()).data;
                     roomID = data.roomID;
                     window.location.href = "./room.html?roomID=" + roomID;
-                    console.log(roomID);
                     return [3 /*break*/, 4];
                 case 3:
                     error_1 = _a.sent();
@@ -98,7 +96,7 @@ function HandleEnterRoom(ev) {
 }
 function handleRegister(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var username, password, roomID, role, data, register, error, error_3;
+        var username, password, roomID, role, data, register, user, error, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -108,12 +106,15 @@ function handleRegister(event) {
                     _a.trys.push([1, 3, , 4]);
                     username = event.target.username.value;
                     password = event.target.password.value;
-                    roomID = 'room1';
-                    role = 'user';
+                    roomID = getRoomIdByParams();
+                    role = getRoleByParams();
                     return [4 /*yield*/, axios.post('/users/register', { username: username, password: password, roomID: roomID, role: role })];
                 case 2:
                     data = (_a.sent()).data;
-                    register = data.register, error = data.error;
+                    register = data.register, user = data.user, error = data.error;
+                    if (role === "dm") {
+                        window.location.href = "./mainPageDm.html?roomID=" + roomID + "&userID=" + user._id;
+                    }
                     if (error)
                         throw error;
                     console.log(data);
@@ -193,27 +194,93 @@ function loadUserMainPage() {
         });
     });
 }
-// function goToRoomNum(event) {
-//     event.preventDefault()
-//     try {
-//         console.log('heyyyyyyyyyyy')
-//         const roomNum = event.target.elements.roomNum.value
-//         console.log(roomNum)
-//         window.location.href = `room.html?roomnum=${roomNum}`;
-//     } catch(error){
-//       console.error(error)
-//     }
-//   }
-// function enterRoom(){
-//     try {
-//         console.log('hello')
-//         const searchParams = new URLSearchParams(window.location.href)
-//         const roomNum = searchParams.get('roomnum')
-//         console.log(roomNum)
-//     } catch (error) {
-//       console.error(error)
-//     }
-//   }
 function loadRoom() {
     console.log('this is room');
+    //   checkRoomIDAndIfNew()
+    var roomID = getRoomIdByParams();
+    getRoomById(roomID);
+}
+function getRoleByParams() {
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var role = urlParams.get('role');
+    console.log(role);
+    return role;
+}
+function getRoomIdByParams() {
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var roomID = urlParams.get('roomID');
+    return roomID;
+}
+function getRoomById(roomID) {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, room, userlist, userlist;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios.post('/users/getRoomByID', { roomID: roomID })];
+                case 1:
+                    data = (_a.sent()).data;
+                    room = data.room;
+                    if (room.userListID.length === 0) {
+                        userlist = 0;
+                        renderRoom(userlist, room);
+                    }
+                    else if (room.userListID.length > 0) {
+                        userlist = getRoomUsers(roomID);
+                        renderRoom(userlist, room);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function getRoomUsers(roomID) {
+    return __awaiter(this, void 0, void 0, function () {
+        var data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios.post('/users/getRoomUsers', { roomID: roomID })];
+                case 1:
+                    data = (_a.sent()).data;
+                    console.log(data);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderRoom(userlist, room) {
+    var roomContainer = document.querySelector('.room_container');
+    var html = "";
+    if (userlist) {
+        // 		html = `<h1>Room name: ${room.name}</h1>
+        //         <div class="room_container__userContainer">
+        //             <div class="room_container__dmContainer">
+        //                 <a href="login.html?roomID=${room._id}&role=dm">Dm Login</a>
+        //             </div>
+        // 			<h3>Soon a function will fill this with users</h3>
+        //         </div>
+        //         <a href="login.html?roomID=${room._id}"><button>Register New Player</button></a>
+        // `
+    }
+    else {
+        html = "<h1>Room name: " + room.name + "</h1>\n        <div class=\"room_container__userContainer\">\n            <div class=\"room_container__dmContainer\">\n                <a href=\"register.html?roomID=" + room._id + "&role=dm\">Dm Register</a>\n            </div>\n\t\t\t<h3>User List is empty. Tell your user to enter the room and register!</h3>\n        </div>\n        <a href=\"register.html?roomID=" + room._id + "&role=user\"><button>Register New Player</button></a>\n";
+    }
+    roomContainer.innerHTML = html;
+}
+// Ask Tal about cookies
+function checkRoomIDAndIfNew() {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, newRoom, roomID;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios.get('/users/getRoomID')];
+                case 1:
+                    data = (_a.sent()).data;
+                    newRoom = data.newRoom, roomID = data.roomID;
+                    console.log(newRoom, roomID);
+                    return [2 /*return*/];
+            }
+        });
+    });
 }

@@ -36,57 +36,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-<<<<<<< HEAD
-exports.updateNotes = exports.getRoom = exports.addRoom = void 0;
+exports.getRoomID = exports.getRoomUsers = exports.getRoomByID = exports.renderUserMainPage = exports.userLogin = exports.handleRegister = exports.updateNotes = exports.getRoom = exports.addRoom = void 0;
 var roomModel_1 = require("./../models/roomModel");
 function addRoom(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var newRoom, room, roomDB;
+        var newRoom, isRoomNew, userListID, room, roomDB;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     console.log(req.body);
                     newRoom = req.body.newRoom;
-                    room = new roomModel_1["default"]({ name: newRoom });
+                    isRoomNew = true;
+                    userListID = [];
+                    room = new roomModel_1["default"]({ name: newRoom, isNew: isRoomNew, userListID: userListID });
                     return [4 /*yield*/, room.save()];
                 case 1:
                     roomDB = _a.sent();
                     res.cookie('roomID', roomDB._id);
+                    res.cookie('newRoom', true);
                     res.send({ success: true, roomID: roomDB._id });
                     return [2 /*return*/];
-=======
-exports.renderUserMainPage = exports.userLogin = exports.handleRegister = void 0;
-console.log('this is usersCont.ts');
-var usersModel_1 = require("../models/usersModel");
-function handleRegister(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var _a, username, password, roomID, role, error, user, error_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _b.trys.push([0, 2, , 3]);
-                    _a = req.body, username = _a.username, password = _a.password, roomID = _a.roomID, role = _a.role;
-                    console.log(username, password, roomID);
-                    error = usersModel_1.UserValidation.validate({ username: username, password: password, roomID: roomID, role: role }).error;
-                    if (error)
-                        throw error;
-                    user = new usersModel_1["default"]({ username: username, password: password, roomID: roomID, role: role });
-                    return [4 /*yield*/, user.save()];
-                case 1:
-                    _b.sent();
-                    res.send({ register: true });
-                    return [3 /*break*/, 3];
-                case 2:
-                    error_1 = _b.sent();
-                    res.send({ error: error_1.message });
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
->>>>>>> carmel
             }
         });
     });
 }
-<<<<<<< HEAD
 exports.addRoom = addRoom;
 function getRoom(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -102,16 +75,75 @@ function getRoom(req, res) {
                 case 1:
                     roomDB = _a.sent();
                     res.cookie('roomID', roomDB._id);
+                    res.cookie('newRoom', false);
                     res.send({ success: true, roomDB: roomDB });
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
                     res.send({ error: error_1.message });
-=======
-exports.handleRegister = handleRegister;
-function userLogin(req, res) {
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getRoom = getRoom;
+function updateNotes(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, userID, updatedNotes;
+        return __generator(this, function (_b) {
+            _a = req.body, userID = _a.userID, updatedNotes = _a.updatedNotes;
+            console.log(userID, updatedNotes);
+            res.send({ succeses: true });
+            return [2 /*return*/];
+        });
+    });
+}
+exports.updateNotes = updateNotes;
+console.log('this is usersCont.ts');
+var usersModel_1 = require("../models/usersModel");
+function handleRegister(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var _a, username, password, roomID, role, error, user, error_2;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    _a = req.body, username = _a.username, password = _a.password, roomID = _a.roomID, role = _a.role;
+                    error = usersModel_1.UserValidation.validate({ username: username, password: password, roomID: roomID, role: role }).error;
+                    if (error)
+                        throw error;
+                    user = new usersModel_1["default"]({ username: username, password: password, roomID: roomID, role: role });
+                    return [4 /*yield*/, user.save()
+                        // saveUserToRoom(username, roomID)
+                    ];
+                case 1:
+                    _b.sent();
+                    // saveUserToRoom(username, roomID)
+                    res.send({ register: true, user: user });
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_2 = _b.sent();
+                    res.send({ error: error_2.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.handleRegister = handleRegister;
+// export async function saveUserToRoom(username, roomID) {
+//   const user = await UserModel.findOne({ username, roomID});
+//   const room = await RoomModel.findById({roomID});
+//   const usetID = user._id
+//   const userArr = room.userListID;
+//   userArr.push(usetID);
+//   room.userListID = userArr;
+//   await room.save();
+// }
+function userLogin(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, username, password, roomID, role, error, user, error_3;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -131,34 +163,18 @@ function userLogin(req, res) {
                     }
                     return [3 /*break*/, 3];
                 case 2:
-                    error_2 = _b.sent();
-                    res.send({ error: error_2.message });
->>>>>>> carmel
+                    error_3 = _b.sent();
+                    res.send({ error: error_3.message });
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
         });
     });
 }
-<<<<<<< HEAD
-exports.getRoom = getRoom;
-function updateNotes(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var _a, userID, updatedNotes;
-        return __generator(this, function (_b) {
-            _a = req.body, userID = _a.userID, updatedNotes = _a.updatedNotes;
-            console.log(userID, updatedNotes);
-            res.send({ succeses: true });
-            return [2 /*return*/];
-        });
-    });
-}
-exports.updateNotes = updateNotes;
-=======
 exports.userLogin = userLogin;
 function renderUserMainPage(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var userid, user, error_3;
+        var userid, user, error_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -170,8 +186,8 @@ function renderUserMainPage(req, res) {
                     res.send({ user: user });
                     return [3 /*break*/, 3];
                 case 2:
-                    error_3 = _a.sent();
-                    res.send({ error: error_3.message });
+                    error_4 = _a.sent();
+                    res.send({ error: error_4.message });
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -179,4 +195,59 @@ function renderUserMainPage(req, res) {
     });
 }
 exports.renderUserMainPage = renderUserMainPage;
->>>>>>> carmel
+function getRoomByID(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var roomID, room, error_5;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    roomID = req.body.roomID;
+                    return [4 /*yield*/, roomModel_1["default"].findById(roomID)];
+                case 1:
+                    room = _a.sent();
+                    res.send({ room: room });
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_5 = _a.sent();
+                    res.send({ error: error_5.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getRoomByID = getRoomByID;
+function getRoomUsers(res, req) {
+    return __awaiter(this, void 0, void 0, function () {
+        var roomID, userlist, error_6;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    roomID = req.body.roomID;
+                    return [4 /*yield*/, usersModel_1["default"].find({ roomID: roomID })];
+                case 1:
+                    userlist = _a.sent();
+                    console.log(userlist);
+                    res.send(userlist);
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_6 = _a.sent();
+                    res.send({ error: error_6.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getRoomUsers = getRoomUsers;
+function getRoomID(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            console.log(req.cookies);
+            return [2 /*return*/];
+        });
+    });
+}
+exports.getRoomID = getRoomID;
