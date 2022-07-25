@@ -96,7 +96,7 @@ function HandleEnterRoom(ev) {
 }
 function handleRegister(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var username, password, roomID, role, data, register, user, error, error_3;
+        var username, password, data, register, user, error, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -106,14 +106,12 @@ function handleRegister(event) {
                     _a.trys.push([1, 3, , 4]);
                     username = event.target.username.value;
                     password = event.target.password.value;
-                    roomID = getRoomIdByParams();
-                    role = getRoleByParams();
-                    return [4 /*yield*/, axios.post('/users/register', { username: username, password: password, roomID: roomID, role: role })];
+                    return [4 /*yield*/, axios.post('/users/register', { username: username, password: password })];
                 case 2:
                     data = (_a.sent()).data;
                     register = data.register, user = data.user, error = data.error;
-                    if (role === "dm") {
-                        window.location.href = "./mainPageDm.html?roomID=" + roomID + "&userID=" + user._id;
+                    if (register) {
+                        window.location.href = 'room.html';
                     }
                     if (error)
                         throw error;
@@ -130,7 +128,7 @@ function handleRegister(event) {
 }
 function handleLogin(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var username, password, roomID, role, data, login, user, error, error_4;
+        var username, password, data, login, user, error, error_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -138,26 +136,18 @@ function handleLogin(event) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
+                    console.log('this is index trying to log in');
                     username = event.target.username.value;
                     password = event.target.password.value;
-                    roomID = 'room1';
-                    role = 'user';
-                    return [4 /*yield*/, axios.post('/users/login', { username: username, password: password, roomID: roomID, role: role })];
+                    return [4 /*yield*/, axios.post('/users/login', { username: username, password: password })];
                 case 2:
                     data = (_a.sent()).data;
                     login = data.login, user = data.user, error = data.error;
+                    console.log(error);
                     if (error)
                         throw error;
-                    else {
-                        if (login && role == 'user') {
-                            window.location.href = "mainPageUser.html?userid=" + user._id;
-                        }
-                        else if (login && role == 'DM') {
-                            window.location.href = 'mainPageDM.html';
-                        }
-                        else {
-                            adiv.innerText = 'wrong password/username';
-                        }
+                    if (login) {
+                        window.location.href = 'room.html';
                     }
                     return [3 /*break*/, 4];
                 case 3:
@@ -197,8 +187,8 @@ function loadUserMainPage() {
 function loadRoom() {
     console.log('this is room');
     //   checkRoomIDAndIfNew()
-    var roomID = getRoomIdByParams();
-    getRoomById(roomID);
+    // const roomID = getRoomIdByParams();
+    // getRoomById(roomID);
 }
 function getRoleByParams() {
     var queryString = window.location.search;
@@ -251,7 +241,7 @@ function getRoomUsers(roomID) {
 }
 function renderRoom(userlist, room) {
     var roomContainer = document.querySelector('.room_container');
-    var html = "";
+    var html = '';
     if (userlist) {
         // 		html = `<h1>Room name: ${room.name}</h1>
         //         <div class="room_container__userContainer">

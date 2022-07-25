@@ -35,7 +35,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 console.log('this is app.ts');
-var userID = 123456;
 function loadBody() {
     renderButtonsHandoutsLoot(userID);
 }

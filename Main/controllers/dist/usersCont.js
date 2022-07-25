@@ -104,22 +104,20 @@ console.log('this is usersCont.ts');
 var usersModel_1 = require("../models/usersModel");
 function handleRegister(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, username, password, roomID, role, error, user, error_2;
+        var _a, username, password, error, user, error_2;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    _a = req.body, username = _a.username, password = _a.password, roomID = _a.roomID, role = _a.role;
-                    error = usersModel_1.UserValidation.validate({ username: username, password: password, roomID: roomID, role: role }).error;
+                    _a = req.body, username = _a.username, password = _a.password;
+                    error = usersModel_1.UserValidation.validate({ username: username, password: password }).error;
                     if (error)
                         throw error;
-                    user = new usersModel_1["default"]({ username: username, password: password, roomID: roomID, role: role });
-                    return [4 /*yield*/, user.save()
-                        // saveUserToRoom(username, roomID)
-                    ];
+                    user = new usersModel_1["default"]({ username: username, password: password });
+                    return [4 /*yield*/, user.save()];
                 case 1:
                     _b.sent();
-                    // saveUserToRoom(username, roomID)
+                    res.cookie("user", user);
                     res.send({ register: true, user: user });
                     return [3 /*break*/, 3];
                 case 2:
@@ -143,22 +141,23 @@ exports.handleRegister = handleRegister;
 // }
 function userLogin(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, username, password, roomID, role, error, user, error_3;
+        var _a, username, password, error, user, error_3;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    _a = req.body, username = _a.username, password = _a.password, roomID = _a.roomID, role = _a.role;
-                    error = usersModel_1.UserValidation.validate({ username: username, password: password, roomID: roomID, role: role }).error;
+                    _a = req.body, username = _a.username, password = _a.password;
+                    error = usersModel_1.UserValidation.validate({ username: username, password: password }).error;
                     if (error)
                         throw error;
-                    return [4 /*yield*/, usersModel_1["default"].findOne({ username: username, password: password, roomID: roomID, role: role })];
+                    return [4 /*yield*/, usersModel_1["default"].findOne({ username: username, password: password })];
                 case 1:
                     user = _b.sent();
                     if (!user) {
                         res.send({ login: false });
                     }
                     else {
+                        res.cookie("userID", user._id);
                         res.send({ login: true, user: user });
                     }
                     return [3 /*break*/, 3];

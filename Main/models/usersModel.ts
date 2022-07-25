@@ -12,19 +12,6 @@ const UserSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true
-    },
-    roomID:{
-        type:String,
-        required:true
-    },
-    role:{
-        enum:["user", "dm"],
-        default:"user",
-        type:String,
-        required:true
-    },
-    notes:{
-        type:String
     }
 })
 
@@ -35,7 +22,4 @@ export default UserModel;
 export const UserValidation = Joi.object({
     username:Joi.string().required(),
     password:Joi.string().required(),
-    roomID:Joi.string().required(),
-    role:Joi.string().required(),
-    notes:Joi.string()
 })

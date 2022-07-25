@@ -1,7 +1,5 @@
 console.log('this is app.ts');
 
-const userID = 123456;
-
 function loadBody() {
 	renderButtonsHandoutsLoot(userID);
 }

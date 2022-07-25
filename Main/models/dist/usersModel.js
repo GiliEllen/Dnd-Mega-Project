@@ -12,27 +12,11 @@ var UserSchema = new mongoose_1["default"].Schema({
     password: {
         type: String,
         required: true
-    },
-    roomID: {
-        type: String,
-        required: true
-    },
-    role: {
-        "enum": ["user", "dm"],
-        "default": "user",
-        type: String,
-        required: true
-    },
-    notes: {
-        type: String
     }
 });
 var UserModel = mongoose_1["default"].model('users', UserSchema);
 exports["default"] = UserModel;
 exports.UserValidation = joi_1["default"].object({
     username: joi_1["default"].string().required(),
-    password: joi_1["default"].string().required(),
-    roomID: joi_1["default"].string().required(),
-    role: joi_1["default"].string().required(),
-    notes: joi_1["default"].string()
+    password: joi_1["default"].string().required()
 });

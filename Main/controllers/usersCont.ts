@@ -39,15 +39,14 @@ import UserModel, {UserValidation} from "../models/usersModel";
 
 export async function handleRegister(req, res) {
     try {
-      const { username, password, roomID, role } = req.body;
-      const { error } = UserValidation.validate({ username, password, roomID, role });
+      const { username, password } = req.body;
+      const { error } = UserValidation.validate({ username, password });
       if (error) throw error;
       
-      const user = new UserModel({ username, password, roomID, role });
+      const user = new UserModel({ username, password });
       await user.save()
-
-      // saveUserToRoom(username, roomID)
         
+      res.cookie("user", user)
       res.send({ register: true, user });
     } catch (error) {
       res.send({ error: error.message });
@@ -67,15 +66,16 @@ export async function handleRegister(req, res) {
 
   export async function userLogin(req, res) {
     try {
-      const { username, password, roomID, role} = req.body;
-      const { error } = UserValidation.validate({ username, password, roomID, role});
+      const { username, password} = req.body;
+      const { error } = UserValidation.validate({ username, password});
       if (error) throw error;
   
-      const user = await UserModel.findOne({ username, password, roomID, role});
+      const user = await UserModel.findOne({ username, password});
       
       if (!user) {
         res.send({ login: false });
       } else {
+        res.cookie("userID", user._id)
         res.send({ login: true, user });
       }
     } catch (error) {
