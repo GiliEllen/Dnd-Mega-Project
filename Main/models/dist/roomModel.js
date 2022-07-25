@@ -8,12 +8,6 @@ var RoomSchema = new mongoose_1["default"].Schema({
         type: String,
         required: true,
         unique: true
-    },
-    isNew: {
-        type: Boolean
-    },
-    userListID: {
-        type: Array
     }
 });
 var RoomModel = mongoose_1["default"].model('Rooms', RoomSchema);

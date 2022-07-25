@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Joi, { array } from 'joi';
+import Joi from 'joi';
 
 const RoomSchema = new mongoose.Schema({
     name:
@@ -7,12 +7,6 @@ const RoomSchema = new mongoose.Schema({
         type:String,
         required:true,
         unique:true
-    },
-    isNew:{
-        type:Boolean
-    },
-    userListID: {
-        type:Array
     }
 })
 

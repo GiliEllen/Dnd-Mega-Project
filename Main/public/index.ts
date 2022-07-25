@@ -11,11 +11,26 @@ async function HandleCreateNewRoom(ev: any) {
 		//@ts-ignore
 		// const { data } = await axios.get("/users/room")
 		const { data } = await axios.post('/users/new-room', { newRoom });
-		const { roomID } = data;
-		window.location.href = `./room.html?roomID=${roomID}`;
+		const { roomDB } = data;
+		window.location.href = `./mainPageDm.html?roomID=${roomDB}`;
 	} catch (error) {
 		console.error(error);
 	}
+}
+
+async function handleCreateMember(roomDB, role) {
+	const user = getUserFromCookies();
+	//@ts-ignore
+	const { data } = await axios.post('/users/create-Member', {roomDB, user, role});
+}
+
+async function getUserFromCookies() {
+	console.log('loading room cookies');
+	//@ts-ignore
+	const { data } = await axios.get('/users/get-user-from-cookies');
+	console.log(data);
+	const {user} = data;
+	return user
 }
 
 async function HandleEnterRoom(ev: any) {
@@ -91,19 +106,14 @@ async function loadUserMainPage() {
 	}
 }
 
-function loadRoom() {
-	console.log('this is room');
-	//   checkRoomIDAndIfNew()
-	// const roomID = getRoomIdByParams();
-	// getRoomById(roomID);
-}
+async function loadRoom() {
+	console.log('loading room cookies');
+	//@ts-ignore
+	const { data } = await axios.get('/users/get-user-from-cookies');
+	console.log(data);
+	const {user} = data;
+	console.log(`hello user: ${user.username}`)
 
-function getRoleByParams() {
-	const queryString = window.location.search;
-	const urlParams = new URLSearchParams(queryString);
-	const role = urlParams.get('role');
-	console.log(role);
-	return role;
 }
 
 function getRoomIdByParams() {
@@ -121,13 +131,9 @@ async function getRoomById(roomID) {
 		const userlist = 0;
 		renderRoom(userlist, room);
 	} else if (room.userListID.length > 0) {
-		const userlist = getRoomUsers(roomID);
+
 		renderRoom(userlist, room);
 	}
-}
-async function getRoomUsers(roomID) {
-	const { data } = await axios.post('/users/getRoomUsers', { roomID });
-	console.log(data);
 }
 
 function renderRoom(userlist, room) {

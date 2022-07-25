@@ -1,17 +1,42 @@
 import RoomModel from './../models/roomModel';
+import MemberModel from '../models/memberModel';
 
 export async function addRoom(req, res) {
 	console.log(req.body);
 	const { newRoom } = req.body;
-  const isRoomNew = true
-  const userListID =[];
 
-	const room = new RoomModel({ name: newRoom, isNew: isRoomNew, userListID});
+	const room = new RoomModel({ name: newRoom});
 	const roomDB = await room.save();
 
     res.cookie('roomID', roomDB._id)
-    res.cookie('newRoom', true)
-	res.send({ success: true, roomID: roomDB._id });
+
+	res.send({ success: true, roomDB });
+}
+
+export async function createMember(req, res){
+  try {
+    const {roomDB, user, role} = req.body;
+  const member = new MemberModel({ roomDB, user, role});
+	const memberDB = await member.save();
+
+  res.send(memberDB)
+  } catch (error) {
+    res.send({error:error.message})
+  }
+}
+
+export async function getUserFromCookies(req, res) {
+  try {
+    await console.log(req.cookies)
+    const { userID } = req.cookies;
+    console.log(userID)
+    const user = await UserModel.findById({userID});
+    if(!user) throw new Error(`couldnt find user by id`)
+    res.send({foundUser:true, user})
+  } catch (error) {
+    res.send({error:error.message})
+  }
+
 }
 
 export async function getRoom(req, res) {

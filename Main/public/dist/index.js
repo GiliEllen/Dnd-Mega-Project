@@ -40,7 +40,7 @@ var newRoomName = document.querySelector('#roomName');
 var adiv = document.querySelector('div');
 function HandleCreateNewRoom(ev) {
     return __awaiter(this, void 0, void 0, function () {
-        var newRoom, data, roomID, error_1;
+        var newRoom, data, roomDB, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -52,14 +52,46 @@ function HandleCreateNewRoom(ev) {
                     return [4 /*yield*/, axios.post('/users/new-room', { newRoom: newRoom })];
                 case 2:
                     data = (_a.sent()).data;
-                    roomID = data.roomID;
-                    window.location.href = "./room.html?roomID=" + roomID;
+                    roomDB = data.roomDB;
+                    window.location.href = "./mainPageDm.html?roomID=" + roomDB;
                     return [3 /*break*/, 4];
                 case 3:
                     error_1 = _a.sent();
                     console.error(error_1);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+function handleCreateMember(roomDB, role) {
+    return __awaiter(this, void 0, void 0, function () {
+        var user, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    user = getUserFromCookies();
+                    return [4 /*yield*/, axios.post('/users/create-Member', { roomDB: roomDB, user: user, role: role })];
+                case 1:
+                    data = (_a.sent()).data;
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function getUserFromCookies() {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, user;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    console.log('loading room cookies');
+                    return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
+                case 1:
+                    data = (_a.sent()).data;
+                    console.log(data);
+                    user = data.user;
+                    return [2 /*return*/, user];
             }
         });
     });
@@ -185,17 +217,22 @@ function loadUserMainPage() {
     });
 }
 function loadRoom() {
-    console.log('this is room');
-    //   checkRoomIDAndIfNew()
-    // const roomID = getRoomIdByParams();
-    // getRoomById(roomID);
-}
-function getRoleByParams() {
-    var queryString = window.location.search;
-    var urlParams = new URLSearchParams(queryString);
-    var role = urlParams.get('role');
-    console.log(role);
-    return role;
+    return __awaiter(this, void 0, void 0, function () {
+        var data, user;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    console.log('loading room cookies');
+                    return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
+                case 1:
+                    data = (_a.sent()).data;
+                    console.log(data);
+                    user = data.user;
+                    console.log("hello user: " + user.username);
+                    return [2 /*return*/];
+            }
+        });
+    });
 }
 function getRoomIdByParams() {
     var queryString = window.location.search;
@@ -205,7 +242,7 @@ function getRoomIdByParams() {
 }
 function getRoomById(roomID) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, room, userlist, userlist;
+        var data, room, userlist;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, axios.post('/users/getRoomByID', { roomID: roomID })];
@@ -217,23 +254,8 @@ function getRoomById(roomID) {
                         renderRoom(userlist, room);
                     }
                     else if (room.userListID.length > 0) {
-                        userlist = getRoomUsers(roomID);
                         renderRoom(userlist, room);
                     }
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-function getRoomUsers(roomID) {
-    return __awaiter(this, void 0, void 0, function () {
-        var data;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, axios.post('/users/getRoomUsers', { roomID: roomID })];
-                case 1:
-                    data = (_a.sent()).data;
-                    console.log(data);
                     return [2 /*return*/];
             }
         });

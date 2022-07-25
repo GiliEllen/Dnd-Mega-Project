@@ -5,6 +5,7 @@ var usersCont_1 = require("../controllers/usersCont");
 var router = express_1["default"].Router();
 router
     .get('/getRoomID', usersCont_1.getRoomID)
+    .get('/get-user-from-cookies', usersCont_1.getUserFromCookies)
     .post('/findRoom', usersCont_1.getRoom)
     .post('/new-room', usersCont_1.addRoom)
     .post('/getRoomByID', usersCont_1.getRoomByID)
@@ -12,5 +13,6 @@ router
     .post('/updateNotes', usersCont_1.updateNotes)
     .post('/register', usersCont_1.handleRegister)
     .post('/login', usersCont_1.userLogin)
-    .post('/render-user-main-page', usersCont_1.renderUserMainPage);
+    .post('/render-user-main-page', usersCont_1.renderUserMainPage)
+    .post('/create-Member', usersCont_1.createMember);
 exports["default"] = router;
