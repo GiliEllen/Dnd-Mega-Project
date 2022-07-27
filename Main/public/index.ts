@@ -55,7 +55,7 @@ async function HandleEnterRoom(ev: any) {
 		//@ts-ignore
 		const { data } = await axios.post('/member/FindMember', { existingRoom, existingRoomPass, userDB });
 		console.log(data);
-		const { success, memberDB, error } = data;
+		const { success, memberDB, error, roomDB } = data;
 		if (success) {
 			if (memberDB.role === 'dm') {
 				window.location.href = `./mainPageDm.html?memberID=${memberDB._id}`;
@@ -66,7 +66,7 @@ async function HandleEnterRoom(ev: any) {
 			const roomRoot = document.querySelector('#roomRoot');
 			if (error === 'the password and room are correct but user not a match') {
 				roomRoot.innerHTML =
-					'<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2>';
+					`<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2></br><button onclick="handleAddUserToRoom(${roomDB.name},${userDB.username})">Yes</button><button onclick="handleDeleteThis()">Cancel</button>`;
 			} else if(error === 'passwords do not match'){
 				roomRoot.innerHTML =
 					"<h2>Passwords son't match, please try again</h2>";
@@ -82,8 +82,10 @@ async function handleRegister(event: any) {
 	try {
 		const username = event.target.username.value;
 		const password = event.target.password.value;
+		const rePassword = event.target.rePassword.value;
+		const email = event.target.email.value;
 		//@ts-ignore
-		const { data } = await axios.post('/users/register', { username, password });
+		const { data } = await axios.post('/users/register', { username, password, email, rePassword });
 		console.log(data);
 		const { register, user, error } = data;
 		if (register) {
@@ -99,11 +101,12 @@ async function handleRegister(event: any) {
 async function handleLogin(event: any) {
 	event.preventDefault();
 	try {
-		console.log('this is index trying to log in');
 		const username = event.target.username.value;
+		const email = event.target.email.value;
 		const password = event.target.password.value;
+		const rePassword = event.target.rePassword.value;
 		//@ts-ignore
-		const { data } = await axios.post('/users/login', { username, password });
+		const { data } = await axios.post('/users/login', { username, password, email, rePassword });
 
 		const { login, user, error } = data;
 		console.log(error);
@@ -137,6 +140,13 @@ async function loadRoom() {
 	const { userDB } = data;
 	const roomContainer = document.querySelector('.room_container');
 	roomContainer.innerHTML = `<h1>Hello ${userDB.username}</h1>`;
+}
+
+async function handleAddUserToRoom(roomDB, userDB){
+	console.log(`roomDB`)
+
+	console.log(`userDB`)
+
 }
 
 // function getRoomIdByParams() {

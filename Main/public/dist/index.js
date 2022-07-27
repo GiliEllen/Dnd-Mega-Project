@@ -117,7 +117,7 @@ function getUserFromCookies() {
 }
 function HandleEnterRoom(ev) {
     return __awaiter(this, void 0, void 0, function () {
-        var existingRoom, existingRoomPass, data, userDB, data, success, memberDB, error, roomRoot, error_4;
+        var existingRoom, existingRoomPass, data, userDB, data, success, memberDB, error, roomDB, roomRoot, error_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -135,7 +135,7 @@ function HandleEnterRoom(ev) {
                 case 3:
                     data = (_a.sent()).data;
                     console.log(data);
-                    success = data.success, memberDB = data.memberDB, error = data.error;
+                    success = data.success, memberDB = data.memberDB, error = data.error, roomDB = data.roomDB;
                     if (success) {
                         if (memberDB.role === 'dm') {
                             window.location.href = "./mainPageDm.html?memberID=" + memberDB._id;
@@ -148,7 +148,7 @@ function HandleEnterRoom(ev) {
                         roomRoot = document.querySelector('#roomRoot');
                         if (error === 'the password and room are correct but user not a match') {
                             roomRoot.innerHTML =
-                                '<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2>';
+                                "<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2></br><button onclick=\"handleAddUserToRoom(" + roomDB.name + "," + userDB.username + ")\">Yes</button><button onclick=\"handleDeleteThis()\">Cancel</button>";
                         }
                         else if (error === 'passwords do not match') {
                             roomRoot.innerHTML =
@@ -167,7 +167,7 @@ function HandleEnterRoom(ev) {
 }
 function handleRegister(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var username, password, data, register, user, error, error_5;
+        var username, password, rePassword, email, data, register, user, error, error_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -177,7 +177,9 @@ function handleRegister(event) {
                     _a.trys.push([1, 3, , 4]);
                     username = event.target.username.value;
                     password = event.target.password.value;
-                    return [4 /*yield*/, axios.post('/users/register', { username: username, password: password })];
+                    rePassword = event.target.rePassword.value;
+                    email = event.target.email.value;
+                    return [4 /*yield*/, axios.post('/users/register', { username: username, password: password, email: email, rePassword: rePassword })];
                 case 2:
                     data = (_a.sent()).data;
                     console.log(data);
@@ -200,7 +202,7 @@ function handleRegister(event) {
 }
 function handleLogin(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var username, password, data, login, user, error, error_6;
+        var username, email, password, rePassword, data, login, user, error, error_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -208,10 +210,11 @@ function handleLogin(event) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    console.log('this is index trying to log in');
                     username = event.target.username.value;
+                    email = event.target.email.value;
                     password = event.target.password.value;
-                    return [4 /*yield*/, axios.post('/users/login', { username: username, password: password })];
+                    rePassword = event.target.rePassword.value;
+                    return [4 /*yield*/, axios.post('/users/login', { username: username, password: password, email: email, rePassword: rePassword })];
                 case 2:
                     data = (_a.sent()).data;
                     login = data.login, user = data.user, error = data.error;
@@ -271,6 +274,15 @@ function loadRoom() {
                     roomContainer.innerHTML = "<h1>Hello " + userDB.username + "</h1>";
                     return [2 /*return*/];
             }
+        });
+    });
+}
+function handleAddUserToRoom(roomDB, userDB) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            console.log("roomDB");
+            console.log("userDB");
+            return [2 /*return*/];
         });
     });
 }
