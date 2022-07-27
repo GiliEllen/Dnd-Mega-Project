@@ -1,6 +1,9 @@
 const newRoomForm = document.querySelector('#NewRoomForm');
 const newRoomName = document.querySelector('#roomName') as HTMLInputElement;
 const adiv: HTMLElement = document.querySelector('div');
+let isWorldMapClicked = false;
+let isCurrentMapClicked = false;
+let isUserInfoClicked = false;
 
 async function HandleCreateNewRoom(ev: any) {
 	ev.preventDefault();
@@ -141,9 +144,7 @@ async function loadUserMainPage() {
 		console.error(error);
 	}
 }
- 
-let isWorldMapClicked = false
-let isCurrentMapClicked = false
+
 function handleWorldMapOpen(){
 	try {
 		const worldMap:HTMLDivElement = document.querySelector('.worldMap')
@@ -193,7 +194,7 @@ function handleCurrentMapOpen(){
 	
 	
 }
-let isUserInfoClicked = false
+
 async function handleUserInfoOpen(){
 	try {
 		const userInfo:HTMLDivElement = document.querySelector(".userInfo")
@@ -213,10 +214,6 @@ async function handleUserInfoOpen(){
 		console.error(error);
 	}
 }
-
-
-
-
 
 async function loadRoom() {
 	console.log('loading user cookies');

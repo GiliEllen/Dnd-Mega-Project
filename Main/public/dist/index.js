@@ -37,6 +37,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var newRoomForm = document.querySelector('#NewRoomForm');
 var newRoomName = document.querySelector('#roomName');
 var adiv = document.querySelector('div');
+var isWorldMapClicked = false;
+var isCurrentMapClicked = false;
+var isUserInfoClicked = false;
 function HandleCreateNewRoom(ev) {
     return __awaiter(this, void 0, void 0, function () {
         var newRoom, newRoomPassword, data, roomDB, role, error_1;
@@ -236,11 +239,7 @@ function handleLogin(event) {
 }
 function loadUserMainPage() {
     return __awaiter(this, void 0, void 0, function () {
-<<<<<<< HEAD
-        var searchParams, userid, data, user, error, pageTitle, error_7;
-=======
-        var searchParams, userid, data, user, error, pageTitle, infoFromDB, error_5;
->>>>>>> carmel2.0
+        var searchParams, userid, data, user, error, pageTitle, infoFromDB, error_7;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -265,10 +264,6 @@ function loadUserMainPage() {
         });
     });
 }
-<<<<<<< HEAD
-=======
-var isWorldMapClicked = false;
-var isCurrentMapClicked = false;
 function handleWorldMapOpen() {
     try {
         var worldMap = document.querySelector('.worldMap');
@@ -315,7 +310,6 @@ function handleCurrentMapOpen() {
         console.error(error);
     }
 }
-var isUserInfoClicked = false;
 function handleUserInfoOpen() {
     return __awaiter(this, void 0, void 0, function () {
         var userInfo, infoFromDB;
@@ -341,28 +335,6 @@ function handleUserInfoOpen() {
         });
     });
 }
-// function goToRoomNum(event) {
-//     event.preventDefault()
-//     try {
-//         console.log('heyyyyyyyyyyy')
-//         const roomNum = event.target.elements.roomNum.value
-//         console.log(roomNum)
-//         window.location.href = `room.html?roomnum=${roomNum}`;
-//     } catch(error){
-//       console.error(error)
-//     }
-//   }
-// function enterRoom(){
-//     try {
-//         console.log('hello')
-//         const searchParams = new URLSearchParams(window.location.href)
-//         const roomNum = searchParams.get('roomnum')
-//         console.log(roomNum)
-//     } catch (error) {
-//       console.error(error)
-//     }
-//   }
->>>>>>> carmel2.0
 function loadRoom() {
     return __awaiter(this, void 0, void 0, function () {
         var data, userDB, roomContainer;
