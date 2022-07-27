@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-console.log('this is server.ts');
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
@@ -28,3 +27,7 @@ server.listen(3000, () => {
 });
 const usersRoutes_1 = __importDefault(require("./routes/usersRoutes"));
 app.use('/users', usersRoutes_1.default);
+const roomRoutes_1 = __importDefault(require("./routes/roomRoutes"));
+app.use('/room', roomRoutes_1.default);
+const membersRoutes_1 = __importDefault(require("./routes/membersRoutes"));
+app.use('/member', membersRoutes_1.default);

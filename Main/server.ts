@@ -1,5 +1,3 @@
-console.log('this is server.ts')
-
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser';
@@ -30,3 +28,10 @@ server.listen(3000, () => {
 
 import usersRoutes from './routes/usersRoutes';
 app.use('/users', usersRoutes);
+
+import roomRoutes from './routes/roomRoutes';
+app.use('/room', roomRoutes);
+
+import memberRoutes from './routes/membersRoutes';
+app.use('/member', memberRoutes);
+
