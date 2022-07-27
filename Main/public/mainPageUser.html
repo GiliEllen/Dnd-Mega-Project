@@ -11,9 +11,14 @@
 <body onload = "loadUserMainPage()">
     <div class="rapper">
         <div class="title">home</div>
-        <div class="worldMap">world map</div>
-        <div class="currentMap">current map</div>
-        <div class="userInfo">user info</div>
+        <div class="maps">
+            <div onclick="handleWorldMapOpen()" class="worldMap">world map </div>
+            <div onclick="handleCurrentMapOpen()" class="currentMap">current map</div>
+        </div>
+        <div class="userInfo" onclick="handleUserInfoOpen()">
+            <h3>user info</h3>
+            <div class="infoFromDB"></div>
+        </div>
     </div>
     <script src="./dist/index.js"></script>
 </body>

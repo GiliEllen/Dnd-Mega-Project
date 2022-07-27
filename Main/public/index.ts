@@ -86,16 +86,101 @@ async function handleLogin(event: any) {
 async function loadUserMainPage() {
 	try {
 		const searchParams = new URLSearchParams(window.location.href);
-		const userid = '62d96ac729bed14e36fb7459';
+		//need to take user id from urlparmas or cookies whatever we decide
+		const userid = '62d96ac729bed14e36fb7459'
 		//@ts-ignore
 		const { data } = await axios.post('users/render-user-main-page', { userid });
 		const { user, error } = data;
 		const pageTitle: HTMLElement = document.querySelector('.title');
 		pageTitle.innerHTML = `Welcome ${user.username}`;
+		const infoFromDB: HTMLDivElement = document.querySelector('.infoFromDB');
+		infoFromDB.innerHTML = ` 
+			name:${user.username}
+			room:${user.roomID}
+			role:${user.role}
+			lives:
+			loot:
+			handout:`
 	} catch (error) {
 		console.error(error);
 	}
 }
+ 
+let isWorldMapClicked = false
+let isCurrentMapClicked = false
+function handleWorldMapOpen(){
+	try {
+		const worldMap:HTMLDivElement = document.querySelector('.worldMap')
+		const currentMap:HTMLDivElement = document.querySelector('.currentMap')
+		if(!isWorldMapClicked){
+			worldMap.classList.add('worldMapOpen')
+			isWorldMapClicked = true
+			if(isWorldMapClicked){
+				currentMap.classList.remove('currentMapOpen')
+				currentMap.style.display = 'none'
+				isCurrentMapClicked = false
+			}
+		}
+		else{
+			worldMap.classList.remove('worldMapOpen')
+			currentMap.style.display = 'inline'
+			isWorldMapClicked = false
+		}
+	} catch (error) {
+		console.error(error);
+	}
+	
+	
+}
+function handleCurrentMapOpen(){
+	try {
+		const worldMap:HTMLDivElement = document.querySelector('.worldMap')
+		const currentMap:HTMLDivElement = document.querySelector('.currentMap')
+		
+		if(!isCurrentMapClicked){
+			currentMap.classList.add('currentMapOpen')
+			isCurrentMapClicked = true
+			if(isCurrentMapClicked){
+				worldMap.classList.remove('worldMapOpen')
+				worldMap.style.display = 'none'
+				isWorldMapClicked = false
+			}
+		}
+		else{
+			currentMap.classList.remove('currentMapOpen')
+			worldMap.style.display = 'inline'
+			isCurrentMapClicked = false
+		}
+	} catch (error) {
+		console.error(error);
+	}
+	
+	
+}
+let isUserInfoClicked = false
+async function handleUserInfoOpen(){
+	try {
+		const userInfo:HTMLDivElement = document.querySelector(".userInfo")
+		const infoFromDB:HTMLDivElement = document.querySelector('.infoFromDB')
+		if (!isUserInfoClicked){
+			userInfo.classList.add('userInfoOpen')
+			infoFromDB.style.display = 'inline'
+			isUserInfoClicked = true
+		}
+		else{
+			userInfo.classList.remove('userInfoOpen')
+			infoFromDB.style.display = 'none'
+			isUserInfoClicked = false
+		}
+		
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+
+
+
 
 // function goToRoomNum(event) {
 //     event.preventDefault()

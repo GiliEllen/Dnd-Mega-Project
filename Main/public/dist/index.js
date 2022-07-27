@@ -170,7 +170,7 @@ function handleLogin(event) {
 }
 function loadUserMainPage() {
     return __awaiter(this, void 0, void 0, function () {
-        var searchParams, userid, data, user, error, pageTitle, error_5;
+        var searchParams, userid, data, user, error, pageTitle, infoFromDB, error_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -183,6 +183,8 @@ function loadUserMainPage() {
                     user = data.user, error = data.error;
                     pageTitle = document.querySelector('.title');
                     pageTitle.innerHTML = "Welcome " + user.username;
+                    infoFromDB = document.querySelector('.infoFromDB');
+                    infoFromDB.innerHTML = " \n\t\t\tname:" + user.username + "\n\t\t\troom:" + user.roomID + "\n\t\t\trole:" + user.role + "\n\t\t\tlives:\n\t\t\tloot:\n\t\t\thandout:";
                     return [3 /*break*/, 3];
                 case 2:
                     error_5 = _a.sent();
@@ -190,6 +192,80 @@ function loadUserMainPage() {
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
+        });
+    });
+}
+var isWorldMapClicked = false;
+var isCurrentMapClicked = false;
+function handleWorldMapOpen() {
+    try {
+        var worldMap = document.querySelector('.worldMap');
+        var currentMap = document.querySelector('.currentMap');
+        if (!isWorldMapClicked) {
+            worldMap.classList.add('worldMapOpen');
+            isWorldMapClicked = true;
+            if (isWorldMapClicked) {
+                currentMap.classList.remove('currentMapOpen');
+                currentMap.style.display = 'none';
+                isCurrentMapClicked = false;
+            }
+        }
+        else {
+            worldMap.classList.remove('worldMapOpen');
+            currentMap.style.display = 'inline';
+            isWorldMapClicked = false;
+        }
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+function handleCurrentMapOpen() {
+    try {
+        var worldMap = document.querySelector('.worldMap');
+        var currentMap = document.querySelector('.currentMap');
+        if (!isCurrentMapClicked) {
+            currentMap.classList.add('currentMapOpen');
+            isCurrentMapClicked = true;
+            if (isCurrentMapClicked) {
+                worldMap.classList.remove('worldMapOpen');
+                worldMap.style.display = 'none';
+                isWorldMapClicked = false;
+            }
+        }
+        else {
+            currentMap.classList.remove('currentMapOpen');
+            worldMap.style.display = 'inline';
+            isCurrentMapClicked = false;
+        }
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+var isUserInfoClicked = false;
+function handleUserInfoOpen() {
+    return __awaiter(this, void 0, void 0, function () {
+        var userInfo, infoFromDB;
+        return __generator(this, function (_a) {
+            try {
+                userInfo = document.querySelector(".userInfo");
+                infoFromDB = document.querySelector('.infoFromDB');
+                if (!isUserInfoClicked) {
+                    userInfo.classList.add('userInfoOpen');
+                    infoFromDB.style.display = 'inline';
+                    isUserInfoClicked = true;
+                }
+                else {
+                    userInfo.classList.remove('userInfoOpen');
+                    infoFromDB.style.display = 'none';
+                    isUserInfoClicked = false;
+                }
+            }
+            catch (error) {
+                console.error(error);
+            }
+            return [2 /*return*/];
         });
     });
 }
