@@ -36,8 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getRoomID = exports.getRoomUsers = exports.getRoomByID = exports.renderUserMainPage = exports.userLogin = exports.handleRegister = exports.updateNotes = exports.getUserFromCookies = void 0;
-var roomModel_1 = require("./../models/roomModel");
+exports.getRoomID = exports.getRoomUsers = exports.renderUserMainPage = exports.userLogin = exports.handleRegister = exports.updateNotes = exports.getUserFromCookies = void 0;
 var usersModel_1 = require("../models/usersModel");
 var jwt_simple_1 = require("jwt-simple");
 function getUserFromCookies(req, res) {
@@ -175,32 +174,9 @@ function renderUserMainPage(req, res) {
     });
 }
 exports.renderUserMainPage = renderUserMainPage;
-function getRoomByID(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var roomID, room, error_5;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    roomID = req.body.roomID;
-                    return [4 /*yield*/, roomModel_1["default"].findById(roomID)];
-                case 1:
-                    room = _a.sent();
-                    res.send({ room: room });
-                    return [3 /*break*/, 3];
-                case 2:
-                    error_5 = _a.sent();
-                    res.send({ error: error_5.message });
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.getRoomByID = getRoomByID;
 function getRoomUsers(res, req) {
     return __awaiter(this, void 0, void 0, function () {
-        var roomID, userlist, error_6;
+        var roomID, userlist, error_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -213,8 +189,8 @@ function getRoomUsers(res, req) {
                     res.send(userlist);
                     return [3 /*break*/, 3];
                 case 2:
-                    error_6 = _a.sent();
-                    res.send({ error: error_6.message });
+                    error_5 = _a.sent();
+                    res.send({ error: error_5.message });
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }

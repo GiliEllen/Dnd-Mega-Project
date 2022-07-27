@@ -5,13 +5,13 @@ import jwt from 'jwt-simple';
 
 export async function addRoom(req, res) {
 	console.log(req.body);
-	const { newRoom } = req.body;
+	const { newRoom, newRoomPassword } = req.body;
 
-	const room = new RoomModel({ name: newRoom });
+	const room = new RoomModel({ name: newRoom, password: newRoomPassword });
 	const roomDB = await room.save();
 
 	//sending cookie
-	const cookie = { roomDB: roomDB._id };
+	const cookie = { roomID: roomDB._id };
 	const secret = process.env.JWT_SECRET;
   if (!secret) throw new Error("Couldn't find secret");
   const JWTCookie = jwt.encode(cookie, secret);

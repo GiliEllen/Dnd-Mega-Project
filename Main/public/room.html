@@ -18,13 +18,20 @@
     <form onsubmit="HandleCreateNewRoom(event)" id="NewRoomForm">
         <label for="roomName">Make an easy to remember room name:</label>
         <input name="inputRoom" id="roomName" type="text">
+        <label for="roomName">Make an easy to remember room password:</label>
+        <input name="inputRoompassword" id="roomPass" type="password">
         <button type="submit">Create new Game Room</button>
     </form>
+
     <form onsubmit="HandleEnterRoom(event)" id="RoomForm">
+        <h3>Find your room:</h3>
+        <label for="existingRoomName">Enter Room Name:</label>
         <input name="existingRoomName" type="text">
+        <label for="existingRoomPass">Enter Room password:</label>
+        <input name="existingRoomPass" type="password">
         <button type="submit">Enter</button>
     </form>
-
+    <div id="roomRoot"></div>
     <script src="./dist/index.js"></script>
 </body>
 

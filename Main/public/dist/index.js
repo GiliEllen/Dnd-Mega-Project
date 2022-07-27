@@ -39,7 +39,7 @@ var newRoomName = document.querySelector('#roomName');
 var adiv = document.querySelector('div');
 function HandleCreateNewRoom(ev) {
     return __awaiter(this, void 0, void 0, function () {
-        var newRoom, data, roomDB, role, error_1;
+        var newRoom, newRoomPassword, data, roomDB, role, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -48,11 +48,12 @@ function HandleCreateNewRoom(ev) {
                 case 1:
                     _a.trys.push([1, 3, , 4]);
                     newRoom = ev.target.elements.roomName.value;
-                    return [4 /*yield*/, axios.post('/room/new-room', { newRoom: newRoom })];
+                    newRoomPassword = ev.target.elements.roomPass.value;
+                    return [4 /*yield*/, axios.post('/room/new-room', { newRoom: newRoom, newRoomPassword: newRoomPassword })];
                 case 2:
                     data = (_a.sent()).data;
                     roomDB = data.roomDB;
-                    role = "dm";
+                    role = 'dm';
                     handleCreateMember(roomDB, role);
                     return [3 /*break*/, 4];
                 case 3:
@@ -66,20 +67,22 @@ function HandleCreateNewRoom(ev) {
 }
 function handleCreateMember(roomDB, role) {
     return __awaiter(this, void 0, void 0, function () {
-        var userDB, data, error_2;
+        var userDB, data, memberDB, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    console.log("enter creat member function");
+                    console.log('enter creat member function');
                     return [4 /*yield*/, getUserFromCookies()];
                 case 1:
                     userDB = _a.sent();
-                    console.log(userDB);
                     return [4 /*yield*/, axios.post('/member/create-Member', { roomDB: roomDB, userDB: userDB, role: role })];
                 case 2:
                     data = (_a.sent()).data;
-                    console.log("index.js thinks member was created");
+                    console.log(data);
+                    memberDB = data.memberDB;
+                    console.log(memberDB);
+                    window.location.href = "./mainPageDm.html?memberID=" + memberDB._id;
                     return [3 /*break*/, 4];
                 case 3:
                     error_2 = _a.sent();
@@ -114,29 +117,50 @@ function getUserFromCookies() {
 }
 function HandleEnterRoom(ev) {
     return __awaiter(this, void 0, void 0, function () {
-        var existingRoom, data, roomDB, error_4;
+        var existingRoom, existingRoomPass, data, userDB, data, success, memberDB, error, roomRoot, error_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    //existingRoomName
                     ev.preventDefault();
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
+                    _a.trys.push([1, 4, , 5]);
                     existingRoom = ev.target.elements.existingRoomName.value;
-                    console.log(existingRoom);
-                    return [4 /*yield*/, axios.post('/room/findRoom', { existingRoom: existingRoom })];
+                    existingRoomPass = ev.target.elements.existingRoomPass.value;
+                    return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
                 case 2:
                     data = (_a.sent()).data;
-                    console.log(data);
-                    roomDB = data.roomDB;
-                    console.log(roomDB);
-                    return [3 /*break*/, 4];
+                    userDB = data.userDB;
+                    return [4 /*yield*/, axios.post('/member/FindMember', { existingRoom: existingRoom, existingRoomPass: existingRoomPass, userDB: userDB })];
                 case 3:
+                    data = (_a.sent()).data;
+                    console.log(data);
+                    success = data.success, memberDB = data.memberDB, error = data.error;
+                    if (success) {
+                        if (memberDB.role === 'dm') {
+                            window.location.href = "./mainPageDm.html?memberID=" + memberDB._id;
+                        }
+                        else if (memberDB.role === 'user') {
+                            window.location.href = "./mainPageUser.html?memberID=" + memberDB._id;
+                        }
+                    }
+                    else {
+                        roomRoot = document.querySelector('#roomRoot');
+                        if (error === 'the password and room are correct but user not a match') {
+                            roomRoot.innerHTML =
+                                '<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2>';
+                        }
+                        else if (error === 'passwords do not match') {
+                            roomRoot.innerHTML =
+                                "<h2>Passwords son't match, please try again</h2>";
+                        }
+                    }
+                    return [3 /*break*/, 5];
+                case 4:
                     error_4 = _a.sent();
                     console.error(error_4);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
             }
         });
     });
@@ -255,17 +279,6 @@ function loadRoom() {
 // 	const urlParams = new URLSearchParams(queryString);
 // 	const roomID = urlParams.get('roomID');
 // 	return roomID;
-// }
-// async function getRoomById(roomID) {
-// 	//@ts-ignore
-// 	const { data } = await axios.post('/users/getRoomByID', { roomID });
-// 	const { room } = data;
-// 	if (room.userListID.length === 0) {
-// 		const userlist = 0;
-// 		renderRoom(userlist, room);
-// 	} else if (room.userListID.length > 0) {
-// 		renderRoom(userlist, room);
-// 	}
 // }
 // function renderRoom(userlist, room) {
 // 	const roomContainer = document.querySelector('.room_container');

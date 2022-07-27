@@ -82,16 +82,6 @@ export async function renderUserMainPage(req, res) {
 	}
 }
 
-export async function getRoomByID(req, res) {
-	try {
-		const { roomID } = req.body;
-		const room = await RoomModel.findById(roomID);
-		res.send({ room });
-	} catch (error) {
-		res.send({ error: error.message });
-	}
-}
-
 export async function getRoomUsers(res, req) {
 	try {
 		const { roomID } = req.body;

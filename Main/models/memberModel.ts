@@ -14,7 +14,8 @@ const MemberSchema = new mongoose.Schema({
     role:{
         type:String,
         required:true
-    }
+    },
+    
 })
 
 const MemberModel = mongoose.model('Memmber',MemberSchema);

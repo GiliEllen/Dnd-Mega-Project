@@ -41,17 +41,17 @@ var roomModel_1 = require("./../models/roomModel");
 var jwt_simple_1 = require("jwt-simple");
 function addRoom(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var newRoom, room, roomDB, cookie, secret, JWTCookie;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var _a, newRoom, newRoomPassword, room, roomDB, cookie, secret, JWTCookie;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     console.log(req.body);
-                    newRoom = req.body.newRoom;
-                    room = new roomModel_1["default"]({ name: newRoom });
+                    _a = req.body, newRoom = _a.newRoom, newRoomPassword = _a.newRoomPassword;
+                    room = new roomModel_1["default"]({ name: newRoom, password: newRoomPassword });
                     return [4 /*yield*/, room.save()];
                 case 1:
-                    roomDB = _a.sent();
-                    cookie = { roomDB: roomDB._id };
+                    roomDB = _b.sent();
+                    cookie = { roomID: roomDB._id };
                     secret = process.env.JWT_SECRET;
                     if (!secret)
                         throw new Error("Couldn't find secret");

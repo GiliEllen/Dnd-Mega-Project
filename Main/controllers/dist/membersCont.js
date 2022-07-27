@@ -36,7 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.createMember = void 0;
+exports.FindMember = exports.createMember = void 0;
+var roomModel_1 = require("./../models/roomModel");
 var memberModel_1 = require("../models/memberModel");
 function createMember(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -50,7 +51,7 @@ function createMember(req, res) {
                     return [4 /*yield*/, member.save()];
                 case 1:
                     memberDB = _b.sent();
-                    res.send(memberDB);
+                    res.send({ memberDB: memberDB });
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _b.sent();
@@ -62,3 +63,46 @@ function createMember(req, res) {
     });
 }
 exports.createMember = createMember;
+function FindMember(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, existingRoom, existingRoomPass, userDB, roomDB, memberDB, error_2;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 3, , 4]);
+                    _a = req.body, existingRoom = _a.existingRoom, existingRoomPass = _a.existingRoomPass, userDB = _a.userDB;
+                    if (!existingRoom || !existingRoomPass || !userDB)
+                        throw new Error("didn't recive existing room information from req.body");
+                    return [4 /*yield*/, roomModel_1["default"].findOne({ name: existingRoom })];
+                case 1:
+                    roomDB = _b.sent();
+                    return [4 /*yield*/, memberModel_1["default"].findOne({ "room.name": roomDB.name })];
+                case 2:
+                    memberDB = _b.sent();
+                    if (!memberDB) {
+                        // throw new Error(`member not found`);
+                        res.send({ success: false });
+                    }
+                    ;
+                    if (memberDB.room.password === existingRoomPass) {
+                        if (memberDB.user.name === userDB.username) {
+                            res.send({ success: true, memberDB: memberDB });
+                        }
+                        else {
+                            res.send({ success: false, error: "the password and room are correct but user not a match" });
+                        }
+                    }
+                    else {
+                        res.send({ success: false, error: "passwords do not match" });
+                    }
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_2 = _b.sent();
+                    res.send({ error: error_2.message });
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.FindMember = FindMember;

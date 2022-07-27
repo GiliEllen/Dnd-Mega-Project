@@ -6,12 +6,12 @@ async function HandleCreateNewRoom(ev: any) {
 	ev.preventDefault();
 	try {
 		const newRoom = ev.target.elements.roomName.value;
+		const newRoomPassword = ev.target.elements.roomPass.value;
 		//@ts-ignore
-		const { data } = await axios.post('/room/new-room', { newRoom });
+		const { data } = await axios.post('/room/new-room', { newRoom, newRoomPassword });
 		const { roomDB } = data;
-		const role = "dm";
-		handleCreateMember(roomDB, role)
-		//  window.location.href = `./mainPageDm.html`;
+		const role = 'dm';
+		handleCreateMember(roomDB, role);
 	} catch (error) {
 		console.error(error);
 	}
@@ -19,44 +19,59 @@ async function HandleCreateNewRoom(ev: any) {
 
 async function handleCreateMember(roomDB, role) {
 	try {
-		console.log("enter creat member function")
-	 const userDB = await getUserFromCookies();
-	console.log(userDB)
-	// console.log(`creating member from user ${user.username} and `)
-	//@ts-ignore
-	const { data } = await axios.post('/member/create-Member', {roomDB, userDB, role});
-	console.log("index.js thinks member was created")
+		console.log('enter creat member function');
+		const userDB = await getUserFromCookies();
+		//@ts-ignore
+		const { data } = await axios.post('/member/create-Member', { roomDB, userDB, role });
+		console.log(data);
+		const { memberDB } = data;
+		console.log(memberDB);
+		window.location.href = `./mainPageDm.html?memberID=${memberDB._id}`;
 	} catch (error) {
-		console.error(error)
+		console.error(error);
 	}
 }
 
 async function getUserFromCookies() {
 	try {
 		console.log('loading room cookies');
-	//@ts-ignore
-	const { data } = await axios.get('/users/get-user-from-cookies');
-	const {userDB} = data;
-	return userDB
+		//@ts-ignore
+		const { data } = await axios.get('/users/get-user-from-cookies');
+		const { userDB } = data;
+		return userDB;
 	} catch (error) {
-		console.error(error)
+		console.error(error);
 	}
-	
 }
 
 async function HandleEnterRoom(ev: any) {
-	//existingRoomName
 	ev.preventDefault();
 	try {
 		const existingRoom = ev.target.elements.existingRoomName.value;
-		console.log(existingRoom);
+		const existingRoomPass = ev.target.elements.existingRoomPass.value;
 		//@ts-ignore
-		const { data } = await axios.post('/room/findRoom', { existingRoom });
+		const { data } = await axios.get('/users/get-user-from-cookies');
+		const { userDB } = data;
+		//@ts-ignore
+		const { data } = await axios.post('/member/FindMember', { existingRoom, existingRoomPass, userDB });
 		console.log(data);
-		const { roomDB } = data;
-		console.log(roomDB);
-		// window.location.href = `./room.html?roomID=${roomDB._id}`;
-		// console.log(roomID)
+		const { success, memberDB, error } = data;
+		if (success) {
+			if (memberDB.role === 'dm') {
+				window.location.href = `./mainPageDm.html?memberID=${memberDB._id}`;
+			} else if (memberDB.role === 'user') {
+				window.location.href = `./mainPageUser.html?memberID=${memberDB._id}`;
+			}
+		} else {
+			const roomRoot = document.querySelector('#roomRoot');
+			if (error === 'the password and room are correct but user not a match') {
+				roomRoot.innerHTML =
+					'<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2>';
+			} else if(error === 'passwords do not match'){
+				roomRoot.innerHTML =
+					"<h2>Passwords son't match, please try again</h2>";
+			}
+		}
 	} catch (error) {
 		console.error(error);
 	}
@@ -69,7 +84,7 @@ async function handleRegister(event: any) {
 		const password = event.target.password.value;
 		//@ts-ignore
 		const { data } = await axios.post('/users/register', { username, password });
-		console.log(data)
+		console.log(data);
 		const { register, user, error } = data;
 		if (register) {
 			window.location.href = 'room.html';
@@ -84,19 +99,18 @@ async function handleRegister(event: any) {
 async function handleLogin(event: any) {
 	event.preventDefault();
 	try {
-		console.log('this is index trying to log in')
+		console.log('this is index trying to log in');
 		const username = event.target.username.value;
 		const password = event.target.password.value;
 		//@ts-ignore
-		const { data } = await axios.post('/users/login', { username, password});
-		
+		const { data } = await axios.post('/users/login', { username, password });
+
 		const { login, user, error } = data;
-		console.log(error)
+		console.log(error);
 		if (error) throw error;
 		if (login) {
 			window.location.href = 'room.html';
 		}
-
 	} catch (error) {
 		console.error(error);
 	}
@@ -120,9 +134,9 @@ async function loadRoom() {
 	console.log('loading user cookies');
 	//@ts-ignore
 	const { data } = await axios.get('/users/get-user-from-cookies');
-	const {userDB} = data;
+	const { userDB } = data;
 	const roomContainer = document.querySelector('.room_container');
-	roomContainer.innerHTML = `<h1>Hello ${userDB.username}</h1>`
+	roomContainer.innerHTML = `<h1>Hello ${userDB.username}</h1>`;
 }
 
 // function getRoomIdByParams() {
@@ -130,19 +144,6 @@ async function loadRoom() {
 // 	const urlParams = new URLSearchParams(queryString);
 // 	const roomID = urlParams.get('roomID');
 // 	return roomID;
-// }
-
-// async function getRoomById(roomID) {
-// 	//@ts-ignore
-// 	const { data } = await axios.post('/users/getRoomByID', { roomID });
-// 	const { room } = data;
-// 	if (room.userListID.length === 0) {
-// 		const userlist = 0;
-// 		renderRoom(userlist, room);
-// 	} else if (room.userListID.length > 0) {
-
-// 		renderRoom(userlist, room);
-// 	}
 // }
 
 // function renderRoom(userlist, room) {

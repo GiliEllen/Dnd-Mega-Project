@@ -7,6 +7,10 @@ const RoomSchema = new mongoose.Schema({
         type:String,
         required:true,
         unique:true
+    },
+    password:{
+        type:String,
+        required:true
     }
 })
 
@@ -16,5 +20,5 @@ export default RoomModel;
 
 export const UserValidation = Joi.object({
     name:Joi.string().required(),
-    isNew:Joi.boolean()
+    password:Joi.string().required()
 })

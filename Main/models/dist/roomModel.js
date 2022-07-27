@@ -8,11 +8,15 @@ var RoomSchema = new mongoose_1["default"].Schema({
         type: String,
         required: true,
         unique: true
+    },
+    password: {
+        type: String,
+        required: true
     }
 });
 var RoomModel = mongoose_1["default"].model('Rooms', RoomSchema);
 exports["default"] = RoomModel;
 exports.UserValidation = joi_1["default"].object({
     name: joi_1["default"].string().required(),
-    isNew: joi_1["default"].boolean()
+    password: joi_1["default"].string().required()
 });
