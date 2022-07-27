@@ -1,4 +1,83 @@
 .rapper {
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
+  width: 50%;
+  margin: auto;
+  flex-direction: column;
+}
+.rapper .title {
+  padding: 10px;
+  width: 80%;
+  border: 5px solid black;
+  border-radius: 50px;
+  text-align: center;
+  background-color: aquamarine;
+}
+.rapper .maps {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 10px;
+  width: 85%;
+}
+.rapper .maps .worldMap {
+  padding: 10px;
+  display: inline;
+  width: 40%;
+  height: 20px;
+  border: 5px solid black;
+  border-radius: 50px;
+  text-align: center;
+  margin: 5px;
+  background-color: aquamarine;
+  transition-duration: 1s;
+}
+.rapper .maps .worldMap:hover {
+  background-color: darkcyan;
+}
+.rapper .maps .worldMapOpen {
+  width: 80%;
+  height: 300px;
+  transition-duration: 1s;
+}
+.rapper .maps .currentMap {
+  padding: 10px;
+  display: inline;
+  width: 40%;
+  height: 20px;
+  border: 5px solid black;
+  border-radius: 50px;
+  text-align: center;
+  margin: 5px;
+  background-color: aquamarine;
+  transition-duration: 1s;
+}
+.rapper .maps .currentMap:hover {
+  background-color: darkcyan;
+}
+.rapper .maps .currentMapOpen {
+  width: 80%;
+  height: 300px;
+  transition-duration: 1s;
+}
+.rapper .userInfo {
+  padding: 10px;
+  width: 80%;
+  border: 5px solid black;
+  border-radius: 50px;
+  text-align: center;
+  background-color: aquamarine;
+  transition-duration: 1s;
+}
+.rapper .userInfo:hover {
+  background-color: darkcyan;
+}
+.rapper .userInfoOpen {
+  height: 300px;
+  transition-duration: 1s;
+}
+.rapper .infoFromDB {
+  display: none;
+  text-align: center;
 }
