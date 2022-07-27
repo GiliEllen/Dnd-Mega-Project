@@ -29,9 +29,9 @@ export async function FindMember(req, res) {
 		};
 		if(memberDB.room.password === existingRoomPass) {
 			if(memberDB.user.name === userDB.username) {
-				res.send({ success: true, memberDB });
+				res.send({ success: true, memberDB, roomDB });
 			}else {
-				res.send({ success: false, error: "the password and room are correct but user not a match" });
+				res.send({ success: false, error: "the password and room are correct but user not a match" , roomDB});
 			}
 			
 		} else {

@@ -29,11 +29,11 @@ export async function updateNotes(req, res) {
 
 export async function handleRegister(req, res) {
 	try {
-		const { username, password } = req.body;
-		const { error } = UserValidation.validate({ username, password });
+		const { username, password, email, rePassword } = req.body;
+		const { error } = UserValidation.validate({ username, password, email, repeatPassword: rePassword });
 		if (error) throw error;
 
-		const user = new UserModel({ username, password });
+		const user = new UserModel({ username, password, email });
 		await user.save();
 
 		//sending cookie
@@ -50,11 +50,11 @@ export async function handleRegister(req, res) {
 
 export async function userLogin(req, res) {
 	try {
-		const { username, password } = req.body;
-		const { error } = UserValidation.validate({ username, password });
+		const { username, password, email,rePassword  } = req.body;
+		const { error } = UserValidation.validate({ username, password, email, repeatPassword: rePassword });
 		if (error) throw error;
 
-		const user = await UserModel.findOne({ username, password });
+		const user = await UserModel.findOne({ username, password, email });
 
 		if (!user) {
 			res.send({ login: false });
