@@ -41,7 +41,8 @@ export async function handleRegister(req, res) {
 		const secret = process.env.JWT_SECRET;
 		if (!secret) throw new Error("Couldn't find secret");
 		const JWTCookie = jwt.encode(cookie, secret);
-		res.cookie('userId', JWTCookie);
+		res.cookie('memberId', JWTCookie);
+		
 		res.send({ register: true, user });
 	} catch (error) {
 		res.send({ error: error.message });

@@ -36,9 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.FindMember = exports.createMember = void 0;
+exports.getMemberFromCookie = exports.FindMember = exports.createMember = void 0;
 var roomModel_1 = require("./../models/roomModel");
 var memberModel_1 = require("../models/memberModel");
+var jwt_simple_1 = require("jwt-simple");
 function createMember(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var _a, roomDB, userDB, role, member, memberDB, error_1;
@@ -65,44 +66,56 @@ function createMember(req, res) {
 exports.createMember = createMember;
 function FindMember(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, existingRoom, existingRoomPass, userDB, roomDB, memberDB, error_2;
+        var _a, existingRoom, existingRoomPass, userDB, roomDB, memberDB, cookie, secret, JWTCookie, error_2;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _b.trys.push([0, 3, , 4]);
+                    _b.trys.push([0, 5, , 6]);
                     _a = req.body, existingRoom = _a.existingRoom, existingRoomPass = _a.existingRoomPass, userDB = _a.userDB;
                     if (!existingRoom || !existingRoomPass || !userDB)
                         throw new Error("didn't recive existing room information from req.body");
                     return [4 /*yield*/, roomModel_1["default"].findOne({ name: existingRoom })];
                 case 1:
                     roomDB = _b.sent();
-                    return [4 /*yield*/, memberModel_1["default"].findOne({ "room.name": roomDB.name })];
+                    if (!(roomDB.name === existingRoom && roomDB.password === existingRoomPass)) return [3 /*break*/, 3];
+                    return [4 /*yield*/, memberModel_1["default"].findOne({ 'room.name': roomDB.name, 'user.username': userDB.username })];
                 case 2:
                     memberDB = _b.sent();
                     if (!memberDB) {
-                        // throw new Error(`member not found`);
-                        res.send({ success: false });
+                        throw new Error('Error01: Passward match but no member is found.');
                     }
-                    ;
-                    if (memberDB.room.password === existingRoomPass) {
-                        if (memberDB.user.name === userDB.username) {
-                            res.send({ success: true, memberDB: memberDB, roomDB: roomDB });
-                        }
-                        else {
-                            res.send({ success: false, error: "the password and room are correct but user not a match", roomDB: roomDB });
-                        }
-                    }
-                    else {
-                        res.send({ success: false, error: "passwords do not match" });
+                    else if (memberDB) {
+                        cookie = { memberID: memberDB._id };
+                        secret = process.env.JWT_SECRET;
+                        if (!secret)
+                            throw new Error("Couldn't find secret");
+                        JWTCookie = jwt_simple_1["default"].encode(cookie, secret);
+                        res.cookie('memberId', JWTCookie);
+                        res.send({ success: true, memberDB: memberDB, roomDB: roomDB });
                     }
                     return [3 /*break*/, 4];
-                case 3:
+                case 3: throw new Error("Error02: Password or roomname incorrect");
+                case 4: return [3 /*break*/, 6];
+                case 5:
                     error_2 = _b.sent();
                     res.send({ error: error_2.message });
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
             }
         });
     });
 }
 exports.FindMember = FindMember;
+function getMemberFromCookie(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            try {
+                res.send('hello');
+            }
+            catch (error) {
+            }
+            return [2 /*return*/];
+        });
+    });
+}
+exports.getMemberFromCookie = getMemberFromCookie;

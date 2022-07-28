@@ -85,7 +85,7 @@ function handleCreateMember(roomDB, role) {
                     console.log(data);
                     memberDB = data.memberDB;
                     console.log(memberDB);
-                    window.location.href = "./mainPageDm.html?memberID=" + memberDB._id;
+                    window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
                     return [3 /*break*/, 4];
                 case 3:
                     error_2 = _a.sent();
@@ -120,7 +120,7 @@ function getUserFromCookies() {
 }
 function HandleEnterRoom(ev) {
     return __awaiter(this, void 0, void 0, function () {
-        var existingRoom, existingRoomPass, data, userDB, data, success, memberDB, error, roomDB, roomRoot, error_4;
+        var existingRoom, existingRoomPass, data, userDB, data, success, memberDB, error, roomDB, error_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -141,22 +141,15 @@ function HandleEnterRoom(ev) {
                     success = data.success, memberDB = data.memberDB, error = data.error, roomDB = data.roomDB;
                     if (success) {
                         if (memberDB.role === 'dm') {
-                            window.location.href = "./mainPageDm.html?memberID=" + memberDB._id;
+                            window.location.href = "../views/mainPageDm.html";
                         }
                         else if (memberDB.role === 'user') {
-                            window.location.href = "./mainPageUser.html?memberID=" + memberDB._id;
+                            window.location.href = "../views/mainPageUser.html";
                         }
                     }
                     else {
-                        roomRoot = document.querySelector('#roomRoot');
-                        if (error === 'the password and room are correct but user not a match') {
-                            roomRoot.innerHTML =
-                                "<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2></br><button onclick=\"handleAddUserToRoom(" + roomDB.name + "," + userDB.username + ")\">Yes</button><button onclick=\"handleDeleteThis()\">Cancel</button>";
-                        }
-                        else if (error === 'passwords do not match') {
-                            roomRoot.innerHTML =
-                                "<h2>Passwords son't match, please try again</h2>";
-                        }
+                        if (error)
+                            handleErrorMember(error);
                     }
                     return [3 /*break*/, 5];
                 case 4:
@@ -167,6 +160,15 @@ function HandleEnterRoom(ev) {
             }
         });
     });
+}
+function handleErrorMember(error) {
+    var roomRoot = document.querySelector('#roomRoot');
+    if (error.includes('Error01')) {
+        roomRoot.innerHTML = "<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2></br><button onclick=\"handleAddUserToRoom()\">Yes</button><button onclick=\"handleDeleteThis()\">Cancel</button>";
+    }
+    else if (error.includes('Error02')) {
+        roomRoot.innerHTML = "<h2>Passwords son't match, please try again</h2>";
+    }
 }
 function handleRegister(event) {
     return __awaiter(this, void 0, void 0, function () {
@@ -188,7 +190,7 @@ function handleRegister(event) {
                     console.log(data);
                     register = data.register, user = data.user, error = data.error;
                     if (register) {
-                        window.location.href = 'room.html';
+                        window.location.href = '../views/room.html';
                     }
                     if (error)
                         throw error;
@@ -225,7 +227,7 @@ function handleLogin(event) {
                     if (error)
                         throw error;
                     if (login) {
-                        window.location.href = 'room.html';
+                        window.location.href = '../views/room.html';
                     }
                     return [3 /*break*/, 4];
                 case 3:
@@ -239,21 +241,18 @@ function handleLogin(event) {
 }
 function loadUserMainPage() {
     return __awaiter(this, void 0, void 0, function () {
-        var searchParams, userid, data, user, error, pageTitle, infoFromDB, error_7;
+        var userDB, pageTitle, infoFromDB, error_7;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    searchParams = new URLSearchParams(window.location.href);
-                    userid = '62d96ac729bed14e36fb7459';
-                    return [4 /*yield*/, axios.post('users/render-user-main-page', { userid: userid })];
+                    return [4 /*yield*/, getUserFromCookies()];
                 case 1:
-                    data = (_a.sent()).data;
-                    user = data.user, error = data.error;
+                    userDB = _a.sent();
                     pageTitle = document.querySelector('.title');
-                    pageTitle.innerHTML = "Welcome " + user.username;
+                    pageTitle.innerHTML = "Welcome " + userDB.username;
                     infoFromDB = document.querySelector('.infoFromDB');
-                    infoFromDB.innerHTML = " \n\t\t\tname:" + user.username + "\n\t\t\troom:" + user.roomID + "\n\t\t\trole:" + user.role + "\n\t\t\tlives:\n\t\t\tloot:\n\t\t\thandout:";
+                    infoFromDB.innerHTML = " \n\t\t\tname:" + userDB.username + "\n\t\t\trole:" + userDB.role;
                     return [3 /*break*/, 3];
                 case 2:
                     error_7 = _a.sent();
@@ -315,7 +314,7 @@ function handleUserInfoOpen() {
         var userInfo, infoFromDB;
         return __generator(this, function (_a) {
             try {
-                userInfo = document.querySelector(".userInfo");
+                userInfo = document.querySelector('.userInfo');
                 infoFromDB = document.querySelector('.infoFromDB');
                 if (!isUserInfoClicked) {
                     userInfo.classList.add('userInfoOpen');
@@ -353,12 +352,24 @@ function loadRoom() {
         });
     });
 }
-function handleAddUserToRoom(roomDB, userDB) {
+function handleAddUserToRoom() {
     return __awaiter(this, void 0, void 0, function () {
+        var existingRoominput, existingRoom, data, roomDB, role;
         return __generator(this, function (_a) {
-            console.log("roomDB");
-            console.log("userDB");
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    console.log('trying to add user to this room');
+                    existingRoominput = document.querySelector('#existingRoom');
+                    existingRoom = existingRoominput.value;
+                    return [4 /*yield*/, axios.post("/room/findRoom", { existingRoom: existingRoom })];
+                case 1:
+                    data = (_a.sent()).data;
+                    roomDB = data.roomDB;
+                    console.log(roomDB);
+                    role = "user";
+                    handleCreateMember(roomDB, role);
+                    return [2 /*return*/];
+            }
         });
     });
 }

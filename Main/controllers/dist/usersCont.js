@@ -101,7 +101,7 @@ function handleRegister(req, res) {
                     if (!secret)
                         throw new Error("Couldn't find secret");
                     JWTCookie = jwt_simple_1["default"].encode(cookie, secret);
-                    res.cookie('userId', JWTCookie);
+                    res.cookie('memberId', JWTCookie);
                     res.send({ register: true, user: user });
                     return [3 /*break*/, 3];
                 case 2:
