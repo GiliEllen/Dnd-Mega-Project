@@ -1,0 +1,18 @@
+body {
+  margin: 0%;
+}
+
+.room_wrapper {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+.room_wrapper .room_header {
+  width: 100vw;
+  height: 20%;
+}
+.room_wrapper____forms {
+  width: 100vw;
+  height: 80%;
+}

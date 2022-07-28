@@ -24,8 +24,8 @@ export async function getRoom(req, res) {
 		const { existingRoom } = req.body;
 		if (!existingRoom) throw new Error(`didn't recive existing room from req.body`);
 		const roomDB = await RoomModel.findOne({ name: existingRoom });
+		console.log(roomDB)
 		res.cookie('roomID', roomDB._id);
-		res.cookie('newRoom', false);
 		res.send({ success: true, roomDB });
 	} catch (error) {
 		res.send({ error: error.message });

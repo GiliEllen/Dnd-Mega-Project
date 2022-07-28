@@ -77,8 +77,8 @@ function getRoom(req, res) {
                     return [4 /*yield*/, roomModel_1["default"].findOne({ name: existingRoom })];
                 case 1:
                     roomDB = _a.sent();
+                    console.log(roomDB);
                     res.cookie('roomID', roomDB._id);
-                    res.cookie('newRoom', false);
                     res.send({ success: true, roomDB: roomDB });
                     return [3 /*break*/, 3];
                 case 2:

@@ -101,7 +101,7 @@ function handleRegister(req, res) {
                     if (!secret)
                         throw new Error("Couldn't find secret");
                     JWTCookie = jwt_simple_1["default"].encode(cookie, secret);
-                    res.cookie('userId', JWTCookie);
+                    res.cookie('memberId', JWTCookie);
                     res.send({ register: true, user: user });
                     return [3 /*break*/, 3];
                 case 2:
@@ -116,16 +116,13 @@ function handleRegister(req, res) {
 exports.handleRegister = handleRegister;
 function userLogin(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, username, password, email, rePassword, error, user, cookie, secret, JWTCookie, error_3;
+        var _a, password, email, user, cookie, secret, JWTCookie, error_3;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    _a = req.body, username = _a.username, password = _a.password, email = _a.email, rePassword = _a.rePassword;
-                    error = usersModel_1.UserValidation.validate({ username: username, password: password, email: email, repeatPassword: rePassword }).error;
-                    if (error)
-                        throw error;
-                    return [4 /*yield*/, usersModel_1["default"].findOne({ username: username, password: password, email: email })];
+                    _a = req.body, password = _a.password, email = _a.email;
+                    return [4 /*yield*/, usersModel_1["default"].findOne({ password: password, email: email })];
                 case 1:
                     user = _b.sent();
                     if (!user) {

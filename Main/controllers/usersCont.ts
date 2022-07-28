@@ -41,7 +41,8 @@ export async function handleRegister(req, res) {
 		const secret = process.env.JWT_SECRET;
 		if (!secret) throw new Error("Couldn't find secret");
 		const JWTCookie = jwt.encode(cookie, secret);
-		res.cookie('userId', JWTCookie);
+		res.cookie('memberId', JWTCookie);
+		
 		res.send({ register: true, user });
 	} catch (error) {
 		res.send({ error: error.message });
@@ -50,11 +51,9 @@ export async function handleRegister(req, res) {
 
 export async function userLogin(req, res) {
 	try {
-		const { username, password, email,rePassword  } = req.body;
-		const { error } = UserValidation.validate({ username, password, email, repeatPassword: rePassword });
-		if (error) throw error;
+		const { password, email  } = req.body;
 
-		const user = await UserModel.findOne({ username, password, email });
+		const user = await UserModel.findOne({ password, email });
 
 		if (!user) {
 			res.send({ login: false });

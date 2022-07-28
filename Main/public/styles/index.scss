@@ -1,0 +1,54 @@
+body {
+    margin: 0%;
+    font-family: 'Raleway', sans-serif;
+}
+
+.mainWrapper {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: rgb(24, 22, 50);
+    margin: auto;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+
+    &__center {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        a {
+            font-size: 3rem;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        img {
+            width: fit-content;
+        }
+
+        h3 {
+            background-color:  rgb(113, 99, 49);
+            background-image: linear-gradient(
+                -75deg,
+                transparent 0,
+                transparent 5%,
+                rgba(255,255,255,0.5) 5%,
+                rgba(255,255,255,0.5) 10%,
+                transparent 10%,
+                transparent 100%,
+            );
+            background-size: 200% 100%;
+            -webkit-text-fill-color:transparent;
+            -webkit-background-clip: text;
+            transition: 1.5s;
+        }
+
+        h3:hover {
+            background-position: -120% 0;
+        }
+    }
+
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="dist/style.css">
+    <title>Document</title>
+</head>
+<body onload = "loadUserMainPage()">
+    <div class="rapper">
+        <div class="title">home</div>
+        <div class="maps">
+            <div onclick="handleWorldMapOpen()" class="worldMap">world map </div>
+            <div onclick="handleCurrentMapOpen()" class="currentMap">current map</div>
+        </div>
+        <div class="userInfo" onclick="handleUserInfoOpen()">
+            <h3>user info</h3>
+            <div class="infoFromDB"></div>
+        </div>
+    </div>
+    <script src="../scripts/dist/index.js"></script>
+</body>
+</html>
