@@ -81,9 +81,12 @@ body {
 
                 &:hover {
                     background-position: -120% 0;
+                    cursor: pointer;
                 }
             }
-
+            h3 {
+                color: rgb(206, 205, 200);
+            }
             span {
                 background-color:  rgb(113, 99, 49);
                 background-image: linear-gradient(

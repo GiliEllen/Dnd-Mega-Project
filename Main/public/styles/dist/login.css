@@ -67,6 +67,10 @@ body {
 }
 .session__right form .submit_btn:hover {
   background-position: -120% 0;
+  cursor: pointer;
+}
+.session__right form h3 {
+  color: #cecdc8;
 }
 .session__right form span {
   background-color: #716331;
