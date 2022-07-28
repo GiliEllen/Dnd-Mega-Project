@@ -1,5 +1,14 @@
 body {
   margin: 0%;
+  font-family: "Raleway", sans-serif;
+  background-color: #181632;
+  position: relative;
+}
+
+#background {
+  position: absolute;
+  bottom: 0;
+  z-index: -1;
 }
 
 .room_wrapper {
@@ -9,10 +18,53 @@ body {
   flex-direction: column;
 }
 .room_wrapper .room_header {
+  align-items: center;
+  text-align: center;
   width: 100vw;
   height: 20%;
+  font-size: 3rem;
+  background-color: #716331;
+  background-image: linear-gradient(-75deg, transparent 0, transparent 5%, rgba(255, 255, 255, 0.5) 5%, rgba(255, 255, 255, 0.5) 10%, transparent 10%, transparent 100%);
+  background-size: 200% 100%;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  transition: 1.5s;
 }
-.room_wrapper____forms {
-  width: 100vw;
+.room_wrapper .room_header:hover {
+  background-position: -120% 0;
+}
+.room_wrapper__forms {
+  width: 90vw;
   height: 80%;
+  display: flex;
+  margin: auto;
+  justify-content: space-between;
+}
+.room_wrapper__forms .formContainer {
+  width: 40%;
+  height: 60%;
+  border-radius: 5px;
+  background-color: #716331;
+  display: flex;
+  flex-direction: column;
+}
+.room_wrapper__forms .formContainer form {
+  display: flex;
+  flex-direction: column;
+}
+.room_wrapper__forms .formContainer form img {
+  width: 300px;
+  height: 200px;
+}
+.room_wrapper__forms .formContainer h3 {
+  font-size: 2rem;
+  background-color: #716331;
+  background-image: linear-gradient(-75deg, transparent 0, transparent 5%, rgba(255, 255, 255, 0.5) 5%, rgba(255, 255, 255, 0.5) 10%, transparent 10%, transparent 100%);
+  background-size: 200% 100%;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  transition: 1.5s;
+}
+.room_wrapper__forms .formContainer h3:hover {
+  background-position: -120% 0;
 }

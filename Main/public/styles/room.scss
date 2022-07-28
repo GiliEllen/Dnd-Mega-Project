@@ -1,5 +1,15 @@
 body {
     margin: 0%;
+    font-family: 'Raleway', sans-serif;
+    background-color: rgb(24, 22, 50);
+    position: relative;
+}
+
+#background {
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+
 }
 
 .room_wrapper {
@@ -9,11 +19,77 @@ body {
     flex-direction: column;
 
     .room_header {
+        align-items: center;
+        text-align: center;
         width: 100vw;
         height: 20%;
+        font-size: 3rem;
+        background-color: rgb(113, 99, 49);
+        background-image: linear-gradient(-75deg,
+                transparent 0,
+                transparent 5%,
+                rgba(255, 255, 255, 0.5) 5%,
+                rgba(255, 255, 255, 0.5) 10%,
+                transparent 10%,
+                transparent 100%,
+            );
+        background-size: 200% 100%;
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        transition: 1.5s;
+
+        &:hover {
+            background-position: -120% 0;
+        }
     }
-    &____forms {
-        width: 100vw;
+
+    &__forms {
+        width: 90vw;
         height: 80%;
+        display: flex;
+        margin: auto;
+        justify-content: space-between;
+
+        .formContainer {
+            width: 40%;
+            height: 60%;
+            border-radius: 5px;
+            background-color: rgb(113, 99, 49);;
+            display: flex;
+            flex-direction: column;
+
+            form {
+                display: flex;
+                flex-direction: column;
+
+                img {
+                    width: 300px;
+                    height: 200px;
+                }
+            }
+
+            h3 {
+                font-size: 2rem;
+                background-color:  rgb(113, 99, 49);
+                background-image: linear-gradient(
+                    -75deg,
+                    transparent 0,
+                    transparent 5%,
+                    rgba(255,255,255,0.5) 5%,
+                    rgba(255,255,255,0.5) 10%,
+                    transparent 10%,
+                    transparent 100%,
+                );
+                background-size: 200% 100%;
+                -webkit-text-fill-color:transparent;
+                -webkit-background-clip: text;
+                transition: 1.5s;
+            }
+    
+            h3:hover {
+                background-position: -120% 0;
+            }
+        }
     }
+
 }

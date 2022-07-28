@@ -344,7 +344,7 @@ function loadRoom() {
                     data = (_a.sent()).data;
                     userDB = data.userDB;
                     roomHeader = document.querySelector('.room_header');
-                    roomHeader.innerHTML = "<h1>Hello " + userDB.username + ", </br> what would you likw to do?</h1>";
+                    roomHeader.innerHTML = "<h1>Hello " + userDB.username + ", what would you like to do?</h1>";
                     return [2 /*return*/];
             }
         });

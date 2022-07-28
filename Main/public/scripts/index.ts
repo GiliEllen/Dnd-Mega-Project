@@ -208,7 +208,7 @@ async function loadRoom() {
 	const { data } = await axios.get('/users/get-user-from-cookies');
 	const { userDB } = data;
 	const roomHeader = document.querySelector('.room_header');
-	roomHeader.innerHTML = `<h1>Hello ${userDB.username}, </br> what would you likw to do?</h1>`;
+	roomHeader.innerHTML = `<h1>Hello ${userDB.username}, what would you like to do?</h1>`;
 }
 
 async function handleAddUserToRoom() {
