@@ -334,7 +334,7 @@ function handleUserInfoOpen() {
 }
 function loadRoom() {
     return __awaiter(this, void 0, void 0, function () {
-        var data, userDB, roomContainer;
+        var data, userDB, roomHeader;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -343,8 +343,8 @@ function loadRoom() {
                 case 1:
                     data = (_a.sent()).data;
                     userDB = data.userDB;
-                    roomContainer = document.querySelector('.room_container');
-                    roomContainer.innerHTML = "<h1>Hello " + userDB.username + "</h1>";
+                    roomHeader = document.querySelector('.room_header');
+                    roomHeader.innerHTML = "<h1>Hello " + userDB.username + ", </br> what would you likw to do?</h1>";
                     return [2 /*return*/];
             }
         });
