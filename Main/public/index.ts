@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const newRoomForm = document.querySelector('#NewRoomForm');
 const newRoomName = document.querySelector('#roomName') as HTMLInputElement;
 const adiv: HTMLElement = document.querySelector('div');
@@ -145,10 +147,11 @@ async function loadUserMainPage() {
 	}
 }
 
-function handleWorldMapOpen(){
+async function handleWorldMapOpen(){
 	try {
 		const worldMap:HTMLDivElement = document.querySelector('.worldMap')
 		const currentMap:HTMLDivElement = document.querySelector('.currentMap')
+		const {data} = await axios.get("/room/get-map-for-room")
 		if(!isWorldMapClicked){
 			worldMap.classList.add('worldMapOpen')
 			isWorldMapClicked = true
@@ -231,12 +234,14 @@ async function handleAddUserToRoom(roomDB, userDB){
 
 }
 
-// function getRoomIdByParams() {
-// 	const queryString = window.location.search;
-// 	const urlParams = new URLSearchParams(queryString);
-// 	const roomID = urlParams.get('roomID');
-// 	return roomID;
-// }
+async function getMemberFromCookies() {
+	try {
+		console.log('loading room cookies');
+		
+	} catch (error) {
+		console.error(error);
+	}
+}
 
 // function renderRoom(userlist, room) {
 // 	const roomContainer = document.querySelector('.room_container');

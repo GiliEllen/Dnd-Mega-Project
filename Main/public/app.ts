@@ -65,3 +65,5 @@ function chooseHandout() {
 function handleCreatNewHandout(event) {
 
 }
+
+

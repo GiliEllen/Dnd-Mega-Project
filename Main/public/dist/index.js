@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,6 +35,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+exports.__esModule = true;
+var axios_1 = require("axios");
 var newRoomForm = document.querySelector('#NewRoomForm');
 var newRoomName = document.querySelector('#roomName');
 var adiv = document.querySelector('div');
@@ -52,7 +55,7 @@ function HandleCreateNewRoom(ev) {
                     _a.trys.push([1, 3, , 4]);
                     newRoom = ev.target.elements.roomName.value;
                     newRoomPassword = ev.target.elements.roomPass.value;
-                    return [4 /*yield*/, axios.post('/room/new-room', { newRoom: newRoom, newRoomPassword: newRoomPassword })];
+                    return [4 /*yield*/, axios_1["default"].post('/room/new-room', { newRoom: newRoom, newRoomPassword: newRoomPassword })];
                 case 2:
                     data = (_a.sent()).data;
                     roomDB = data.roomDB;
@@ -79,7 +82,7 @@ function handleCreateMember(roomDB, role) {
                     return [4 /*yield*/, getUserFromCookies()];
                 case 1:
                     userDB = _a.sent();
-                    return [4 /*yield*/, axios.post('/member/create-Member', { roomDB: roomDB, userDB: userDB, role: role })];
+                    return [4 /*yield*/, axios_1["default"].post('/member/create-Member', { roomDB: roomDB, userDB: userDB, role: role })];
                 case 2:
                     data = (_a.sent()).data;
                     console.log(data);
@@ -104,7 +107,7 @@ function getUserFromCookies() {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     console.log('loading room cookies');
-                    return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
+                    return [4 /*yield*/, axios_1["default"].get('/users/get-user-from-cookies')];
                 case 1:
                     data = (_a.sent()).data;
                     userDB = data.userDB;
@@ -130,11 +133,11 @@ function HandleEnterRoom(ev) {
                     _a.trys.push([1, 4, , 5]);
                     existingRoom = ev.target.elements.existingRoomName.value;
                     existingRoomPass = ev.target.elements.existingRoomPass.value;
-                    return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
+                    return [4 /*yield*/, axios_1["default"].get('/users/get-user-from-cookies')];
                 case 2:
                     data = (_a.sent()).data;
                     userDB = data.userDB;
-                    return [4 /*yield*/, axios.post('/member/FindMember', { existingRoom: existingRoom, existingRoomPass: existingRoomPass, userDB: userDB })];
+                    return [4 /*yield*/, axios_1["default"].post('/member/FindMember', { existingRoom: existingRoom, existingRoomPass: existingRoomPass, userDB: userDB })];
                 case 3:
                     data = (_a.sent()).data;
                     console.log(data);
@@ -182,7 +185,7 @@ function handleRegister(event) {
                     password = event.target.password.value;
                     rePassword = event.target.rePassword.value;
                     email = event.target.email.value;
-                    return [4 /*yield*/, axios.post('/users/register', { username: username, password: password, email: email, rePassword: rePassword })];
+                    return [4 /*yield*/, axios_1["default"].post('/users/register', { username: username, password: password, email: email, rePassword: rePassword })];
                 case 2:
                     data = (_a.sent()).data;
                     console.log(data);
@@ -217,7 +220,7 @@ function handleLogin(event) {
                     email = event.target.email.value;
                     password = event.target.password.value;
                     rePassword = event.target.rePassword.value;
-                    return [4 /*yield*/, axios.post('/users/login', { username: username, password: password, email: email, rePassword: rePassword })];
+                    return [4 /*yield*/, axios_1["default"].post('/users/login', { username: username, password: password, email: email, rePassword: rePassword })];
                 case 2:
                     data = (_a.sent()).data;
                     login = data.login, user = data.user, error = data.error;
@@ -246,7 +249,7 @@ function loadUserMainPage() {
                     _a.trys.push([0, 2, , 3]);
                     searchParams = new URLSearchParams(window.location.href);
                     userid = '62d96ac729bed14e36fb7459';
-                    return [4 /*yield*/, axios.post('users/render-user-main-page', { userid: userid })];
+                    return [4 /*yield*/, axios_1["default"].post('users/render-user-main-page', { userid: userid })];
                 case 1:
                     data = (_a.sent()).data;
                     user = data.user, error = data.error;
@@ -265,27 +268,40 @@ function loadUserMainPage() {
     });
 }
 function handleWorldMapOpen() {
-    try {
-        var worldMap = document.querySelector('.worldMap');
-        var currentMap = document.querySelector('.currentMap');
-        if (!isWorldMapClicked) {
-            worldMap.classList.add('worldMapOpen');
-            isWorldMapClicked = true;
-            if (isWorldMapClicked) {
-                currentMap.classList.remove('currentMapOpen');
-                currentMap.style.display = 'none';
-                isCurrentMapClicked = false;
+    return __awaiter(this, void 0, void 0, function () {
+        var worldMap, currentMap, data, error_8;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    worldMap = document.querySelector('.worldMap');
+                    currentMap = document.querySelector('.currentMap');
+                    return [4 /*yield*/, axios_1["default"].get("/room/get-map-for-room")];
+                case 1:
+                    data = (_a.sent()).data;
+                    if (!isWorldMapClicked) {
+                        worldMap.classList.add('worldMapOpen');
+                        isWorldMapClicked = true;
+                        if (isWorldMapClicked) {
+                            currentMap.classList.remove('currentMapOpen');
+                            currentMap.style.display = 'none';
+                            isCurrentMapClicked = false;
+                        }
+                    }
+                    else {
+                        worldMap.classList.remove('worldMapOpen');
+                        currentMap.style.display = 'inline';
+                        isWorldMapClicked = false;
+                    }
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_8 = _a.sent();
+                    console.error(error_8);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
-        }
-        else {
-            worldMap.classList.remove('worldMapOpen');
-            currentMap.style.display = 'inline';
-            isWorldMapClicked = false;
-        }
-    }
-    catch (error) {
-        console.error(error);
-    }
+        });
+    });
 }
 function handleCurrentMapOpen() {
     try {
@@ -342,7 +358,7 @@ function loadRoom() {
             switch (_a.label) {
                 case 0:
                     console.log('loading user cookies');
-                    return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
+                    return [4 /*yield*/, axios_1["default"].get('/users/get-user-from-cookies')];
                 case 1:
                     data = (_a.sent()).data;
                     userDB = data.userDB;
@@ -362,12 +378,19 @@ function handleAddUserToRoom(roomDB, userDB) {
         });
     });
 }
-// function getRoomIdByParams() {
-// 	const queryString = window.location.search;
-// 	const urlParams = new URLSearchParams(queryString);
-// 	const roomID = urlParams.get('roomID');
-// 	return roomID;
-// }
+function getMemberFromCookies() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            try {
+                console.log('loading room cookies');
+            }
+            catch (error) {
+                console.error(error);
+            }
+            return [2 /*return*/];
+        });
+    });
+}
 // function renderRoom(userlist, room) {
 // 	const roomContainer = document.querySelector('.room_container');
 // 	let html = '';

@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getRoom = exports.addRoom = void 0;
+exports.getMapForRoom = exports.getRoom = exports.addRoom = void 0;
 var roomModel_1 = require("./../models/roomModel");
 var jwt_simple_1 = require("jwt-simple");
 function addRoom(req, res) {
@@ -91,3 +91,20 @@ function getRoom(req, res) {
     });
 }
 exports.getRoom = getRoom;
+function getMapForRoom(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var secret;
+        return __generator(this, function (_a) {
+            try {
+                secret = process.env.JWT_SECRET;
+                if (!secret)
+                    throw new Error("couldn't load secret from .env");
+            }
+            catch (error) {
+                res.send({ error: error.message });
+            }
+            return [2 /*return*/];
+        });
+    });
+}
+exports.getMapForRoom = getMapForRoom;

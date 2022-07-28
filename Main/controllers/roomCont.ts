@@ -31,3 +31,14 @@ export async function getRoom(req, res) {
 		res.send({ error: error.message });
 	}
 }
+
+export async function getMapForRoom(req, res){
+	try {
+		const secret = process.env.JWT_SECRET;
+		if (!secret) throw new Error("couldn't load secret from .env");
+
+		
+	} catch (error) {
+		res.send({ error: error.message });
+	}
+}

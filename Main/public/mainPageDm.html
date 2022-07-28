@@ -11,21 +11,37 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="dist/style.css">
 </head>
 
 <body onload="loadBody()">
-    <h4>World Map</h4>
-    <h4>Current Map</h4>
+    <div class="rapper">
+        <div onclick="handleWorldMapOpen()" class="worldMap">
+            <h3>world map</h3>
+            <button class="editMap">Update Map</button>
+            <img class="pic" src="" alt="">
+        </div>
+        <div onclick="handleCurrentMapOpen()" class="currentMap">
+            <h3>current map</h3>
+            <button class="editMap">Update Map</button>
+            <img class="pic" src="" alt="">
+        </div>
+        <div class="userInfo" onclick="handleUserInfoOpen()">
+            <h3>user info</h3>
+            <div class="infoFromDB"></div>
+        </div>
 
-    <div class="userInfoList"></div>
-    <div id="buttonContainer"></div>
-    <label for="infoDump">Write here your notes:</label>
-    <form onsubmit="handleSaveNotes(event)">
-        <input type="text" name="infoDump" id="infoDump">
-        <button type="submit">Save</button>
-    </form>
+        <div class="userInfoList"></div>
 
+        <div id="buttonContainer"></div>
+        <label for="infoDump">Write here your notes:</label>
+        <form onsubmit="handleSaveNotes(event)">
+            <input type="text" name="infoDump" id="infoDump">
+            <button type="submit">Save</button>
+        </form>
+    </div>
     <script src="./dist/app.js"></script>
+    <script src="./dist/index.js"></script>
 </body>
 
 </html>
