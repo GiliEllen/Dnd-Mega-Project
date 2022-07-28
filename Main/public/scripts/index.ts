@@ -107,12 +107,10 @@ async function handleRegister(event: any) {
 async function handleLogin(event: any) {
 	event.preventDefault();
 	try {
-		const username = event.target.username.value;
 		const email = event.target.email.value;
 		const password = event.target.password.value;
-		const rePassword = event.target.rePassword.value;
 		//@ts-ignore
-		const { data } = await axios.post('/users/login', { username, password, email, rePassword });
+		const { data } = await axios.post('/users/login', { password, email });
 
 		const { login, user, error } = data;
 		console.log(error);

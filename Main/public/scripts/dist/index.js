@@ -207,7 +207,7 @@ function handleRegister(event) {
 }
 function handleLogin(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var username, email, password, rePassword, data, login, user, error, error_6;
+        var email, password, data, login, user, error, error_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -215,11 +215,9 @@ function handleLogin(event) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    username = event.target.username.value;
                     email = event.target.email.value;
                     password = event.target.password.value;
-                    rePassword = event.target.rePassword.value;
-                    return [4 /*yield*/, axios.post('/users/login', { username: username, password: password, email: email, rePassword: rePassword })];
+                    return [4 /*yield*/, axios.post('/users/login', { password: password, email: email })];
                 case 2:
                     data = (_a.sent()).data;
                     login = data.login, user = data.user, error = data.error;

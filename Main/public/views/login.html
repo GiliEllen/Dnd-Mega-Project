@@ -12,19 +12,39 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="../styles/dist/login.css">
     <title>Login</title>
 </head>
 
 <body>
-    <form onsubmit="handleLogin(event)">
-        <input type="text" name="username" placeholder="User Name">
-        <input type="email" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <input type="password" name="rePassword" placeholder="Reapeat Password">
-        <button type="submit">Log In</button>
-    </form>
-    <h3>new here? <a href="register.html">click here to register</a></h3>
+    <div class="session">
+        <div class="session__right">
+            <form onsubmit="handleLogin(event)">
+                <p>Welcome back! </br> Log in to see your adventures:</p>
+                <div class="input_container">
+                    <input type="email" name="email" placeholder="Email">
+                </div>
+                <div class="input_container">
+                    <input type="password" name="password" placeholder="Password">
+                </div>
+                <button class="submit_btn" type="submit">LOG IN</button>
+                <div class="register_link">
+                    <h3>new here? <span><a href="register.html">click here to register</a></span></h3>
+                </div>
+            </form>
+
+
+        </div>
+        <div class="session__left">
+                
+            </video>
+
+        </div>
+    </div>
+
+
     <script src="../scripts/dist/index.js"></script>
+    <script src="../scripts/dist/background.js"></script>
 </body>
 
 </html>
