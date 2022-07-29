@@ -14,10 +14,6 @@ const MemberSchema = new mongoose.Schema({
     role:{
         type:String,
         required:true
-    },
-    handouts:{
-        type:Array,
-        required:true
     }
     
 })

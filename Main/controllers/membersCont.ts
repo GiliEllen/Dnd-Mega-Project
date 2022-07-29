@@ -6,8 +6,7 @@ import jwt from 'jwt-simple';
 export async function createMember(req, res) {
 	try {
 		const { roomDB, userDB, role } = req.body;
-		const handouts = [];
-		const member = new MemberModel({ room: roomDB, user: userDB, role, handouts });
+		const member = new MemberModel({ room: roomDB, user: userDB, role });
 		const memberDB = await member.save();
 
 		const cookie = { memberID: memberDB._id };
@@ -16,7 +15,6 @@ export async function createMember(req, res) {
 		const JWTCookie = jwt.encode(cookie, secret);
 		res.cookie('memberId', JWTCookie);
 		res.send({ success: true, memberDB, roomDB });
-		res.send({ memberDB });
 	} catch (error) {
 		res.send({ error: error.message });
 	}

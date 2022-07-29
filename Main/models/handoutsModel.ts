@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Joi from 'joi';
 
 const HandoutsSchema = new mongoose.Schema({
     url:
@@ -10,14 +9,13 @@ const HandoutsSchema = new mongoose.Schema({
     name: {
         type:String,
         required:true
+    }, 
+    createdBy: {
+        type:Object,
+        required:true
     }
 })
 
 const HandoutsModel = mongoose.model('Handouts',HandoutsSchema);
 
 export default HandoutsModel;
-
-export const UserValidation = Joi.object({
-    url:Joi.string().required(),
-    name:Joi.string().required()
-})

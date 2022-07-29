@@ -10,7 +10,7 @@
 
 </head>
 
-<body onload="renderMembersToSendNewHandouts()">
+<body onload="loadBody()">
     <form onsubmit="handleChooseHandouts(event)">
         <h4>Do you wish to:</h4>
         <button id="existingHandout" type="submit">Choose existing handout</button>
@@ -23,6 +23,13 @@
         <input name="imgURL" type="url">
         <label for="userList">Choose users to recive the handout:</label>
         <div name="userList" class="userList" id="userList"></div>
+        <button type="submit">Send</button>
+    </form>
+
+    <form id="existingHandoutsForm" onsubmit="handleSendExistingHandouts(event)">
+        <div class="existinhHandoutsRoot"></div>
+        <label for="userListRoot">Choose users to recive the handout:</label>
+        <div name="userListRoot" class="userList" id="userListRoot"></div>
         <button type="submit">Send</button>
     </form>
 

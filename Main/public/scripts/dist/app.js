@@ -36,7 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 console.log('this is app.ts');
 function loadBody() {
-    // renderButtonsHandoutsLoot(userID);
+    renderMembersToSendNewHandouts();
+    renderExistingHandouts();
+    renderMemberToSendExistingHandouts();
 }
 function handleSaveNotes(ev) {
     return __awaiter(this, void 0, void 0, function () {
@@ -120,7 +122,7 @@ function handleGetAllMembers() {
         });
     });
 }
-function handleCreateAndSendHandouts() {
+function handleGoTodHandouts() {
     var memberID = getMemberIDByParams();
     window.location.href = "../views/handoutsDm.html?memberID=" + memberID;
 }
@@ -148,14 +150,20 @@ function renderMembersToSendNewHandouts() {
 }
 function handleSendNewHandouts(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var availableMembers, userIDArray_1, membersToSendHandoutsArray_1, nameOfHandout, imgURL, userList, userInputArray, i, userID, data, handoutDB, sentHandout, error_2;
+        var data, memberDB, availableMembers, userIDArray_1, membersToSendHandoutsArray_1, nameOfHandout, imgURL, userList, userInputArray, i, userID, data, handoutDB, sentHandout, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 4, , 5]);
                     event.preventDefault();
-                    return [4 /*yield*/, handleGetAllMembers()];
+                    _a.label = 1;
                 case 1:
+                    _a.trys.push([1, 6, , 7]);
+                    return [4 /*yield*/, axios.get('/member/get-member-from-cookie')];
+                case 2:
+                    data = (_a.sent()).data;
+                    memberDB = data.memberDB;
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 3:
                     availableMembers = _a.sent();
                     userIDArray_1 = [];
                     membersToSendHandoutsArray_1 = [];
@@ -179,22 +187,22 @@ function handleSendNewHandouts(event) {
                                 membersToSendHandoutsArray_1.push(member);
                         });
                     });
-                    return [4 /*yield*/, axios.post('/handout/create-new-handout', { nameOfHandout: nameOfHandout, imgURL: imgURL })];
-                case 2:
+                    return [4 /*yield*/, axios.post('/handout/create-new-handout', { nameOfHandout: nameOfHandout, imgURL: imgURL, memberDB: memberDB })];
+                case 4:
                     data = (_a.sent()).data;
                     handoutDB = data.handoutDB;
                     console.log(handoutDB);
                     return [4 /*yield*/, handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray_1)];
-                case 3:
+                case 5:
                     sentHandout = _a.sent();
                     if (sentHandout)
-                        console.log("successfully reated and sent new handouts to the users");
-                    return [3 /*break*/, 5];
-                case 4:
+                        console.log("successfully created and sent new handouts to the users");
+                    return [3 /*break*/, 7];
+                case 6:
                     error_2 = _a.sent();
                     console.log(error_2);
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
             }
         });
     });
@@ -212,6 +220,78 @@ function handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray) {
                     if (sentHandouts.length)
                         return [2 /*return*/, true];
                     return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderExistingHandouts() {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, data, existingHandouts, existinhHandoutsRoot, html_1, error_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDB = _a.sent();
+                    return [4 /*yield*/, axios.post('/handout/find-All-dm-handouts', { memberDB: memberDB })];
+                case 2:
+                    data = (_a.sent()).data;
+                    existingHandouts = data.existingHandouts;
+                    existinhHandoutsRoot = document.querySelector('.existinhHandoutsRoot');
+                    html_1 = '';
+                    existingHandouts.forEach(function (handoutObj) {
+                        html_1 += "<div class=\"handoutCard\"><img src=\"" + handoutObj.url + "\"><h3>" + handoutObj.name + "</h3><input name=\"" + handoutObj._id + "\" type=\"checkbox\"> <label for=\"" + handoutObj._id + "\">PICK ME</label></div>";
+                    });
+                    existinhHandoutsRoot.innerHTML = html_1;
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_3 = _a.sent();
+                    console.log(error_3);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderMemberToSendExistingHandouts() {
+    return __awaiter(this, void 0, void 0, function () {
+        var userListRoot, availableMembers, html_2, error_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    userListRoot = document.querySelector('#userListRoot');
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 1:
+                    availableMembers = _a.sent();
+                    html_2 = '';
+                    availableMembers.forEach(function (member) {
+                        if (member.role === 'user') {
+                            html_2 += "<input type=\"checkbox\" name=\"" + member.user.username + "\" value=\"" + member.user._id + "\">\n\t\t\t\t<label for=\"" + member.user.username + "\">" + member.user.username + "</label>";
+                        }
+                    });
+                    userListRoot.innerHTML = html_2;
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_4 = _a.sent();
+                    console.log(error_4);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+function getMemberFromCookies() {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, memberDB;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios.get('/member/get-member-from-cookie')];
+                case 1:
+                    data = (_a.sent()).data;
+                    memberDB = data.memberDB;
+                    return [2 /*return*/, memberDB];
             }
         });
     });

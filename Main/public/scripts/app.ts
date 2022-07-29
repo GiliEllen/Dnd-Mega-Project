@@ -1,7 +1,9 @@
 console.log('this is app.ts');
 
 function loadBody() {
-	// renderButtonsHandoutsLoot(userID);
+	renderMembersToSendNewHandouts();
+	renderExistingHandouts();
+	renderMemberToSendExistingHandouts();
 }
 
 async function handleSaveNotes(ev) {
@@ -67,7 +69,7 @@ async function handleGetAllMembers() {
 	return memberArray;
 }
 
-function handleCreateAndSendHandouts() {
+function handleGoTodHandouts() {
 	const memberID = getMemberIDByParams();
 	window.location.href = `../views/handoutsDm.html?memberID=${memberID}`;
 }
@@ -86,8 +88,11 @@ async function renderMembersToSendNewHandouts() {
 }
 
 async function handleSendNewHandouts(event) {
+	event.preventDefault();
 	try {
-		event.preventDefault();
+		//@ts-ignore
+		const { data } = await axios.get('/member/get-member-from-cookie');
+		const { memberDB } = data;
 		const availableMembers = await handleGetAllMembers();
 		const userIDArray = [];
 		const membersToSendHandoutsArray = [];
@@ -109,19 +114,61 @@ async function handleSendNewHandouts(event) {
 			});
 		});
 		//@ts-ignore
-		const {data} = await axios.post('/handout/create-new-handout', {nameOfHandout, imgURL});
+		const {data} = await axios.post('/handout/create-new-handout', {nameOfHandout, imgURL, memberDB});
 		const {handoutDB} = data;
 		console.log(handoutDB)
 		const sentHandout = await handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray);
-		if(sentHandout) console.log(`successfully reated and sent new handouts to the users`)
+		if(sentHandout) console.log(`successfully created and sent new handouts to the users`)
 	} catch (error) {
 		console.log(error);
 	}
 }
 
 async function handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray) {
+	//@ts-ignore
 	const {data} = await axios.post('/handout/Linkhandout', {handoutDB, membersToSendHandoutsArray});
 	const {sentHandouts} = data;
 	console.log(sentHandouts)
 	if(sentHandouts.length) return true;
+}
+
+async function renderExistingHandouts(){
+	try {
+		const memberDB = await getMemberFromCookies();
+		//@ts-ignore
+		const { data } = await axios.post('/handout/find-All-dm-handouts', {memberDB});
+		const {existingHandouts} = data;
+		const existinhHandoutsRoot = document.querySelector('.existinhHandoutsRoot');
+		let html = '';
+		existingHandouts.forEach(handoutObj => {
+			html += `<div class="handoutCard"><img src="${handoutObj.url}"><h3>${handoutObj.name}</h3><input name="${handoutObj._id}" type="checkbox"> <label for="${handoutObj._id}">PICK ME</label></div>`
+		});
+		existinhHandoutsRoot.innerHTML = html
+	} catch (error) {
+		console.log(error);
+	}
+
+}
+async function renderMemberToSendExistingHandouts(){
+	try {
+		const userListRoot = document.querySelector('#userListRoot');
+		const availableMembers = await handleGetAllMembers();
+		let html = '';
+		availableMembers.forEach((member) => {
+			if (member.role === 'user') {
+				html += `<input type="checkbox" name="${member.user.username}" value="${member.user._id}">
+				<label for="${member.user.username}">${member.user.username}</label>`;
+			}
+		});
+		userListRoot.innerHTML = html;
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+async function getMemberFromCookies() {
+	//@ts-ignore
+	const { data } = await axios.get('/member/get-member-from-cookie');
+	const { memberDB } = data;
+	return memberDB
 }

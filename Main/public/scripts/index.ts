@@ -69,7 +69,7 @@ async function HandleEnterRoom(ev: any) {
 			if (memberDB.role === 'dm') {
 				window.location.href = `../views/mainPageDm.html?memberID=${memberDB._id}`;
 			} else if (memberDB.role === 'user') {
-				window.location.href = `../views/mainPageUser.htmlmemberID=${memberDB._id}`;
+				window.location.href = `../views/mainPageUser.html?memberID=${memberDB._id}`;
 			}
 		} else {
 			if (error) handleErrorMember(error);

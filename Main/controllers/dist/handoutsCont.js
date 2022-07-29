@@ -36,20 +36,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.sendHandout = exports.Linkhandout = exports.createHandout = void 0;
+exports.findAllHandouts = exports.sendHandout = exports.Linkhandout = exports.createHandout = void 0;
 var handoutsModel_1 = require("../models/handoutsModel");
 var memberHandoutsModel_1 = require("../models/memberHandoutsModel");
 function createHandout(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, nameOfHandout, imgURL, handout, handoutDB, error_1;
+        var _a, nameOfHandout, imgURL, memberDB, handout, handoutDB, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    _a = req.body, nameOfHandout = _a.nameOfHandout, imgURL = _a.imgURL;
+                    _a = req.body, nameOfHandout = _a.nameOfHandout, imgURL = _a.imgURL, memberDB = _a.memberDB;
                     if (!nameOfHandout || !imgURL)
                         throw new Error("couldn't recive data from req.body");
-                    handout = new handoutsModel_1["default"]({ url: imgURL, name: nameOfHandout });
+                    handout = new handoutsModel_1["default"]({ url: imgURL, name: nameOfHandout, createdBy: memberDB });
                     return [4 /*yield*/, handout.save()];
                 case 1:
                     handoutDB = _b.sent();
@@ -83,8 +83,7 @@ function Linkhandout(req, res) {
                     sentHandouts = _b.sent();
                     if (!sentHandouts.length)
                         throw new Error("No handouts were sent");
-                    if (sentHandouts.length)
-                        res.send({ sentHandouts: sentHandouts });
+                    res.send({ sentHandouts: sentHandouts });
                     return [3 /*break*/, 3];
                 case 2:
                     error_2 = _b.sent();
@@ -112,3 +111,28 @@ function sendHandout(member, handout) {
     });
 }
 exports.sendHandout = sendHandout;
+function findAllHandouts(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, existingHandouts, error_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    memberDB = req.body.memberDB;
+                    return [4 /*yield*/, handoutsModel_1["default"].find({ 'createdBy.name': memberDB.name })];
+                case 1:
+                    existingHandouts = _a.sent();
+                    if (!existingHandouts)
+                        throw new Error("no handouts were found");
+                    res.send({ existingHandouts: existingHandouts });
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_3 = _a.sent();
+                    res.send({ error: error_3.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.findAllHandouts = findAllHandouts;
