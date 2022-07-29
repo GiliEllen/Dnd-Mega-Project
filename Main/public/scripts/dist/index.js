@@ -245,30 +245,6 @@ function handleLogin(event) {
         });
     });
 }
-function loadUserMainPage() {
-    return __awaiter(this, void 0, void 0, function () {
-        var userDB, pageTitle, infoFromDB, error_7;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, getUserFromCookies()];
-                case 1:
-                    userDB = _a.sent();
-                    pageTitle = document.querySelector('.title');
-                    pageTitle.innerHTML = "Welcome " + userDB.username;
-                    infoFromDB = document.querySelector('.infoFromDB');
-                    infoFromDB.innerHTML = " \n\t\t\tname:" + userDB.username + "\n\t\t\trole:" + userDB.role;
-                    return [3 /*break*/, 3];
-                case 2:
-                    error_7 = _a.sent();
-                    console.error(error_7);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    });
-}
 function handleWorldMapOpen() {
     try {
         var worldMap = document.querySelector('.worldMap');

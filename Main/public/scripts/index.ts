@@ -129,22 +129,7 @@ async function handleLogin(event: any) {
 	}
 }
 
-async function loadUserMainPage() {
-	try {
-		const userDB = await getUserFromCookies();
-		// const { data } = await axios.post('users/render-user-main-page', { userid });
-		// const { user, error } = data;
 
-		const pageTitle: HTMLElement = document.querySelector('.title');
-		pageTitle.innerHTML = `Welcome ${userDB.username}`;
-		const infoFromDB: HTMLDivElement = document.querySelector('.infoFromDB');
-		infoFromDB.innerHTML = ` 
-			name:${userDB.username}
-			role:${userDB.role}`;
-	} catch (error) {
-		console.error(error);
-	}
-}
 
 function handleWorldMapOpen() {
 	try {
