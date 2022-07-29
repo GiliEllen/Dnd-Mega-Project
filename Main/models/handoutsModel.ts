@@ -1,5 +1,3 @@
-console.log('this is handoutsModel.ts')
-
 import mongoose from 'mongoose';
 import Joi from 'joi';
 
@@ -15,7 +13,7 @@ const HandoutsSchema = new mongoose.Schema({
     }
 })
 
-const HandoutsModel = mongoose.model('loot',HandoutsSchema);
+const HandoutsModel = mongoose.model('Handouts',HandoutsSchema);
 
 export default HandoutsModel;
 

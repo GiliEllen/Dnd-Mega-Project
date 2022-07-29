@@ -35,3 +35,6 @@ app.use('/room', roomRoutes);
 import memberRoutes from './routes/membersRoutes';
 app.use('/member', memberRoutes);
 
+import handoutRoutes from './routes/handoutsRoutes';
+app.use('/handout', handoutRoutes)
+

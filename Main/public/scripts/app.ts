@@ -88,21 +88,40 @@ async function renderMembersToSendNewHandouts() {
 async function handleSendNewHandouts(event) {
 	try {
 		event.preventDefault();
-		console.dir(event);
 		const availableMembers = await handleGetAllMembers();
 		const userIDArray = [];
+		const membersToSendHandoutsArray = [];
 		const nameOfHandout = event.target.nameOfHandout.value;
 		const imgURL = event.target.imgURL.value;
+		if(!imgURL || !nameOfHandout) throw new Error('Missing field')
 		const userList = document.querySelector('#userList');
 		const userInputArray = userList.getElementsByTagName('input');
-		for(let i =0; i<userInputArray.length; i++) {
-			let userID = userInputArray[i].value;
-			userIDArray.push(userID)
+		for(let i = 0; i < userInputArray.length; i++) {
+			if(userInputArray[i].checked){
+				let userID = userInputArray[i].value;
+				userIDArray.push(userID)
+			}
 		}
-		console.log(userIDArray)
-		
-
+		if(userIDArray.length === 0) throw new Error('no user chosen')
+		availableMembers.forEach(member => {
+			userIDArray.forEach(userId => {
+				if(member.user._id === userId) membersToSendHandoutsArray.push(member)
+			});
+		});
+		//@ts-ignore
+		const {data} = await axios.post('/handout/create-new-handout', {nameOfHandout, imgURL});
+		const {handoutDB} = data;
+		console.log(handoutDB)
+		const sentHandout = await handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray);
+		if(sentHandout) console.log(`successfully reated and sent new handouts to the users`)
 	} catch (error) {
 		console.log(error);
 	}
+}
+
+async function handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray) {
+	const {data} = await axios.post('/handout/Linkhandout', {handoutDB, membersToSendHandoutsArray});
+	const {sentHandouts} = data;
+	console.log(sentHandouts)
+	if(sentHandouts.length) return true;
 }

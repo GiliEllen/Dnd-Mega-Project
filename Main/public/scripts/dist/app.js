@@ -148,32 +148,70 @@ function renderMembersToSendNewHandouts() {
 }
 function handleSendNewHandouts(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var availableMembers, userIDArray, nameOfHandout, imgURL, userList, userInputArray, i, userID, error_2;
+        var availableMembers, userIDArray_1, membersToSendHandoutsArray_1, nameOfHandout, imgURL, userList, userInputArray, i, userID, data, handoutDB, sentHandout, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 3]);
+                    _a.trys.push([0, 4, , 5]);
                     event.preventDefault();
-                    console.dir(event);
                     return [4 /*yield*/, handleGetAllMembers()];
                 case 1:
                     availableMembers = _a.sent();
-                    userIDArray = [];
+                    userIDArray_1 = [];
+                    membersToSendHandoutsArray_1 = [];
                     nameOfHandout = event.target.nameOfHandout.value;
                     imgURL = event.target.imgURL.value;
+                    if (!imgURL || !nameOfHandout)
+                        throw new Error('Missing field');
                     userList = document.querySelector('#userList');
                     userInputArray = userList.getElementsByTagName('input');
                     for (i = 0; i < userInputArray.length; i++) {
-                        userID = userInputArray[i].value;
-                        userIDArray.push(userID);
+                        if (userInputArray[i].checked) {
+                            userID = userInputArray[i].value;
+                            userIDArray_1.push(userID);
+                        }
                     }
-                    console.log(userIDArray);
-                    return [3 /*break*/, 3];
+                    if (userIDArray_1.length === 0)
+                        throw new Error('no user chosen');
+                    availableMembers.forEach(function (member) {
+                        userIDArray_1.forEach(function (userId) {
+                            if (member.user._id === userId)
+                                membersToSendHandoutsArray_1.push(member);
+                        });
+                    });
+                    return [4 /*yield*/, axios.post('/handout/create-new-handout', { nameOfHandout: nameOfHandout, imgURL: imgURL })];
                 case 2:
+                    data = (_a.sent()).data;
+                    handoutDB = data.handoutDB;
+                    console.log(handoutDB);
+                    return [4 /*yield*/, handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray_1)];
+                case 3:
+                    sentHandout = _a.sent();
+                    if (sentHandout)
+                        console.log("successfully reated and sent new handouts to the users");
+                    return [3 /*break*/, 5];
+                case 4:
                     error_2 = _a.sent();
                     console.log(error_2);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+function handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray) {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, sentHandouts;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios.post('/handout/Linkhandout', { handoutDB: handoutDB, membersToSendHandoutsArray: membersToSendHandoutsArray })];
+                case 1:
+                    data = (_a.sent()).data;
+                    sentHandouts = data.sentHandouts;
+                    console.log(sentHandouts);
+                    if (sentHandouts.length)
+                        return [2 /*return*/, true];
+                    return [2 /*return*/];
             }
         });
     });
