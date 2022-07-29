@@ -1,6 +1,4 @@
 console.log('this is app.ts');
-import MemberModel from '.../models/memberModel.ts';
-
 
 async function getMemberFromCookies() {
 	try {
@@ -24,17 +22,17 @@ async function getWorldDataFromDB(roomID:string) {
 		console.error(error);
 	}
 }
-function loadBody() {
-	// renderButtonsHandoutsLoot(userID);
-	try {
-		const memberDB = getMemberFromCookies()
-		const memberRoom = memberDB.room._id
-		const worldData = getWorldDataFromDB(memberRoom)
+// function loadBody() {
+// 	// renderButtonsHandoutsLoot(userID);
+// 	try {
+// 		const memberDB = getMemberFromCookies()
+// 		const memberRoom = memberDB.room._id
+// 		const worldData = getWorldDataFromDB(memberRoom)
 
-	} catch (error) {
-		console.error(error)
-	}
-}
+// 	} catch (error) {
+// 		console.error(error)
+// 	}
+// }
 
 async function handleSaveNotes(ev) {
 	ev.preventDefault();
