@@ -85,7 +85,13 @@ function handleCreateMember(roomDB, role) {
                     console.log(data);
                     memberDB = data.memberDB;
                     console.log(memberDB);
-                    window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
+                    if (memberDB.role === 'dm') {
+                        window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
+                        ;
+                    }
+                    else if (memberDB.role === 'user') {
+                        window.location.href = "../views/mainPageUser.html?memberID=" + memberDB._id;
+                    }
                     return [3 /*break*/, 4];
                 case 3:
                     error_2 = _a.sent();
@@ -134,17 +140,17 @@ function HandleEnterRoom(ev) {
                 case 2:
                     data = (_a.sent()).data;
                     userDB = data.userDB;
-                    return [4 /*yield*/, axios.post('/member/FindMember', { existingRoom: existingRoom, existingRoomPass: existingRoomPass, userDB: userDB })];
+                    return [4 /*yield*/, axios.post('/member/FindMemberByRoom', { existingRoom: existingRoom, existingRoomPass: existingRoomPass, userDB: userDB })];
                 case 3:
                     data = (_a.sent()).data;
                     console.log(data);
                     success = data.success, memberDB = data.memberDB, error = data.error, roomDB = data.roomDB;
                     if (success) {
                         if (memberDB.role === 'dm') {
-                            window.location.href = "../views/mainPageDm.html";
+                            window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
                         }
                         else if (memberDB.role === 'user') {
-                            window.location.href = "../views/mainPageUser.html";
+                            window.location.href = "../views/mainPageUser.htmlmemberID=" + memberDB._id;
                         }
                     }
                     else {
@@ -167,7 +173,7 @@ function handleErrorMember(error) {
         roomRoot.innerHTML = "<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2></br><button onclick=\"handleAddUserToRoom()\">Yes</button><button onclick=\"handleDeleteThis()\">Cancel</button>";
     }
     else if (error.includes('Error02')) {
-        roomRoot.innerHTML = "<h2>Passwords son't match, please try again</h2>";
+        roomRoot.innerHTML = "<h2>Passwords don't match, please try again</h2>";
     }
 }
 function handleRegister(event) {
@@ -372,12 +378,12 @@ function handleAddUserToRoom() {
         });
     });
 }
-// function getRoomIdByParams() {
-// 	const queryString = window.location.search;
-// 	const urlParams = new URLSearchParams(queryString);
-// 	const roomID = urlParams.get('roomID');
-// 	return roomID;
-// }
+function getMemberIdByParams() {
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var memberID = urlParams.get('memberID');
+    return memberID;
+}
 // function renderRoom(userlist, room) {
 // 	const roomContainer = document.querySelector('.room_container');
 // 	let html = '';

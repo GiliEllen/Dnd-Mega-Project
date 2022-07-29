@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getMemberFromCookie = exports.FindMember = exports.createMember = void 0;
+exports.getAllRoomMembers = exports.getMemberFromCookie = exports.FindMember = exports.createMember = void 0;
 var roomModel_1 = require("./../models/roomModel");
 var memberModel_1 = require("../models/memberModel");
 var jwt_simple_1 = require("jwt-simple");
@@ -94,7 +94,7 @@ function FindMember(req, res) {
                         res.send({ success: true, memberDB: memberDB, roomDB: roomDB });
                     }
                     return [3 /*break*/, 4];
-                case 3: throw new Error("Error02: Password or roomname incorrect");
+                case 3: throw new Error('Error02: Password or roomname incorrect');
                 case 4: return [3 /*break*/, 6];
                 case 5:
                     error_2 = _b.sent();
@@ -108,14 +108,56 @@ function FindMember(req, res) {
 exports.FindMember = FindMember;
 function getMemberFromCookie(req, res) {
     return __awaiter(this, void 0, void 0, function () {
+        var secret, memberId, decodedUserId, memberID, memberDB, error_3;
         return __generator(this, function (_a) {
-            try {
-                res.send('hello');
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    console.log("try to extract member from cookie");
+                    secret = process.env.JWT_SECRET;
+                    if (!secret)
+                        throw new Error("couldn't load secret from .env");
+                    memberId = req.cookies.memberId;
+                    if (!memberId)
+                        throw new Error("couldn't get memberID from cookies");
+                    decodedUserId = jwt_simple_1["default"].decode(memberId, secret);
+                    memberID = decodedUserId.memberID;
+                    return [4 /*yield*/, memberModel_1["default"].findById(memberID)];
+                case 1:
+                    memberDB = _a.sent();
+                    res.send({ memberDB: memberDB });
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_3 = _a.sent();
+                    res.send({ error: error_3.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
-            catch (error) {
-            }
-            return [2 /*return*/];
         });
     });
 }
 exports.getMemberFromCookie = getMemberFromCookie;
+function getAllRoomMembers(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, memberArray, error_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    memberDB = req.body.memberDB;
+                    return [4 /*yield*/, memberModel_1["default"].find({ 'room.name': memberDB.room.name })];
+                case 1:
+                    memberArray = _a.sent();
+                    console.log(memberArray);
+                    res.send({ memberArray: memberArray });
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_4 = _a.sent();
+                    res.send({ error: error_4.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getAllRoomMembers = getAllRoomMembers;

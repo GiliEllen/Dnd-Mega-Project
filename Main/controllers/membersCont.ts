@@ -26,7 +26,7 @@ export async function FindMember(req, res) {
 			const memberDB = await MemberModel.findOne({ 'room.name': roomDB.name, 'user.username': userDB.username });
 			if (!memberDB) {
 				throw new Error('Error01: Passward match but no member is found.');
-			} else if (memberDB){
+			} else if (memberDB) {
 				const cookie = { memberID: memberDB._id };
 				const secret = process.env.JWT_SECRET;
 				if (!secret) throw new Error("Couldn't find secret");
@@ -35,17 +35,36 @@ export async function FindMember(req, res) {
 				res.send({ success: true, memberDB, roomDB });
 			}
 		} else {
-			throw new Error("Error02: Password or roomname incorrect")
+			throw new Error('Error02: Password or roomname incorrect');
 		}
 	} catch (error) {
 		res.send({ error: error.message });
 	}
 }
 
-export async function getMemberFromCookie(req, res){
+export async function getMemberFromCookie(req, res) {
 	try {
-		res.send('hello')
+		console.log(`try to extract member from cookie`)
+		const secret = process.env.JWT_SECRET;
+		if (!secret) throw new Error("couldn't load secret from .env");
+		let { memberId } = req.cookies;
+		if (!memberId) throw new Error("couldn't get memberID from cookies");
+		const decodedUserId = jwt.decode(memberId, secret);
+		const { memberID } = decodedUserId;
+		const memberDB = await MemberModel.findById(memberID);
+		res.send({ memberDB });
 	} catch (error) {
-		
+		res.send({ error: error.message })
+	}
+}
+
+export async function getAllRoomMembers(req, res) {
+	try {
+		const { memberDB } = req.body;
+		const memberArray = await MemberModel.find({'room.name': memberDB.room.name});
+		console.log(memberArray)
+		res.send({memberArray})
+	} catch (error) {
+		res.send({ error: error.message })
 	}
 }

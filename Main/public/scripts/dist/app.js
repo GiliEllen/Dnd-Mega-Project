@@ -84,19 +84,54 @@ function handleChooseHandouts(event) {
         chooseHandout();
     }
 }
-function renderCreateHandout() {
-    try {
-        var root = document.querySelector('#root');
-        var html = "<form onsubmit=\"handleCreatNewHandout(event)\">\n    <label for=\"nameOfHandout\">Enter Handout's name:</label>\n    <input name=\"nameOfHandout\" type=\"text\">\n    <label for=\"imgURL\">Enter Handout's image URL:</label>\n    <input name=\"imgURL\" type=\"url\">\n    <label for=\"userList\">Choose users to recive the handout:</label>\n    <div name=\"userList\" class=\"userList\" id=\"userList\"></div>\n    <button type=\"submit\">Send</button>\n    </form>";
-        root.innerHTML = html;
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
+// function renderCreateHandout() {
+// 	try {
+// 		const root = document.querySelector('#root');
+// 		const html = `<form onsubmit="handleCreatNewHandout(event)">
+//     <label for="nameOfHandout">Enter Handout's name:</label>
+//     <input name="nameOfHandout" type="text">
+//     <label for="imgURL">Enter Handout's image URL:</label>
+//     <input name="imgURL" type="url">
+//     <label for="userList">Choose users to recive the handout:</label>
+//     <div name="userList" class="userList" id="userList"></div>
+//     <button type="submit">Send</button>
+//     </form>`;
+// 		root.innerHTML = html;
+// 	} catch (error) {
+//         console.log(error)
+//     }
+// }
 function chooseHandout() {
     var root = document.querySelector('#root');
 }
+function getMemberIDByParams() {
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var memberID = urlParams.get('memberID');
+    return memberID;
+}
+function handleLoadMembers() {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, memberDB, data, memberArray;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    console.log("attempting to load members");
+                    return [4 /*yield*/, axios.get('/member/get-member-from-cookie')];
+                case 1:
+                    data = (_a.sent()).data;
+                    memberDB = data.memberDB;
+                    return [4 /*yield*/, axios.post('/member/getAllRoomMembers', { memberDB: memberDB })];
+                case 2:
+                    data = (_a.sent()).data;
+                    memberArray = data.memberArray;
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 // to be added
-function handleCreatNewHandout(event) {
+function handleCreateAndSendHandouts() {
+    var memberID = getMemberIDByParams();
+    window.location.href = "../views/handoutsDm.html?memberID=" + memberID;
 }
