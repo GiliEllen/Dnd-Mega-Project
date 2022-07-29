@@ -1,7 +1,39 @@
 console.log('this is app.ts');
+import MemberModel from '.../models/memberModel.ts';
 
+
+async function getMemberFromCookies() {
+	try {
+		//@ts-ignore
+		const { data } = await axios.get('/member/get-user-from-cookies');
+		const { memberDB } = data;
+		return memberDB;
+	} catch (error) {
+		console.error(error);
+	}
+	
+}
+
+async function getWorldDataFromDB(roomID:string) {
+	try{
+	//@ts-ignore
+	const { data } = await axios.post('room/get-world-data', {roomID})
+	const { worldData } = data;
+	return worldData
+	} catch (error) {
+		console.error(error);
+	}
+}
 function loadBody() {
 	// renderButtonsHandoutsLoot(userID);
+	try {
+		const memberDB = getMemberFromCookies()
+		const memberRoom = memberDB.room._id
+		const worldData = getWorldDataFromDB(memberRoom)
+
+	} catch (error) {
+		console.error(error)
+	}
 }
 
 async function handleSaveNotes(ev) {
@@ -64,4 +96,21 @@ function chooseHandout() {
 // to be added
 function handleCreatNewHandout(event) {
 
+}
+
+async function loadUserMainPage() {
+	try {
+		const userDB = await getUserFromCookies();
+		// const { data } = await axios.post('users/render-user-main-page', { userid });
+		// const { user, error } = data;
+
+		const pageTitle: HTMLElement = document.querySelector('.title');
+		pageTitle.innerHTML = `Welcome ${userDB.username}`;
+		const infoFromDB: HTMLDivElement = document.querySelector('.infoFromDB');
+		infoFromDB.innerHTML = ` 
+			name:${userDB.username}
+			role:${userDB.role}`;
+	} catch (error) {
+		console.error(error);
+	}
 }

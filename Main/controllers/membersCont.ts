@@ -44,7 +44,17 @@ export async function FindMember(req, res) {
 
 export async function getMemberFromCookie(req, res){
 	try {
-		res.send('hello')
+		const secret = process.env.JWT_SECRET;
+		if (!secret) throw new Error("couldn't load secret from .env");
+
+		let { memberId } = req.cookies;
+		if (!memberId) throw new Error("couldn't get memberID from cookies");
+
+		const decodedMemberId = jwt.decode(memberId, secret);
+		const { memberID } = decodedMemberId;
+
+		const memberDB = await MemberModel.findById(memberID);
+		res.send({ memberDB });
 	} catch (error) {
 		
 	}

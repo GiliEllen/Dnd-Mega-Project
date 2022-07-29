@@ -36,8 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getRoom = exports.addRoom = void 0;
+exports.getWorldData = exports.getRoom = exports.addRoom = void 0;
 var roomModel_1 = require("./../models/roomModel");
+var worldDataModel_1 = require("../models/worldDataModel");
 var jwt_simple_1 = require("jwt-simple");
 function addRoom(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -91,3 +92,28 @@ function getRoom(req, res) {
     });
 }
 exports.getRoom = getRoom;
+function getWorldData(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var roomID, worldData, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    roomID = req.body.roomID;
+                    if (!roomID)
+                        throw new Error('didnt get roomID');
+                    return [4 /*yield*/, worldDataModel_1["default"].findOne({ _id: roomID })];
+                case 1:
+                    worldData = _a.sent();
+                    res.send({ success: true, worldData: worldData });
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_2 = _a.sent();
+                    res.send({ error: error_2.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getWorldData = getWorldData;

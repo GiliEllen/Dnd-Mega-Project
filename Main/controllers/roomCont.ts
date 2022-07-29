@@ -1,5 +1,6 @@
 import RoomModel from './../models/roomModel';
 import MemberModel from '../models/memberModel';
+import worldDataModel from '../models/worldDataModel';
 import UserModel, { UserValidation } from '../models/usersModel';
 import jwt from 'jwt-simple';
 
@@ -30,4 +31,17 @@ export async function getRoom(req, res) {
 	} catch (error) {
 		res.send({ error: error.message });
 	}
+}
+
+export async function getWorldData(req, res) {
+	try{
+		const { roomID } = req.body;
+		if (!roomID) throw new Error('didnt get roomID');
+		const worldData = await worldDataModel.findOne({_id: roomID})
+		res.send({success:true, worldData})
+	}
+	catch (error) {
+		res.send({ error: error.message });
+	}
+
 }
