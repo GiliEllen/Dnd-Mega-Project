@@ -1,20 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"
+        integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="../styles/dist/login.css">
     <title>Document</title>
 </head>
+
 <body>
-    <form onsubmit="handleRegister(event)">
-        <input type="text" name="username" placeholder="User Name">
-        <input type="email" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <input type="password" name="rePassword" placeholder="Repeat Password">
-        <button type="submit">Register</button>
-    </form>
+    <div class="session">
+        <div class="session__right">
+            <form onsubmit="handleRegister(event)">
+                <p>Welcome New Adventurar! </br> Sign up here:</p>
+                <div class="input_container">
+                    <input type="text" name="username" placeholder="User Name">
+                </div>
+                <div class="input_container">
+                    <input type="email" name="email" placeholder="Email">
+                </div>
+                <div class="input_container">
+                    <input type="password" name="password" placeholder="Password">
+                </div>
+                <div class="input_container">
+                    <input type="password" name="rePassword" placeholder="Repeat Password">
+                </div> 
+                <button class="submit_btn" type="submit">SIGN UP</button>
+                <div class="register_link">
+                    <h3>Have an account already? <span><a href="login.html">click here to sign in</a></span></h3>
+                </div>
+            </form>
+        </div>
+        <div class="session__left">
+            <video id="background-video" autoplay loop muted>
+                <source id="videoSource" type="video/mp4">
+            </video>
+        </div>
+    </div>
     <script src="../scripts/dist/index.js"></script>
+    <script src="../scripts/dist/background.js"></script>
 </body>
+
 </html>

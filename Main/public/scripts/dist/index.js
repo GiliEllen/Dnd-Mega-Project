@@ -357,8 +357,9 @@ function handleAddUserToRoom() {
             switch (_a.label) {
                 case 0:
                     console.log('trying to add user to this room');
-                    existingRoominput = document.querySelector('#existingRoom');
+                    existingRoominput = document.querySelector('#existingRoomName');
                     existingRoom = existingRoominput.value;
+                    console.log(existingRoom);
                     return [4 /*yield*/, axios.post("/room/findRoom", { existingRoom: existingRoom })];
                 case 1:
                     data = (_a.sent()).data;

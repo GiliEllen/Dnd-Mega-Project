@@ -213,8 +213,9 @@ async function loadRoom() {
 
 async function handleAddUserToRoom() {
 	console.log('trying to add user to this room')
-	const existingRoominput = document.querySelector('#existingRoom') as HTMLInputElement;
+	const existingRoominput = document.querySelector('#existingRoomName') as HTMLInputElement;
 	const existingRoom = existingRoominput.value;
+	console.log(existingRoom)
 
 	// const {data} = await axios.get("/member/get-member-from-cookie")
 	//@ts-ignore
