@@ -86,9 +86,6 @@ function handleChooseHandouts(event) {
 }
 function renderCreateHandout() {
     try {
-        var root = document.querySelector('#root');
-        var html = "<form onsubmit=\"handleCreatNewHandout(event)\">\n    <label for=\"nameOfHandout\">Enter Handout's name:</label>\n    <input name=\"nameOfHandout\" type=\"text\">\n    <label for=\"imgURL\">Enter Handout's image URL:</label>\n    <input name=\"imgURL\" type=\"url\">\n    <label for=\"userList\">Choose users to recive the handout:</label>\n    <div name=\"userList\" class=\"userList\" id=\"userList\"></div>\n    <button type=\"submit\">Send</button>\n    </form>";
-        root.innerHTML = html;
     }
     catch (error) {
         console.log(error);
@@ -97,6 +94,87 @@ function renderCreateHandout() {
 function chooseHandout() {
     var root = document.querySelector('#root');
 }
-// to be added
-function handleCreatNewHandout(event) {
+function getMemberIDByParams() {
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var memberID = urlParams.get('memberID');
+    return memberID;
+}
+function handleGetAllMembers() {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, memberDB, data, memberArray;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    console.log("attempting to load members");
+                    return [4 /*yield*/, axios.get('/member/get-member-from-cookie')];
+                case 1:
+                    data = (_a.sent()).data;
+                    memberDB = data.memberDB;
+                    return [4 /*yield*/, axios.post('/member/getAllRoomMembers', { memberDB: memberDB })];
+                case 2:
+                    data = (_a.sent()).data;
+                    memberArray = data.memberArray;
+                    return [2 /*return*/, memberArray];
+            }
+        });
+    });
+}
+function handleCreateAndSendHandouts() {
+    var memberID = getMemberIDByParams();
+    window.location.href = "../views/handoutsDm.html?memberID=" + memberID;
+}
+function renderMembersToSendNewHandouts() {
+    return __awaiter(this, void 0, void 0, function () {
+        var userList, availableMembers, html;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    userList = document.querySelector('#userList');
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 1:
+                    availableMembers = _a.sent();
+                    html = '';
+                    availableMembers.forEach(function (member) {
+                        if (member.role === 'user') {
+                            html += "<input type=\"checkbox\" name=\"" + member.user.username + "\" value=\"" + member.user._id + "\">\n\t\t\t<label for=\"" + member.user.username + "\">" + member.user.username + "</label>";
+                        }
+                    });
+                    userList.innerHTML = html;
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function handleSendNewHandouts(event) {
+    return __awaiter(this, void 0, void 0, function () {
+        var availableMembers, userIDArray, nameOfHandout, imgURL, userList, userInputArray, i, userID, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    event.preventDefault();
+                    console.dir(event);
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 1:
+                    availableMembers = _a.sent();
+                    userIDArray = [];
+                    nameOfHandout = event.target.nameOfHandout.value;
+                    imgURL = event.target.imgURL.value;
+                    userList = document.querySelector('#userList');
+                    userInputArray = userList.getElementsByTagName('input');
+                    for (i = 0; i < userInputArray.length; i++) {
+                        userID = userInputArray[i].value;
+                        userIDArray.push(userID);
+                    }
+                    console.log(userIDArray);
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_2 = _a.sent();
+                    console.log(error_2);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
 }

@@ -42,26 +42,67 @@ function handleChooseHandouts(event) {
 
 function renderCreateHandout() {
 	try {
-		const root = document.querySelector('#root');
-		const html = `<form onsubmit="handleCreatNewHandout(event)">
-    <label for="nameOfHandout">Enter Handout's name:</label>
-    <input name="nameOfHandout" type="text">
-    <label for="imgURL">Enter Handout's image URL:</label>
-    <input name="imgURL" type="url">
-    <label for="userList">Choose users to recive the handout:</label>
-    <div name="userList" class="userList" id="userList"></div>
-    <button type="submit">Send</button>
-    </form>`;
-		root.innerHTML = html;
 	} catch (error) {
-        console.log(error)
-    }
+		console.log(error);
+	}
 }
 function chooseHandout() {
 	const root = document.querySelector('#root');
 }
+function getMemberIDByParams() {
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const memberID = urlParams.get('memberID');
+	return memberID;
+}
 
-// to be added
-function handleCreatNewHandout(event) {
+async function handleGetAllMembers() {
+	console.log(`attempting to load members`);
+	//@ts-ignore
+	const { data } = await axios.get('/member/get-member-from-cookie');
+	const { memberDB } = data;
+	//@ts-ignore
+	const { data } = await axios.post('/member/getAllRoomMembers', { memberDB });
+	const { memberArray } = data;
+	return memberArray;
+}
 
+function handleCreateAndSendHandouts() {
+	const memberID = getMemberIDByParams();
+	window.location.href = `../views/handoutsDm.html?memberID=${memberID}`;
+}
+
+async function renderMembersToSendNewHandouts() {
+	const userList = document.querySelector('#userList');
+	const availableMembers = await handleGetAllMembers();
+	let html = '';
+	availableMembers.forEach((member) => {
+		if (member.role === 'user') {
+			html += `<input type="checkbox" name="${member.user.username}" value="${member.user._id}">
+			<label for="${member.user.username}">${member.user.username}</label>`;
+		}
+	});
+	userList.innerHTML = html;
+}
+
+async function handleSendNewHandouts(event) {
+	try {
+		event.preventDefault();
+		console.dir(event);
+		const availableMembers = await handleGetAllMembers();
+		const userIDArray = [];
+		const nameOfHandout = event.target.nameOfHandout.value;
+		const imgURL = event.target.imgURL.value;
+		const userList = document.querySelector('#userList');
+		const userInputArray = userList.getElementsByTagName('input');
+		for(let i =0; i<userInputArray.length; i++) {
+			let userID = userInputArray[i].value;
+			userIDArray.push(userID)
+		}
+		console.log(userIDArray)
+		
+
+	} catch (error) {
+		console.log(error);
+	}
 }

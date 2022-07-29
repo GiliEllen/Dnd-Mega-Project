@@ -85,7 +85,13 @@ function handleCreateMember(roomDB, role) {
                     console.log(data);
                     memberDB = data.memberDB;
                     console.log(memberDB);
-                    window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
+                    if (memberDB.role === 'dm') {
+                        window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
+                        ;
+                    }
+                    else if (memberDB.role === 'user') {
+                        window.location.href = "../views/mainPageUser.html?memberID=" + memberDB._id;
+                    }
                     return [3 /*break*/, 4];
                 case 3:
                     error_2 = _a.sent();
@@ -134,17 +140,17 @@ function HandleEnterRoom(ev) {
                 case 2:
                     data = (_a.sent()).data;
                     userDB = data.userDB;
-                    return [4 /*yield*/, axios.post('/member/FindMember', { existingRoom: existingRoom, existingRoomPass: existingRoomPass, userDB: userDB })];
+                    return [4 /*yield*/, axios.post('/member/FindMemberByRoom', { existingRoom: existingRoom, existingRoomPass: existingRoomPass, userDB: userDB })];
                 case 3:
                     data = (_a.sent()).data;
                     console.log(data);
                     success = data.success, memberDB = data.memberDB, error = data.error, roomDB = data.roomDB;
                     if (success) {
                         if (memberDB.role === 'dm') {
-                            window.location.href = "../views/mainPageDm.html";
+                            window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
                         }
                         else if (memberDB.role === 'user') {
-                            window.location.href = "../views/mainPageUser.html";
+                            window.location.href = "../views/mainPageUser.htmlmemberID=" + memberDB._id;
                         }
                     }
                     else {
@@ -167,7 +173,7 @@ function handleErrorMember(error) {
         roomRoot.innerHTML = "<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2></br><button onclick=\"handleAddUserToRoom()\">Yes</button><button onclick=\"handleDeleteThis()\">Cancel</button>";
     }
     else if (error.includes('Error02')) {
-        roomRoot.innerHTML = "<h2>Passwords son't match, please try again</h2>";
+        roomRoot.innerHTML = "<h2>Passwords don't match, please try again</h2>";
     }
 }
 function handleRegister(event) {
@@ -217,6 +223,8 @@ function handleLogin(event) {
                     _a.trys.push([1, 3, , 4]);
                     email = event.target.email.value;
                     password = event.target.password.value;
+                    if (!email || !password)
+                        throw new Error('Missing either email or password');
                     return [4 /*yield*/, axios.post('/users/login', { password: password, email: email })];
                 case 2:
                     data = (_a.sent()).data;
@@ -344,7 +352,7 @@ function loadRoom() {
                     data = (_a.sent()).data;
                     userDB = data.userDB;
                     roomHeader = document.querySelector('.room_header');
-                    roomHeader.innerHTML = "<h1>Hello " + userDB.username + ", </br> what would you likw to do?</h1>";
+                    roomHeader.innerHTML = "<h1>Hello " + userDB.username + ", what would you like to do?</h1>";
                     return [2 /*return*/];
             }
         });
@@ -357,8 +365,9 @@ function handleAddUserToRoom() {
             switch (_a.label) {
                 case 0:
                     console.log('trying to add user to this room');
-                    existingRoominput = document.querySelector('#existingRoom');
+                    existingRoominput = document.querySelector('#existingRoomName');
                     existingRoom = existingRoominput.value;
+                    console.log(existingRoom);
                     return [4 /*yield*/, axios.post("/room/findRoom", { existingRoom: existingRoom })];
                 case 1:
                     data = (_a.sent()).data;
@@ -371,42 +380,9 @@ function handleAddUserToRoom() {
         });
     });
 }
-// function getRoomIdByParams() {
-// 	const queryString = window.location.search;
-// 	const urlParams = new URLSearchParams(queryString);
-// 	const roomID = urlParams.get('roomID');
-// 	return roomID;
-// }
-// function renderRoom(userlist, room) {
-// 	const roomContainer = document.querySelector('.room_container');
-// 	let html = '';
-// 	if (userlist) {
-// 		// 		html = `<h1>Room name: ${room.name}</h1>
-// 		//         <div class="room_container__userContainer">
-// 		//             <div class="room_container__dmContainer">
-// 		//                 <a href="login.html?roomID=${room._id}&role=dm">Dm Login</a>
-// 		//             </div>
-// 		// 			<h3>Soon a function will fill this with users</h3>
-// 		//         </div>
-// 		//         <a href="login.html?roomID=${room._id}"><button>Register New Player</button></a>
-// 		// `
-// 	} else {
-// 		html = `<h1>Room name: ${room.name}</h1>
-//         <div class="room_container__userContainer">
-//             <div class="room_container__dmContainer">
-//                 <a href="register.html?roomID=${room._id}&role=dm">Dm Register</a>
-//             </div>
-// 			<h3>User List is empty. Tell your user to enter the room and register!</h3>
-//         </div>
-//         <a href="register.html?roomID=${room._id}&role=user"><button>Register New Player</button></a>
-// `;
-// 	}
-// 	roomContainer.innerHTML = html;
-// }
-// Ask Tal about cookies
-// async function checkRoomIDAndIfNew() {
-// 	//@ts-ignore
-// 	const { data } = await axios.get('/users/getRoomID');
-// 	const { newRoom, roomID } = data;
-// 	console.log(newRoom, roomID);
-// }
+function getMemberIdByParams() {
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var memberID = urlParams.get('memberID');
+    return memberID;
+}

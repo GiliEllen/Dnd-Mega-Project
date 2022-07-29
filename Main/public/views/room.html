@@ -17,26 +17,33 @@
 <body onload="loadRoom()">
     <div class="room_wrapper">
         <div class="room_header"></div>
-        <div class="room__wrapper__forms">
-            <form onsubmit="HandleCreateNewRoom(event)" id="NewRoomForm">
-                <label for="roomName">Make an easy to remember room name:</label>
-                <input name="inputRoom" id="roomName" type="text">
-                <label for="roomName">Make an easy to remember room password:</label>
-                <input name="inputRoompassword" id="roomPass" type="password">
-                <button type="submit">Create new Game Room</button>
-            </form>
-
-            <form onsubmit="HandleEnterRoom(event)" id="RoomForm">
-                <h3>Find your room:</h3>
-                <label for="existingRoomName" id="existingRoom">Enter Room Name:</label>
-                <input name="existingRoomName" type="text">
-                <label for="existingRoomPass">Enter Room password:</label>
-                <input name="existingRoomPass" type="password">
-                <button type="submit">Enter</button>
-            </form>
+        <div class="room_wrapper__forms">
+            <div class="formContainer">
+                <form onsubmit="HandleCreateNewRoom(event)" id="NewRoomForm">
+                    <img src="../images/02.png" alt="" srcset="">
+                    <h3>Creat new room to DM at:</h3>
+                    <label for="roomName">Make an easy to remember room name:</label>
+                    <input name="inputRoom" id="roomName" type="text">
+                    <label for="roomName">Make an easy to remember room password:</label>
+                    <input name="inputRoompassword" id="roomPass" type="password">
+                    <button type="submit">Create new Game Room</button>
+                </form>
+            </div>
+            <div class="formContainer">
+                <form onsubmit="HandleEnterRoom(event)" id="RoomForm">
+                    <img src="../images/03.png" alt="" srcset="">
+                    <h3>Find your room:</h3>
+                    <label for="existingRoomName" id="existingRoom">Enter Room Name:</label>
+                    <input id="existingRoomName" name="existingRoomName" type="text">
+                    <label for="existingRoomPass">Enter Room password:</label>
+                    <input name="existingRoomPass" type="password">
+                    <button type="submit">Enter</button>
+                </form>
+            </div>
         </div>
     </div>
     <div id="roomRoot"></div>
+    <img id="background" src="../images/01.png" alt="" srcset="">
     <script src="../scripts/dist/index.js"></script>
 </body>
 

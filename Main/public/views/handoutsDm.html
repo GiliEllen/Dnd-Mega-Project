@@ -10,18 +10,25 @@
 
 </head>
 
-<body>
+<body onload="renderMembersToSendNewHandouts()">
     <form onsubmit="handleChooseHandouts(event)">
         <h4>Do you wish to:</h4>
         <button id="existingHandout" type="submit">Choose existing handout</button>
         <button id="creatingHandout" type="submit">Create a new handout</button>
     </form>
+    <form id="newHandoutForm" onsubmit="handleSendNewHandouts(event)">
+        <label for="nameOfHandout">Enter Handout's name:</label>
+        <input name="nameOfHandout" type="text">
+        <label for="imgURL">Enter Handout's image URL:</label>
+        <input name="imgURL" type="url">
+        <label for="userList">Choose users to recive the handout:</label>
+        <div name="userList" class="userList" id="userList"></div>
+        <button type="submit">Send</button>
+    </form>
 
     <div class="root" id="root"></div>
-
-
-
     <script src="../scripts/dist/app.js"></script>
+
 </body>
 
 </html>

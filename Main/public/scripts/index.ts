@@ -29,7 +29,12 @@ async function handleCreateMember(roomDB, role) {
 		console.log(data);
 		const { memberDB } = data;
 		console.log(memberDB);
-		window.location.href = `../views/mainPageDm.html?memberID=${memberDB._id}`;
+		if (memberDB.role === 'dm') {
+			window.location.href = `../views/mainPageDm.html?memberID=${memberDB._id}`;;
+		} else if (memberDB.role === 'user') {
+			window.location.href = `../views/mainPageUser.html?memberID=${memberDB._id}`;
+		}
+		
 	} catch (error) {
 		console.error(error);
 	}
@@ -57,14 +62,14 @@ async function HandleEnterRoom(ev: any) {
 		const { data } = await axios.get('/users/get-user-from-cookies');
 		const { userDB } = data;
 		//@ts-ignore
-		const { data } = await axios.post('/member/FindMember', { existingRoom, existingRoomPass, userDB });
+		const { data } = await axios.post('/member/FindMemberByRoom', { existingRoom, existingRoomPass, userDB });
 		console.log(data);
 		const { success, memberDB, error, roomDB } = data;
 		if (success) {
 			if (memberDB.role === 'dm') {
-				window.location.href = `../views/mainPageDm.html`;
+				window.location.href = `../views/mainPageDm.html?memberID=${memberDB._id}`;
 			} else if (memberDB.role === 'user') {
-				window.location.href = `../views/mainPageUser.html`;
+				window.location.href = `../views/mainPageUser.htmlmemberID=${memberDB._id}`;
 			}
 		} else {
 			if (error) handleErrorMember(error);
@@ -79,7 +84,7 @@ function handleErrorMember(error) {
 	if (error.includes('Error01')) {
 		roomRoot.innerHTML = `<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2></br><button onclick="handleAddUserToRoom()">Yes</button><button onclick="handleDeleteThis()">Cancel</button>`;
 	} else if (error.includes('Error02')) {
-		roomRoot.innerHTML = "<h2>Passwords son't match, please try again</h2>";
+		roomRoot.innerHTML = "<h2>Passwords don't match, please try again</h2>";
 	}
 }
 
@@ -109,6 +114,7 @@ async function handleLogin(event: any) {
 	try {
 		const email = event.target.email.value;
 		const password = event.target.password.value;
+		if(!email || !password) throw new Error('Missing either email or password')
 		//@ts-ignore
 		const { data } = await axios.post('/users/login', { password, email });
 
@@ -208,62 +214,25 @@ async function loadRoom() {
 	const { data } = await axios.get('/users/get-user-from-cookies');
 	const { userDB } = data;
 	const roomHeader = document.querySelector('.room_header');
-	roomHeader.innerHTML = `<h1>Hello ${userDB.username}, </br> what would you likw to do?</h1>`;
+	roomHeader.innerHTML = `<h1>Hello ${userDB.username}, what would you like to do?</h1>`;
 }
 
 async function handleAddUserToRoom() {
 	console.log('trying to add user to this room')
-	const existingRoominput = document.querySelector('#existingRoom') as HTMLInputElement;
+	const existingRoominput = document.querySelector('#existingRoomName') as HTMLInputElement;
 	const existingRoom = existingRoominput.value;
-
-	// const {data} = await axios.get("/member/get-member-from-cookie")
+	console.log(existingRoom)
 	//@ts-ignore
 	const {data} = await axios.post("/room/findRoom", {existingRoom});
 	const {roomDB} = data;
 	console.log(roomDB)
 	const role = "user"
 	handleCreateMember(roomDB,role)
-
 }
 
-// function getRoomIdByParams() {
-// 	const queryString = window.location.search;
-// 	const urlParams = new URLSearchParams(queryString);
-// 	const roomID = urlParams.get('roomID');
-// 	return roomID;
-// }
-
-// function renderRoom(userlist, room) {
-// 	const roomContainer = document.querySelector('.room_container');
-// 	let html = '';
-// 	if (userlist) {
-// 		// 		html = `<h1>Room name: ${room.name}</h1>
-// 		//         <div class="room_container__userContainer">
-// 		//             <div class="room_container__dmContainer">
-// 		//                 <a href="login.html?roomID=${room._id}&role=dm">Dm Login</a>
-// 		//             </div>
-// 		// 			<h3>Soon a function will fill this with users</h3>
-// 		//         </div>
-// 		//         <a href="login.html?roomID=${room._id}"><button>Register New Player</button></a>
-// 		// `
-// 	} else {
-// 		html = `<h1>Room name: ${room.name}</h1>
-//         <div class="room_container__userContainer">
-//             <div class="room_container__dmContainer">
-//                 <a href="register.html?roomID=${room._id}&role=dm">Dm Register</a>
-//             </div>
-// 			<h3>User List is empty. Tell your user to enter the room and register!</h3>
-//         </div>
-//         <a href="register.html?roomID=${room._id}&role=user"><button>Register New Player</button></a>
-// `;
-// 	}
-// 	roomContainer.innerHTML = html;
-// }
-
-// Ask Tal about cookies
-// async function checkRoomIDAndIfNew() {
-// 	//@ts-ignore
-// 	const { data } = await axios.get('/users/getRoomID');
-// 	const { newRoom, roomID } = data;
-// 	console.log(newRoom, roomID);
-// }
+function getMemberIdByParams() {
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const memberID = urlParams.get('memberID');
+	return memberID;
+}

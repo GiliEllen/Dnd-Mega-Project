@@ -6,5 +6,6 @@ var router = express_1["default"].Router();
 router
     .get('/get-member-from-cookie', membersCont_1.getMemberFromCookie)
     .post('/create-Member', membersCont_1.createMember)
-    .post('/FindMember', membersCont_1.FindMember);
+    .post('/FindMemberByRoom', membersCont_1.FindMember)
+    .post('/getAllRoomMembers', membersCont_1.getAllRoomMembers);
 exports["default"] = router;
