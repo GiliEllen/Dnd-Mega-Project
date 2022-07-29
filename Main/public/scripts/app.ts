@@ -67,7 +67,7 @@ function getMemberIDByParams() {
 	return memberID;
 }
 
-async function handleLoadMembers() {
+async function handleGetAllMembers() {
 	console.log(`attempting to load members`)
 	//@ts-ignore
 	const { data } = await axios.get('/member/get-member-from-cookie');
@@ -75,10 +75,24 @@ async function handleLoadMembers() {
 	//@ts-ignore
 	const {data} = await axios.post('/member/getAllRoomMembers', {memberDB});
 	const {memberArray} = data;
+	return memberArray;
 
 }
 
-// to be added
+async function renderMembersToSendNewHandouts() {
+	const userList = document.querySelector('#userList');
+	const availableMembers = await handleGetAllMembers();
+	let html = "";
+	availableMembers.forEach(member => {
+		if(member.role === "user") {
+			html += `<input type="checkbox" name="${member.user.username}" value="${member.user.email}">
+			<label for="${member.user.username}">${member.user.username}</label>`
+		}
+	});
+	console.log(html)
+	userList.innerHTML = html;
+}
+
 function handleCreateAndSendHandouts() {
 	const memberID = getMemberIDByParams();
 	window.location.href = `../views/handoutsDm.html?memberID=${memberID}`;

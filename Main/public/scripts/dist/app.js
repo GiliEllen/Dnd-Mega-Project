@@ -110,7 +110,7 @@ function getMemberIDByParams() {
     var memberID = urlParams.get('memberID');
     return memberID;
 }
-function handleLoadMembers() {
+function handleGetAllMembers() {
     return __awaiter(this, void 0, void 0, function () {
         var data, memberDB, data, memberArray;
         return __generator(this, function (_a) {
@@ -125,12 +125,34 @@ function handleLoadMembers() {
                 case 2:
                     data = (_a.sent()).data;
                     memberArray = data.memberArray;
+                    return [2 /*return*/, memberArray];
+            }
+        });
+    });
+}
+function renderMembersToSendNewHandouts() {
+    return __awaiter(this, void 0, void 0, function () {
+        var userList, availableMembers, html;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    userList = document.querySelector('#userList');
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 1:
+                    availableMembers = _a.sent();
+                    html = "";
+                    availableMembers.forEach(function (member) {
+                        if (member.role === "user") {
+                            html += "<input type=\"checkbox\" name=\"" + member.user.username + "\" value=\"" + member.user.email + "\">\n\t\t\t<label for=\"" + member.user.username + "\">" + member.user.username + "</label>";
+                        }
+                    });
+                    console.log(html);
+                    userList.innerHTML = html;
                     return [2 /*return*/];
             }
         });
     });
 }
-// to be added
 function handleCreateAndSendHandouts() {
     var memberID = getMemberIDByParams();
     window.location.href = "../views/handoutsDm.html?memberID=" + memberID;
