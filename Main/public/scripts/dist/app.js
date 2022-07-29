@@ -130,6 +130,10 @@ function handleGetAllMembers() {
         });
     });
 }
+function handleCreateAndSendHandouts() {
+    var memberID = getMemberIDByParams();
+    window.location.href = "../views/handoutsDm.html?memberID=" + memberID;
+}
 function renderMembersToSendNewHandouts() {
     return __awaiter(this, void 0, void 0, function () {
         var userList, availableMembers, html;
@@ -152,8 +156,4 @@ function renderMembersToSendNewHandouts() {
             }
         });
     });
-}
-function handleCreateAndSendHandouts() {
-    var memberID = getMemberIDByParams();
-    window.location.href = "../views/handoutsDm.html?memberID=" + memberID;
 }

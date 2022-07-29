@@ -79,6 +79,11 @@ async function handleGetAllMembers() {
 
 }
 
+function handleCreateAndSendHandouts() {
+	const memberID = getMemberIDByParams();
+	window.location.href = `../views/handoutsDm.html?memberID=${memberID}`;
+}
+
 async function renderMembersToSendNewHandouts() {
 	const userList = document.querySelector('#userList');
 	const availableMembers = await handleGetAllMembers();
@@ -93,7 +98,3 @@ async function renderMembersToSendNewHandouts() {
 	userList.innerHTML = html;
 }
 
-function handleCreateAndSendHandouts() {
-	const memberID = getMemberIDByParams();
-	window.location.href = `../views/handoutsDm.html?memberID=${memberID}`;
-}
