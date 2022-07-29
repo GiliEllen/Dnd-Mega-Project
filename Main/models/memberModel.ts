@@ -15,6 +15,10 @@ const MemberSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    handouts:{
+        type:Array,
+        required:true
+    }
     
 })
 

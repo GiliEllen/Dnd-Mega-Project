@@ -235,38 +235,3 @@ function getMemberIdByParams() {
 	const memberID = urlParams.get('memberID');
 	return memberID;
 }
-
-// function renderRoom(userlist, room) {
-// 	const roomContainer = document.querySelector('.room_container');
-// 	let html = '';
-// 	if (userlist) {
-// 		// 		html = `<h1>Room name: ${room.name}</h1>
-// 		//         <div class="room_container__userContainer">
-// 		//             <div class="room_container__dmContainer">
-// 		//                 <a href="login.html?roomID=${room._id}&role=dm">Dm Login</a>
-// 		//             </div>
-// 		// 			<h3>Soon a function will fill this with users</h3>
-// 		//         </div>
-// 		//         <a href="login.html?roomID=${room._id}"><button>Register New Player</button></a>
-// 		// `
-// 	} else {
-// 		html = `<h1>Room name: ${room.name}</h1>
-//         <div class="room_container__userContainer">
-//             <div class="room_container__dmContainer">
-//                 <a href="register.html?roomID=${room._id}&role=dm">Dm Register</a>
-//             </div>
-// 			<h3>User List is empty. Tell your user to enter the room and register!</h3>
-//         </div>
-//         <a href="register.html?roomID=${room._id}&role=user"><button>Register New Player</button></a>
-// `;
-// 	}
-// 	roomContainer.innerHTML = html;
-// }
-
-// Ask Tal about cookies
-// async function checkRoomIDAndIfNew() {
-// 	//@ts-ignore
-// 	const { data } = await axios.get('/users/getRoomID');
-// 	const { newRoom, roomID } = data;
-// 	console.log(newRoom, roomID);
-// }

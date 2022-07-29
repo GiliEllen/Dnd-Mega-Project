@@ -84,23 +84,13 @@ function handleChooseHandouts(event) {
         chooseHandout();
     }
 }
-// function renderCreateHandout() {
-// 	try {
-// 		const root = document.querySelector('#root');
-// 		const html = `<form onsubmit="handleCreatNewHandout(event)">
-//     <label for="nameOfHandout">Enter Handout's name:</label>
-//     <input name="nameOfHandout" type="text">
-//     <label for="imgURL">Enter Handout's image URL:</label>
-//     <input name="imgURL" type="url">
-//     <label for="userList">Choose users to recive the handout:</label>
-//     <div name="userList" class="userList" id="userList"></div>
-//     <button type="submit">Send</button>
-//     </form>`;
-// 		root.innerHTML = html;
-// 	} catch (error) {
-//         console.log(error)
-//     }
-// }
+function renderCreateHandout() {
+    try {
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
 function chooseHandout() {
     var root = document.querySelector('#root');
 }
@@ -144,15 +134,46 @@ function renderMembersToSendNewHandouts() {
                     return [4 /*yield*/, handleGetAllMembers()];
                 case 1:
                     availableMembers = _a.sent();
-                    html = "";
+                    html = '';
                     availableMembers.forEach(function (member) {
-                        if (member.role === "user") {
-                            html += "<input type=\"checkbox\" name=\"" + member.user.username + "\" value=\"" + member.user.email + "\">\n\t\t\t<label for=\"" + member.user.username + "\">" + member.user.username + "</label>";
+                        if (member.role === 'user') {
+                            html += "<input type=\"checkbox\" name=\"" + member.user.username + "\" value=\"" + member.user._id + "\">\n\t\t\t<label for=\"" + member.user.username + "\">" + member.user.username + "</label>";
                         }
                     });
-                    console.log(html);
                     userList.innerHTML = html;
                     return [2 /*return*/];
+            }
+        });
+    });
+}
+function handleSendNewHandouts(event) {
+    return __awaiter(this, void 0, void 0, function () {
+        var availableMembers, userIDArray, nameOfHandout, imgURL, userList, userInputArray, i, userID, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    event.preventDefault();
+                    console.dir(event);
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 1:
+                    availableMembers = _a.sent();
+                    userIDArray = [];
+                    nameOfHandout = event.target.nameOfHandout.value;
+                    imgURL = event.target.imgURL.value;
+                    userList = document.querySelector('#userList');
+                    userInputArray = userList.getElementsByTagName('input');
+                    for (i = 0; i < userInputArray.length; i++) {
+                        userID = userInputArray[i].value;
+                        userIDArray.push(userID);
+                    }
+                    console.log(userIDArray);
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_2 = _a.sent();
+                    console.log(error_2);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     });

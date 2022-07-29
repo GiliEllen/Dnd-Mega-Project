@@ -15,6 +15,10 @@ var MemberSchema = new mongoose_1["default"].Schema({
     role: {
         type: String,
         required: true
+    },
+    handouts: {
+        type: Array,
+        required: true
     }
 });
 var MemberModel = mongoose_1["default"].model('Memmber', MemberSchema);

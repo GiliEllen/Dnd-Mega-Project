@@ -6,7 +6,8 @@ import jwt from 'jwt-simple';
 export async function createMember(req, res) {
 	try {
 		const { roomDB, userDB, role } = req.body;
-		const member = new MemberModel({ room: roomDB, user: userDB, role });
+		const handouts = [];
+		const member = new MemberModel({ room: roomDB, user: userDB, role , handouts});
 		const memberDB = await member.save();
 
 		res.send({ memberDB });
@@ -62,7 +63,6 @@ export async function getAllRoomMembers(req, res) {
 	try {
 		const { memberDB } = req.body;
 		const memberArray = await MemberModel.find({'room.name': memberDB.room.name});
-		console.log(memberArray)
 		res.send({memberArray})
 	} catch (error) {
 		res.send({ error: error.message })
