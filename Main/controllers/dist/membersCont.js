@@ -42,7 +42,7 @@ var memberModel_1 = require("../models/memberModel");
 var jwt_simple_1 = require("jwt-simple");
 function createMember(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, roomDB, userDB, role, handouts, member, memberDB, error_1;
+        var _a, roomDB, userDB, role, handouts, member, memberDB, cookie, secret, JWTCookie, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -53,6 +53,13 @@ function createMember(req, res) {
                     return [4 /*yield*/, member.save()];
                 case 1:
                     memberDB = _b.sent();
+                    cookie = { memberID: memberDB._id };
+                    secret = process.env.JWT_SECRET;
+                    if (!secret)
+                        throw new Error("Couldn't find secret");
+                    JWTCookie = jwt_simple_1["default"].encode(cookie, secret);
+                    res.cookie('memberId', JWTCookie);
+                    res.send({ success: true, memberDB: memberDB, roomDB: roomDB });
                     res.send({ memberDB: memberDB });
                     return [3 /*break*/, 3];
                 case 2:

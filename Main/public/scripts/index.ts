@@ -114,6 +114,7 @@ async function handleLogin(event: any) {
 	try {
 		const email = event.target.email.value;
 		const password = event.target.password.value;
+		if(!email || !password) throw new Error('Missing either email or password')
 		//@ts-ignore
 		const { data } = await axios.post('/users/login', { password, email });
 

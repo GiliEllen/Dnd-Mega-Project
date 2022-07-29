@@ -223,6 +223,8 @@ function handleLogin(event) {
                     _a.trys.push([1, 3, , 4]);
                     email = event.target.email.value;
                     password = event.target.password.value;
+                    if (!email || !password)
+                        throw new Error('Missing either email or password');
                     return [4 /*yield*/, axios.post('/users/login', { password: password, email: email })];
                 case 2:
                     data = (_a.sent()).data;

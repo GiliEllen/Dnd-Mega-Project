@@ -7,9 +7,15 @@ export async function createMember(req, res) {
 	try {
 		const { roomDB, userDB, role } = req.body;
 		const handouts = [];
-		const member = new MemberModel({ room: roomDB, user: userDB, role , handouts});
+		const member = new MemberModel({ room: roomDB, user: userDB, role, handouts });
 		const memberDB = await member.save();
 
+		const cookie = { memberID: memberDB._id };
+		const secret = process.env.JWT_SECRET;
+		if (!secret) throw new Error("Couldn't find secret");
+		const JWTCookie = jwt.encode(cookie, secret);
+		res.cookie('memberId', JWTCookie);
+		res.send({ success: true, memberDB, roomDB });
 		res.send({ memberDB });
 	} catch (error) {
 		res.send({ error: error.message });
@@ -45,7 +51,7 @@ export async function FindMember(req, res) {
 
 export async function getMemberFromCookie(req, res) {
 	try {
-		console.log(`try to extract member from cookie`)
+		console.log(`try to extract member from cookie`);
 		const secret = process.env.JWT_SECRET;
 		if (!secret) throw new Error("couldn't load secret from .env");
 		let { memberId } = req.cookies;
@@ -55,16 +61,16 @@ export async function getMemberFromCookie(req, res) {
 		const memberDB = await MemberModel.findById(memberID);
 		res.send({ memberDB });
 	} catch (error) {
-		res.send({ error: error.message })
+		res.send({ error: error.message });
 	}
 }
 
 export async function getAllRoomMembers(req, res) {
 	try {
 		const { memberDB } = req.body;
-		const memberArray = await MemberModel.find({'room.name': memberDB.room.name});
-		res.send({memberArray})
+		const memberArray = await MemberModel.find({ 'room.name': memberDB.room.name });
+		res.send({ memberArray });
 	} catch (error) {
-		res.send({ error: error.message })
+		res.send({ error: error.message });
 	}
 }
