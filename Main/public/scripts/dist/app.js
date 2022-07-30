@@ -302,9 +302,8 @@ function handleSendExistingHandouts(event) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
+                    _a.trys.push([0, 4, , 5]);
                     event.preventDefault();
-                    console.dir(event);
                     memberDB = getMemberFromCookies();
                     return [4 /*yield*/, handleGetAllMembers()];
                 case 1:
@@ -327,7 +326,6 @@ function handleSendExistingHandouts(event) {
                                 membersToSendHandoutsArray_2.push(member);
                         });
                     });
-                    console.log(membersToSendHandoutsArray_2);
                     existinhHandoutsRoot = document.querySelector('#existinhHandoutsRoot');
                     existinhHandoutsInputArray = existinhHandoutsRoot.getElementsByTagName('input');
                     existinhHandoutsCheckedIDArray = [];
@@ -348,15 +346,18 @@ function handleSendExistingHandouts(event) {
                                 fullHandoutsToSend_1.push(handout);
                         });
                     });
-                    fullHandoutsToSend_1.forEach(function (handout) {
-                        sendThisHandout(handout, membersToSendHandoutsArray_2);
-                    });
-                    return [3 /*break*/, 4];
+                    return [4 /*yield*/, fullHandoutsToSend_1.forEach(function (handout) {
+                            sendThisHandout(handout, membersToSendHandoutsArray_2);
+                        })];
                 case 3:
+                    _a.sent();
+                    window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
+                    return [3 /*break*/, 5];
+                case 4:
                     error_5 = _a.sent();
                     console.log(error_5);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
             }
         });
     });

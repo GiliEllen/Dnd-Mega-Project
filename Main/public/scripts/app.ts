@@ -174,7 +174,6 @@ async function getMemberFromCookies() {
 async function handleSendExistingHandouts(event) {
 	try {
 		event.preventDefault();
-		console.dir(event);
 		//@ts-ignore
 		const memberDB = getMemberFromCookies();
 		const availableMembers = await handleGetAllMembers();
@@ -194,7 +193,6 @@ async function handleSendExistingHandouts(event) {
 				if (member.user._id === userId) membersToSendHandoutsArray.push(member);
 			});
 		});
-		console.log(membersToSendHandoutsArray)
 		const existinhHandoutsRoot = document.querySelector('#existinhHandoutsRoot');
 		const existinhHandoutsInputArray = existinhHandoutsRoot.getElementsByTagName('input');
 		const existinhHandoutsCheckedIDArray = [];
@@ -212,10 +210,10 @@ async function handleSendExistingHandouts(event) {
 				if (handout._id === handoutCheckedID) fullHandoutsToSend.push(handout)
 			});
 		});
-		fullHandoutsToSend.forEach(handout => {
+		await fullHandoutsToSend.forEach(handout => {
 			sendThisHandout(handout, membersToSendHandoutsArray)
 		});
-
+		window.location.href = `../views/mainPageDm.html?memberID=${memberDB._id}`;
 		
 	} catch (error) {
 		console.log(error);
