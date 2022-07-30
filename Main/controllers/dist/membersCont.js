@@ -119,7 +119,6 @@ function getMemberFromCookie(req, res) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    console.log("try to extract member from cookie");
                     secret = process.env.JWT_SECRET;
                     if (!secret)
                         throw new Error("couldn't load secret from .env");

@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const MemberHandoutsSchema = new mongoose.Schema({
     member:
     {
-        type:String,
+        type:Object,
         required:true,
     },
     handout: {

@@ -10,8 +10,8 @@ export async function createHandout(req, res) {
 		if (!handoutDB) throw new Error('failed to create new handout');
 		res.send({ handoutDB });
 	} catch (error) {
-        res.send({ error: error.message });
-    }
+		res.send({ error: error.message });
+	}
 }
 export async function Linkhandout(req, res) {
 	try {
@@ -20,25 +20,50 @@ export async function Linkhandout(req, res) {
 			sendHandout(member, handoutDB);
 		});
 		const sentHandouts = await MemberHandoutsModel.find({ 'handout.name': handoutDB.name });
-        if(!sentHandouts.length) throw new Error(`No handouts were sent`)
-        res.send({sentHandouts})
+		if (!sentHandouts.length) throw new Error(`No handouts were sent`);
+		res.send({ sentHandouts });
 	} catch (error) {
-        res.send({ error: error.message });
-    }
+		res.send({ error: error.message });
+	}
 }
 
 export async function sendHandout(member, handout) {
-	const linkedHandout = new MemberHandoutsModel({ member: member, handout });
+	const linkedHandout = new MemberHandoutsModel({ member, handout });
 	const linkedHandoutDB = await linkedHandout.save();
 }
 
 export async function findAllHandouts(req, res) {
+	try {
+		const { memberDB } = req.body;
+		const existingHandouts = await HandoutsModel.find({ 'createdBy.user.name': memberDB.username });
+		if (!existingHandouts) throw new Error(`no handouts were found`);
+		res.send({ existingHandouts });
+	} catch (error) {
+		res.send({ error: error.message });
+	}
+}
+export async function findAllCheckedHandouts(req, res) {
     try {
-        const {memberDB} = req.body;
-        const existingHandouts = await HandoutsModel.find({ 'createdBy.name': memberDB.name });
-        if(!existingHandouts) throw new Error(`no handouts were found`);
-        res.send({existingHandouts})
+        
     } catch (error) {
-        res.send({ error: error.message });
+        
     }
 }
+
+// export async function findAllCheckedHandouts(req, res) {
+// 	try {
+// 		const { memberDB, existinhHandoutsIDArray } = req.body;
+// 		if (!memberDB || !existinhHandoutsIDArray) throw new Error('misiing info from req.body');
+// 		const exitingHandoutsToSendArray = [];
+//         existinhHandoutsIDArray.forEach((handoutID) => {
+// 			findtheseHandouts(handoutID, memberDB);
+// 		});
+		
+// 	} catch (error) {
+// 		res.send({ error: error.message });
+// 	}
+// }
+
+// export async function  findtheseHandouts(handoutID, memberDB) {
+//     const existingHandouts = await HandoutsModel.find({ 'createdBy.user.name': memberDB.username });
+// }

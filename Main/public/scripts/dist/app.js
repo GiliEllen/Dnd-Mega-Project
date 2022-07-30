@@ -34,7 +34,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-console.log('this is app.ts');
 function loadBody() {
     renderMembersToSendNewHandouts();
     renderExistingHandouts();
@@ -241,7 +240,7 @@ function renderExistingHandouts() {
                     existinhHandoutsRoot = document.querySelector('.existinhHandoutsRoot');
                     html_1 = '';
                     existingHandouts.forEach(function (handoutObj) {
-                        html_1 += "<div class=\"handoutCard\"><img src=\"" + handoutObj.url + "\"><h3>" + handoutObj.name + "</h3><input name=\"" + handoutObj._id + "\" type=\"checkbox\"> <label for=\"" + handoutObj._id + "\">PICK ME</label></div>";
+                        html_1 += "<div class=\"handoutCard\"><img src=\"" + handoutObj.url + "\"><h3>" + handoutObj.name + "</h3><input name=\"" + handoutObj.name + "\" type=\"checkbox\" value=\"" + handoutObj._id + "\"> <label for=\"" + handoutObj._id + "\">PICK ME</label></div>";
                     });
                     existinhHandoutsRoot.innerHTML = html_1;
                     return [3 /*break*/, 4];
@@ -268,7 +267,8 @@ function renderMemberToSendExistingHandouts() {
                     html_2 = '';
                     availableMembers.forEach(function (member) {
                         if (member.role === 'user') {
-                            html_2 += "<input type=\"checkbox\" name=\"" + member.user.username + "\" value=\"" + member.user._id + "\">\n\t\t\t\t<label for=\"" + member.user.username + "\">" + member.user.username + "</label>";
+                            html_2 += "<input id=\"memberName\" type=\"checkbox\" name=\"" + member.user.username + "\" value=\"" + member.user
+                                ._id + "\">\n\t\t\t\t<label for=\"" + member.user.username + "\">" + member.user.username + "</label>";
                         }
                     });
                     userListRoot.innerHTML = html_2;
@@ -292,6 +292,84 @@ function getMemberFromCookies() {
                     data = (_a.sent()).data;
                     memberDB = data.memberDB;
                     return [2 /*return*/, memberDB];
+            }
+        });
+    });
+}
+function handleSendExistingHandouts(event) {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, availableMembers, userIDArray_2, membersToSendHandoutsArray_2, userListRoot, userInputArray, i, userID, existinhHandoutsRoot, existinhHandoutsInputArray, existinhHandoutsCheckedIDArray, i, handoutID, data, existingHandouts_1, fullHandoutsToSend_1, error_5;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    event.preventDefault();
+                    console.dir(event);
+                    memberDB = getMemberFromCookies();
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 1:
+                    availableMembers = _a.sent();
+                    userIDArray_2 = [];
+                    membersToSendHandoutsArray_2 = [];
+                    userListRoot = document.querySelector('#userListRoot');
+                    userInputArray = userListRoot.getElementsByTagName('input');
+                    for (i = 0; i < userInputArray.length; i++) {
+                        if (userInputArray[i].checked) {
+                            userID = userInputArray[i].value;
+                            userIDArray_2.push(userID);
+                        }
+                    }
+                    if (userIDArray_2.length === 0)
+                        throw new Error('no user chosen');
+                    availableMembers.forEach(function (member) {
+                        userIDArray_2.forEach(function (userId) {
+                            if (member.user._id === userId)
+                                membersToSendHandoutsArray_2.push(member);
+                        });
+                    });
+                    console.log(membersToSendHandoutsArray_2);
+                    existinhHandoutsRoot = document.querySelector('#existinhHandoutsRoot');
+                    existinhHandoutsInputArray = existinhHandoutsRoot.getElementsByTagName('input');
+                    existinhHandoutsCheckedIDArray = [];
+                    for (i = 0; i < existinhHandoutsInputArray.length; i++) {
+                        if (existinhHandoutsInputArray[i].checked) {
+                            handoutID = existinhHandoutsInputArray[i].value;
+                            existinhHandoutsCheckedIDArray.push(handoutID);
+                        }
+                    }
+                    return [4 /*yield*/, axios.post('/handout/find-All-dm-handouts', { memberDB: memberDB })];
+                case 2:
+                    data = (_a.sent()).data;
+                    existingHandouts_1 = data.existingHandouts;
+                    fullHandoutsToSend_1 = [];
+                    existinhHandoutsCheckedIDArray.forEach(function (handoutCheckedID) {
+                        existingHandouts_1.forEach(function (handout) {
+                            if (handout._id === handoutCheckedID)
+                                fullHandoutsToSend_1.push(handout);
+                        });
+                    });
+                    fullHandoutsToSend_1.forEach(function (handout) {
+                        sendThisHandout(handout, membersToSendHandoutsArray_2);
+                    });
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_5 = _a.sent();
+                    console.log(error_5);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+function sendThisHandout(handout, membersToSendHandoutsArray) {
+    return __awaiter(this, void 0, void 0, function () {
+        var sentHandout;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, handleLinkMemberAndHandout(handout, membersToSendHandoutsArray)];
+                case 1:
+                    sentHandout = _a.sent();
+                    return [2 /*return*/];
             }
         });
     });

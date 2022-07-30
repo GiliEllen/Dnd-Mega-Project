@@ -49,7 +49,6 @@ export async function FindMember(req, res) {
 
 export async function getMemberFromCookie(req, res) {
 	try {
-		console.log(`try to extract member from cookie`);
 		const secret = process.env.JWT_SECRET;
 		if (!secret) throw new Error("couldn't load secret from .env");
 		let { memberId } = req.cookies;

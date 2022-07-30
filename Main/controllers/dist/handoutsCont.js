@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.findAllHandouts = exports.sendHandout = exports.Linkhandout = exports.createHandout = void 0;
+exports.findAllCheckedHandouts = exports.findAllHandouts = exports.sendHandout = exports.Linkhandout = exports.createHandout = void 0;
 var handoutsModel_1 = require("../models/handoutsModel");
 var memberHandoutsModel_1 = require("../models/memberHandoutsModel");
 function createHandout(req, res) {
@@ -119,7 +119,7 @@ function findAllHandouts(req, res) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     memberDB = req.body.memberDB;
-                    return [4 /*yield*/, handoutsModel_1["default"].find({ 'createdBy.name': memberDB.name })];
+                    return [4 /*yield*/, handoutsModel_1["default"].find({ 'createdBy.user.name': memberDB.username })];
                 case 1:
                     existingHandouts = _a.sent();
                     if (!existingHandouts)
@@ -136,3 +136,30 @@ function findAllHandouts(req, res) {
     });
 }
 exports.findAllHandouts = findAllHandouts;
+function findAllCheckedHandouts(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            try {
+            }
+            catch (error) {
+            }
+            return [2 /*return*/];
+        });
+    });
+}
+exports.findAllCheckedHandouts = findAllCheckedHandouts;
+// export async function findAllCheckedHandouts(req, res) {
+// 	try {
+// 		const { memberDB, existinhHandoutsIDArray } = req.body;
+// 		if (!memberDB || !existinhHandoutsIDArray) throw new Error('misiing info from req.body');
+// 		const exitingHandoutsToSendArray = [];
+//         existinhHandoutsIDArray.forEach((handoutID) => {
+// 			findtheseHandouts(handoutID, memberDB);
+// 		});
+// 	} catch (error) {
+// 		res.send({ error: error.message });
+// 	}
+// }
+// export async function  findtheseHandouts(handoutID, memberDB) {
+//     const existingHandouts = await HandoutsModel.find({ 'createdBy.user.name': memberDB.username });
+// }
