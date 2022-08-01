@@ -71,6 +71,10 @@ body {
 .room_wrapper__forms .formContainer:hover {
   border: 2px solid #9e9880;
 }
+.room_wrapper__forms .formContainer .yesRoomNoUser {
+  display: none;
+  text-align: center;
+}
 .room_wrapper__forms .formContainer form {
   display: flex;
   flex-direction: column;

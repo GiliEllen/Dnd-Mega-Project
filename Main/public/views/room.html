@@ -43,6 +43,14 @@
                     </div>
                     <button class="submit_btn" type="submit">Enter</button>
                 </form>
+                <form class="yesRoomNoUser">
+                    <h3>It Seems this room does not contain this user</h3>
+                    <h3>do you wish to add this user to this room?</h3>
+                    <div class="button_wrapper">
+                        <button class="submit_btn" onclick="handleAddUserToRoom(event)">Yes</button>
+                        <button class="submit_btn" onclick="handleDeleteThis(event)">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

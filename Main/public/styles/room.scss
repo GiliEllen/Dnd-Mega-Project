@@ -84,6 +84,11 @@ body {
                 border: 2px solid rgb(158, 152, 128);
             }
 
+            .yesRoomNoUser {
+                display: none;
+                text-align: center;
+            }
+
             form {
                 display: flex;
                 flex-direction: column;

@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+exports.__esModule = true;
 var newRoomForm = document.querySelector('#NewRoomForm');
 var newRoomName = document.querySelector('#roomName');
 var adiv = document.querySelector('div');
@@ -170,10 +172,24 @@ function HandleEnterRoom(ev) {
 function handleErrorMember(error) {
     var roomRoot = document.querySelector('#roomRoot');
     if (error.includes('Error01')) {
-        roomRoot.innerHTML = "<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2></br><button onclick=\"handleAddUserToRoom()\">Yes</button><button onclick=\"handleDeleteThis()\">Cancel</button>";
+        var yesRoomNoUser = document.querySelector('.yesRoomNoUser');
+        yesRoomNoUser.style.display = "inline";
+        var RoomForm = document.querySelector('#RoomForm');
+        RoomForm.style.display = 'none';
     }
     else if (error.includes('Error02')) {
         roomRoot.innerHTML = "<h2>Passwords don't match, please try again</h2>";
+    }
+}
+function handleDeleteThis(event) {
+    try {
+        var yesRoomNoUser = document.querySelector('.yesRoomNoUser');
+        yesRoomNoUser.style.display = 'none';
+        var RoomForm = document.querySelector('#RoomForm');
+        RoomForm.style.display = "flex";
+    }
+    catch (error) {
+        console.log(error);
     }
 }
 function handleRegister(event) {
@@ -356,12 +372,13 @@ function loadRoom() {
         });
     });
 }
-function handleAddUserToRoom() {
+function handleAddUserToRoom(event) {
     return __awaiter(this, void 0, void 0, function () {
         var existingRoominput, existingRoom, data, roomDB, role;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    event.preventDefault();
                     console.log('trying to add user to this room');
                     existingRoominput = document.querySelector('#existingRoomName');
                     existingRoom = existingRoominput.value;
