@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Joi from 'joi';
 
 const MemberSchema = new mongoose.Schema({
     room:
@@ -19,6 +18,9 @@ const MemberSchema = new mongoose.Schema({
         type:Number,
         required:true,
         default:15
+    },
+    socketID:{
+        type:String
     }
     
 })
@@ -26,9 +28,3 @@ const MemberSchema = new mongoose.Schema({
 const MemberModel = mongoose.model('Memmber',MemberSchema);
 
 export default MemberModel;
-
-export const UserValidation = Joi.object({
-    room:Joi.object().required(),
-    user:Joi.object().required(),
-    role:Joi.string().required()
-})

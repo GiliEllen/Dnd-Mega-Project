@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getAllRoomMembers = exports.getMemberFromCookie = exports.FindMember = exports.createMember = void 0;
+exports.findMyDm = exports.updateHit = exports.getAllRoomMembers = exports.getMemberFromCookie = exports.FindMember = exports.createMember = void 0;
 var roomModel_1 = require("./../models/roomModel");
 var memberModel_1 = require("../models/memberModel");
 var jwt_simple_1 = require("jwt-simple");
@@ -165,3 +165,66 @@ function getAllRoomMembers(req, res) {
     });
 }
 exports.getAllRoomMembers = getAllRoomMembers;
+function updateHit(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, memberDBToUpdate, hitPoints, member, memberDB, error_5;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 3, , 4]);
+                    _a = req.body, memberDBToUpdate = _a.memberDBToUpdate, hitPoints = _a.hitPoints;
+                    if (!memberDBToUpdate || !hitPoints)
+                        throw new Error('missing data from server');
+                    return [4 /*yield*/, memberModel_1["default"].findOne({
+                            'user.username': memberDBToUpdate.user.username,
+                            'room.name': memberDBToUpdate.room.name
+                        })];
+                case 1:
+                    member = _b.sent();
+                    if (!member)
+                        throw new Error('member not found');
+                    member.hitPoints = hitPoints;
+                    return [4 /*yield*/, member.save()];
+                case 2:
+                    memberDB = _b.sent();
+                    res.send({ memberDB: memberDB });
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_5 = _b.sent();
+                    res.send({ error: error_5.message });
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.updateHit = updateHit;
+function findMyDm(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var member, memberDB, error_6;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    member = req.body.member;
+                    if (!member)
+                        throw new Error('no info from req.body');
+                    return [4 /*yield*/, memberModel_1["default"].findOne({
+                            'room.name': member.room.name, role: "dm"
+                        })];
+                case 1:
+                    memberDB = _a.sent();
+                    if (!memberDB)
+                        throw new Error('no memberDB found');
+                    res.send({ memberDB: memberDB });
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_6 = _a.sent();
+                    res.send({ error: error_6.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.findMyDm = findMyDm;

@@ -37,25 +37,34 @@
                 </div>
             </div>
             <div class="worldMap grid_item">
+                <i class="fa-solid fa-map"></i>
                 <h4>World Map</h4>
             </div>
             <div class="currentMap grid_item">
+                <i class="fa-solid fa-map-location"></i>
                 <h4>Current Map</h4>
             </div>
-            
-            <div class="Handouts grid_item" id="buttonContainer">
-                <button onclick="handleGoTodHandouts()" type="submit">Handouts</button>
-            </div>
-            <div class="Loot grid_item" id="">
-                <button onclick="handleGoTodHandouts()" type="submit">Loot</button>
-            </div>
-            <label for="infoDump">Write here your notes:</label>
-            <form onsubmit="handleSaveNotes(event)">
+
+            <a href="./handoutsDm.html">
+                <div class="Handouts grid_item" id="buttonContainer">
+                    <i class="fa-solid fa-book"></i>
+                    <h4>Handouts</h4>
+                </div>
+            </a>
+            <a href="./lootDm.html">
+                <div class="Loot grid_item" id="">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <h4>Loot</h4>
+                </div>
+            </a>
+            <!-- <label for="infoDump">Write here your notes:</label> -->
+            <!-- <form onsubmit="handleSaveNotes(event)">
                 <input type="text" name="infoDump" id="infoDump">
                 <button type="submit">Save</button>
-            </form>
+            </form> -->
         </div>
     </div>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="../scripts/dist/app.js"></script>
 </body>
 

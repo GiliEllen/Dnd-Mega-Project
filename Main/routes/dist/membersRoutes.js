@@ -7,5 +7,7 @@ router
     .get('/get-member-from-cookie', membersCont_1.getMemberFromCookie)
     .post('/create-Member', membersCont_1.createMember)
     .post('/FindMemberByRoom', membersCont_1.FindMember)
-    .post('/getAllRoomMembers', membersCont_1.getAllRoomMembers);
+    .post('/getAllRoomMembers', membersCont_1.getAllRoomMembers)
+    .post('/updateHit', membersCont_1.updateHit)
+    .post('/findMyDm', membersCont_1.findMyDm);
 exports["default"] = router;

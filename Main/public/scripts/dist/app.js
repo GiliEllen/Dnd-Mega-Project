@@ -34,6 +34,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var socket = io();
+socket.on('connect', function () {
+    console.log(socket.id);
+});
+function findMyDm(member) {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, memberDB;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios.post('/member/findMyDm', { member: member })];
+                case 1:
+                    data = (_a.sent()).data;
+                    memberDB = data.memberDB;
+                    return [2 /*return*/, memberDB];
+            }
+        });
+    });
+}
 function loadBody() {
     renderMembersToSendNewHandouts();
     renderExistingHandouts();
@@ -49,8 +67,42 @@ function loadBodyDM() {
                     memberDB = _a.sent();
                     renderDmName(memberDB);
                     renderMembersNamesAndHitPoints();
+                    sessionStorage.setItem("memberName", "" + memberDB.user.username);
+                    sessionStorage.setItem("memberRole", "" + memberDB.role);
+                    socket.emit('getUserRole', sessionStorage.getItem("memberRole"), (socket.id), sessionStorage.getItem("memberName"));
                     return [2 /*return*/];
             }
+        });
+    });
+}
+function loadUserMainBody() {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDB = _a.sent();
+                    renderUserName(memberDB);
+                    renderUserOwnHitpoints(memberDB);
+                    sessionStorage.setItem("memberName", "" + memberDB.user.username);
+                    sessionStorage.setItem("memberRole", "" + memberDB.role);
+                    sessionStorage.setItem("memberHitPoints", "" + memberDB.hitPoints);
+                    socket.emit('getUserRole', sessionStorage.getItem("memberRole"));
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderUserOwnHitpoints(memberDB) {
+    return __awaiter(this, void 0, void 0, function () {
+        var userInfoListInfoname, hitPointsNum;
+        return __generator(this, function (_a) {
+            userInfoListInfoname = document.querySelector('.userInfoList__Info__name');
+            userInfoListInfoname.innerHTML = memberDB.user.username;
+            hitPointsNum = document.querySelector('.hitPointsNum');
+            hitPointsNum.innerHTML = memberDB.hitPoints;
+            return [2 /*return*/];
         });
     });
 }
@@ -68,7 +120,8 @@ function renderMembersNamesAndHitPoints() {
                     html = '';
                     memberArray.forEach(function (member) {
                         if (member.role === 'user') {
-                            html += "<li><div class=\"username\">" + member.user.username + "</div><div class=\"hitPoints_container\"><div id=\"hitPoints\">" + member.hitPoints + "</div><i class=\"fa-solid fa-heart\"></i></li></div> ";
+                            html += "<li><div class=\"username\">" + member.user
+                                .username + "</div><div class=\"hitPoints_container\"><div id=\"hitPoints\">" + member.hitPoints + "</div><i class=\"fa-solid fa-heart\"></i></li></div> ";
                         }
                     });
                     userInfoList.innerHTML = html;
@@ -80,6 +133,10 @@ function renderMembersNamesAndHitPoints() {
 function renderDmName(memberDB) {
     var dmName = document.querySelector('#dmName');
     dmName.innerHTML = "Hello " + memberDB.user.username + "!";
+}
+function renderUserName(memberDB) {
+    var userName = document.querySelector('#userName');
+    userName.innerHTML = "Hello " + memberDB.user.username + "!";
 }
 function handleSaveNotes(ev) {
     return __awaiter(this, void 0, void 0, function () {
@@ -159,10 +216,6 @@ function handleGetAllMembers() {
             }
         });
     });
-}
-function handleGoTodHandouts() {
-    var memberID = getMemberIDByParams();
-    window.location.href = "../views/handoutsDm.html?memberID=" + memberID;
 }
 function renderMembersToSendNewHandouts() {
     return __awaiter(this, void 0, void 0, function () {
@@ -410,6 +463,43 @@ function sendThisHandout(handout, membersToSendHandoutsArray) {
                 case 1:
                     sentHandout = _a.sent();
                     return [2 /*return*/];
+            }
+        });
+    });
+}
+function handleChangeHitPoints(event) {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDBToUpdate, hitUpdater, hitPoints, data, memberDB, error_6;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    event.preventDefault();
+                    console.log("trying to update hit");
+                    return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDBToUpdate = _a.sent();
+                    if (!memberDBToUpdate)
+                        throw new Error('member not found to update');
+                    hitUpdater = event.target.id;
+                    hitPoints = memberDBToUpdate.hitPoints;
+                    if (hitUpdater === "up") {
+                        hitPoints++;
+                    }
+                    else if (hitUpdater === "down") {
+                        hitPoints--;
+                    }
+                    return [4 /*yield*/, axios.post('/member/updateHit', { memberDBToUpdate: memberDBToUpdate, hitPoints: hitPoints })];
+                case 2:
+                    data = (_a.sent()).data;
+                    memberDB = data.memberDB;
+                    renderUserOwnHitpoints(memberDB);
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_6 = _a.sent();
+                    console.log(error_6);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });

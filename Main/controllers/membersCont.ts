@@ -71,3 +71,34 @@ export async function getAllRoomMembers(req, res) {
 		res.send({ error: error.message });
 	}
 }
+
+export async function updateHit(req, res) {
+	try {
+		const { memberDBToUpdate, hitPoints } = req.body;
+		if (!memberDBToUpdate || !hitPoints) throw new Error('missing data from server');
+		const member = await MemberModel.findOne({
+			'user.username': memberDBToUpdate.user.username,
+			'room.name': memberDBToUpdate.room.name
+		});
+		if (!member) throw new Error('member not found');
+		member.hitPoints = hitPoints;
+		const memberDB = await member.save();
+		res.send({ memberDB });
+	} catch (error) {
+		res.send({ error: error.message });
+	}
+}
+
+export async function findMyDm(req, res) {
+	try {
+		const {member} = req.body;
+		if(!member) throw new Error('no info from req.body')
+		const memberDB = await MemberModel.findOne({
+			'room.name': member.room.name, role: "dm"
+		});
+		if(!memberDB) throw new Error('no memberDB found');
+		res.send({memberDB})
+ 	} catch (error) {
+		res.send({error:error.message})
+	}
+}

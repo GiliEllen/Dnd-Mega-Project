@@ -1,3 +1,15 @@
+const socket = io();
+
+socket.on('connect', () => {
+	console.log(socket.id);
+});
+
+async function findMyDm(member){
+	const {data} = await axios.post('/member/findMyDm', {member})
+	const {memberDB} = data;
+	return memberDB
+}
+
 function loadBody() {
 	renderMembersToSendNewHandouts();
 	renderExistingHandouts();
@@ -6,18 +18,38 @@ function loadBody() {
 async function loadBodyDM() {
 	const memberDB = await getMemberFromCookies();
 	renderDmName(memberDB);
-	renderMembersNamesAndHitPoints()
+	renderMembersNamesAndHitPoints();
+	sessionStorage.setItem(`memberName`, `${memberDB.user.username}`);
+	sessionStorage.setItem(`memberRole`, `${memberDB.role}`);
+	socket.emit('getUserRole', sessionStorage.getItem(`memberRole`),(socket.id), sessionStorage.getItem(`memberName`));
+}
 
+async function loadUserMainBody() {
+	const memberDB = await getMemberFromCookies();
+	renderUserName(memberDB);
+	renderUserOwnHitpoints(memberDB)
+	sessionStorage.setItem(`memberName`, `${memberDB.user.username}`);
+	sessionStorage.setItem(`memberRole`, `${memberDB.role}`);
+	sessionStorage.setItem(`memberHitPoints`, `${memberDB.hitPoints}`);
+	socket.emit('getUserRole', sessionStorage.getItem(`memberRole`));
+}
+
+async function renderUserOwnHitpoints(memberDB){
+	const userInfoListInfoname = document.querySelector('.userInfoList__Info__name');
+	userInfoListInfoname.innerHTML = memberDB.user.username;
+	const hitPointsNum = document.querySelector('.hitPointsNum');
+	hitPointsNum.innerHTML = memberDB.hitPoints
 }
 
 async function renderMembersNamesAndHitPoints() {
-	const userInfoList = document.querySelector('.userInfoList__users__list')
+	const userInfoList = document.querySelector('.userInfoList__users__list');
 	const memberArray = await handleGetAllMembers();
-	console.log(memberArray)
-	let html ='';
+	console.log(memberArray);
+	let html = '';
 	memberArray.forEach((member) => {
 		if (member.role === 'user') {
-			html += `<li><div class="username">${member.user.username}</div><div class="hitPoints_container"><div id="hitPoints">${member.hitPoints}</div><i class="fa-solid fa-heart"></i></li></div> `;
+			html += `<li><div class="username">${member.user
+				.username}</div><div class="hitPoints_container"><div id="hitPoints">${member.hitPoints}</div><i class="fa-solid fa-heart"></i></li></div> `;
 		}
 	});
 	userInfoList.innerHTML = html;
@@ -25,7 +57,11 @@ async function renderMembersNamesAndHitPoints() {
 
 function renderDmName(memberDB) {
 	const dmName = document.querySelector('#dmName');
-	dmName.innerHTML = `Hello ${memberDB.user.username}!`
+	dmName.innerHTML = `Hello ${memberDB.user.username}!`;
+}
+function renderUserName(memberDB) {
+	const userName = document.querySelector('#userName');
+	userName.innerHTML = `Hello ${memberDB.user.username}!`;
 }
 
 async function handleSaveNotes(ev) {
@@ -88,11 +124,6 @@ async function handleGetAllMembers() {
 	return memberArray;
 }
 
-function handleGoTodHandouts() {
-	const memberID = getMemberIDByParams();
-	window.location.href = `../views/handoutsDm.html?memberID=${memberID}`;
-}
-
 async function renderMembersToSendNewHandouts() {
 	const userList = document.querySelector('#userList');
 	const availableMembers = await handleGetAllMembers();
@@ -108,7 +139,7 @@ async function renderMembersToSendNewHandouts() {
 
 async function handleSendNewHandouts(event) {
 	event.preventDefault();
-	console.log(event)
+	console.log(event);
 	try {
 		//@ts-ignore
 		const { data } = await axios.get('/member/get-member-from-cookie');
@@ -243,4 +274,25 @@ async function handleSendExistingHandouts(event) {
 
 async function sendThisHandout(handout, membersToSendHandoutsArray) {
 	const sentHandout = await handleLinkMemberAndHandout(handout, membersToSendHandoutsArray);
+}
+
+async function handleChangeHitPoints(event) {
+	try {
+		event.preventDefault();
+		console.log(`trying to update hit`)
+		const memberDBToUpdate = await getMemberFromCookies();
+		if(!memberDBToUpdate) throw new Error('member not found to update');
+		const hitUpdater = event.target.id;
+		let hitPoints = memberDBToUpdate.hitPoints
+		if(hitUpdater === "up") {
+			hitPoints++
+		} else if (hitUpdater === "down") {
+			hitPoints--
+		}
+		const {data} = await axios.post('/member/updateHit', {memberDBToUpdate, hitPoints})
+		const {memberDB} = data;
+		renderUserOwnHitpoints(memberDB);
+	} catch (error) {
+		console.log(error)
+	}
 }

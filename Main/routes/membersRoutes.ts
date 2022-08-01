@@ -1,5 +1,12 @@
 import express from 'express';
-import { createMember, FindMember, getMemberFromCookie, getAllRoomMembers} from '../controllers/membersCont';
+import {
+	createMember,
+	FindMember,
+	getMemberFromCookie,
+	getAllRoomMembers,
+	updateHit,
+	findMyDm
+} from '../controllers/membersCont';
 
 const router = express.Router();
 
@@ -8,5 +15,7 @@ router
 	.post('/create-Member', createMember)
 	.post('/FindMemberByRoom', FindMember)
 	.post('/getAllRoomMembers', getAllRoomMembers)
+	.post('/updateHit', updateHit)
+	.post('/findMyDm', findMyDm)
 
 export default router;

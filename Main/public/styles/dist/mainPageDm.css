@@ -39,9 +39,9 @@ body {
 .session__contents {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   gap: 32px;
-  grid-template-areas: "userInfoList userInfoList" "worldMap CurrentMAp" "Handouts Loot" "notes notes";
+  grid-template-areas: "userInfoList userInfoList" "worldMap CurrentMAp" "Handouts Loot";
   justify-items: stretch;
   align-items: stretch;
   width: 100%;
@@ -82,14 +82,47 @@ body {
   justify-content: space-between;
   color: white;
 }
+.session .userInfoList__Info {
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  align-items: center;
+}
+.session .userInfoList__Info__name {
+  font-size: 3rem;
+  color: #9e9880;
+}
+.session .userInfoList__Info__HitContainer form {
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
+  align-items: center;
+}
+.session .userInfoList__Info__HitContainer form .hitControllers {
+  display: flex;
+  flex-direction: column;
+}
+.session .userInfoList__Info__HitContainer form .hitControllers:hover {
+  cursor: pointer;
+}
 .session .grid_item {
   height: 262px;
   background-color: #201d3e;
   border: 2px solid #46416e;
   border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #9e9880;
 }
-.session .notes {
-  grid-area: notes;
+.session .grid_item:any-link {
+  text-decoration-line: none;
+  color: #9e9880;
+}
+.session .fa-solid {
+  color: #716331;
+  font-size: 3rem;
 }
 .session .worldMap {
   grid-area: worldMap;
@@ -102,4 +135,12 @@ body {
 }
 .session .Loot {
   grid-area: Loot;
+}
+.session .fa-heart {
+  color: white;
+  font-size: 2rem;
+}
+.session a:any-link {
+  color: #9e9880;
+  text-decoration: none;
 }
