@@ -1,4 +1,3 @@
-import { func } from "joi";
 
 const newRoomForm = document.querySelector('#NewRoomForm');
 const newRoomName = document.querySelector('#roomName') as HTMLInputElement;

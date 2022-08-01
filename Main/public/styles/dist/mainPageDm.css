@@ -1,0 +1,74 @@
+body {
+  margin: 0;
+  font-family: "Raleway", sans-serif;
+  background-color: #181632;
+  position: relative;
+}
+
+.session {
+  width: 60vw;
+  height: fit-content;
+  background-color: #191633;
+  margin: auto;
+  font-size: 1.5rem;
+}
+.session__headers {
+  margin: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.session__headers h1 {
+  margin: 0%;
+  align-items: center;
+  text-align: center;
+  background-color: #716331;
+  background-image: linear-gradient(-75deg, transparent 0, transparent 5%, rgba(255, 255, 255, 0.5) 5%, rgba(255, 255, 255, 0.5) 10%, transparent 10%, transparent 100%);
+  background-size: 200% 100%;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  transition: 1.5s;
+}
+.session__headers h1:hover {
+  background-position: -120% 0;
+}
+.session__headers h2 {
+  color: #afada5;
+}
+.session__contents {
+  display: flex;
+  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
+}
+.session__contents .grid_item {
+  background-color: #201d3e;
+  height: 1fr;
+  width: 1fr;
+}
+.session__contents .userInfoList {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  border-radius: 5px;
+  background-color: #201d3e;
+  display: flex;
+  border: 2px solid #46416e;
+  border-radius: 30px;
+  justify-content: space-around;
+}
+.session__contents .userInfoList:hover {
+  border: 2px solid #9e9880;
+}
+.session__contents .userInfoList__header {
+  color: #716331;
+}
+.session__contents .userInfoList__users {
+  color: #9e9880;
+}
+.session__contents .userInfoList__users__list {
+  list-style-type: none;
+}

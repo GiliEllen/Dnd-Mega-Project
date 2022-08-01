@@ -1,7 +1,18 @@
+
+
 function loadBody() {
 	renderMembersToSendNewHandouts();
 	renderExistingHandouts();
 	renderMemberToSendExistingHandouts();
+}
+async function loadBodyDM() {
+	const memberDB = await getMemberFromCookies();
+	renderDmName(memberDB);
+}
+
+function renderDmName(memberDB) {
+	const dmName = document.querySelector('#dmName');
+	dmName.innerHTML = `Hello ${memberDB.user.username}!`
 }
 
 async function handleSaveNotes(ev) {
@@ -57,10 +68,7 @@ function getMemberIDByParams() {
 }
 
 async function handleGetAllMembers() {
-	console.log(`attempting to load members`);
-	//@ts-ignore
-	const { data } = await axios.get('/member/get-member-from-cookie');
-	const { memberDB } = data;
+	const memberDB = await getMemberFromCookies();
 	//@ts-ignore
 	const { data } = await axios.post('/member/getAllRoomMembers', { memberDB });
 	const { memberArray } = data;
@@ -205,21 +213,20 @@ async function handleSendExistingHandouts(event) {
 		const { data } = await axios.post('/handout/find-All-dm-handouts', { memberDB });
 		const { existingHandouts } = data;
 		const fullHandoutsToSend = [];
-		existinhHandoutsCheckedIDArray.forEach(handoutCheckedID => {
-			existingHandouts.forEach(handout => {
-				if (handout._id === handoutCheckedID) fullHandoutsToSend.push(handout)
+		existinhHandoutsCheckedIDArray.forEach((handoutCheckedID) => {
+			existingHandouts.forEach((handout) => {
+				if (handout._id === handoutCheckedID) fullHandoutsToSend.push(handout);
 			});
 		});
-		await fullHandoutsToSend.forEach(handout => {
-			sendThisHandout(handout, membersToSendHandoutsArray)
+		await fullHandoutsToSend.forEach((handout) => {
+			sendThisHandout(handout, membersToSendHandoutsArray);
 		});
 		window.location.href = `../views/mainPageDm.html?memberID=${memberDB._id}`;
-		
 	} catch (error) {
 		console.log(error);
 	}
 }
 
 async function sendThisHandout(handout, membersToSendHandoutsArray) {
-	const sentHandout = await handleLinkMemberAndHandout(handout, membersToSendHandoutsArray)
+	const sentHandout = await handleLinkMemberAndHandout(handout, membersToSendHandoutsArray);
 }

@@ -1,0 +1,97 @@
+body {
+    margin: 0;
+    font-family: 'Raleway', sans-serif;
+    background-color: rgb(24, 22, 50);
+    position: relative;
+}
+
+.session {
+    width: 60vw;
+    height: fit-content;
+    background-color: rgb(25, 22, 51);
+    margin: auto;
+    font-size: 1.5rem;
+
+    &__headers {
+        margin: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        h1 {
+            margin: 0%;
+            align-items: center;
+            text-align: center;
+            background-color: rgb(113, 99, 49);
+            background-image: linear-gradient(-75deg,
+                    transparent 0,
+                    transparent 5%,
+                    rgba(255, 255, 255, 0.5) 5%,
+                    rgba(255, 255, 255, 0.5) 10%,
+                    transparent 10%,
+                    transparent 100%,
+                );
+            background-size: 200% 100%;
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            transition: 1.5s;
+
+            &:hover {
+                background-position: -120% 0;
+            }
+        }
+
+        h2 {
+            color: rgb(175, 173, 165);
+        }
+    }
+
+    &__contents {
+        display: flex;
+        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        gap: 30px 30px;
+        grid-template-areas:
+            ". ."
+            ". ."
+            ". ."
+            ". .";
+    }
+
+    .grid_item {
+        background-color: rgb(32, 29, 62);
+        height: 1fr;
+        width: 1fr;
+    }
+
+    .userInfoList {
+        grid-column-start: 1;
+        grid-column-end: 3;
+        border-radius: 5px;
+        background-color: rgb(32, 29, 62);
+        display: flex;
+        border: 2px solid rgb(70, 65, 110);
+        border-radius: 30px;
+        justify-content: space-around;
+
+        &:hover {
+            border: 2px solid rgb(158, 152, 128);
+        }
+
+        &__header {
+            color: rgb(113, 99, 49);
+        }
+
+        &__users {
+            color: rgb(158, 152, 128);
+
+            &__list {
+                list-style-type: none;
+            }
+        }
+    }
+}
+}

@@ -11,22 +11,47 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="../styles/dist/mainPageDm.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 
-<body onload="loadBody()">
-    <h4>World Map</h4>
-    <h4>Current Map</h4>
+<body onload="loadBodyDM()">
+    <div class="session">
+        <div class="session__headers">
+            <h1 id="dmName">Hello USER</h1>
+            <h2>You Are The Dm In This Room</h2>
+        </div>
 
-    <div class="userInfoList"></div>
-    <div id="buttonContainer">
-        <button onclick="handleGoTodHandouts()" type="submit">Handouts</button>
+        <div class="session__contents">
+            <div class="userInfoList">
+                <div class="userInfoList__header">
+                    <h3>Players Live Info:</h3>
+                </div>
+                <div class="userInfoList__users">
+                    <ul class="userInfoList__users__list">
+                        <li>No user Avilable</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid_item">
+                <h4>World Map</h4>
+            </div>
+            <div class="grid_item">
+                <h4>Current Map</h4>
+            </div>
+            
+            <div class="grid_item" id="buttonContainer">
+                <button onclick="handleGoTodHandouts()" type="submit">Handouts</button>
+            </div>
+            <label for="infoDump">Write here your notes:</label>
+            <form onsubmit="handleSaveNotes(event)">
+                <input type="text" name="infoDump" id="infoDump">
+                <button type="submit">Save</button>
+            </form>
+        </div>
     </div>
-    <label for="infoDump">Write here your notes:</label>
-    <form onsubmit="handleSaveNotes(event)">
-        <input type="text" name="infoDump" id="infoDump">
-        <button type="submit">Save</button>
-    </form>
-
     <script src="../scripts/dist/app.js"></script>
 </body>
 

@@ -39,6 +39,24 @@ function loadBody() {
     renderExistingHandouts();
     renderMemberToSendExistingHandouts();
 }
+function loadBodyDM() {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDB = _a.sent();
+                    renderDmName(memberDB);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderDmName(memberDB) {
+    var dmName = document.querySelector('#dmName');
+    dmName.innerHTML = "Hello " + memberDB.user.username + "!";
+}
 function handleSaveNotes(ev) {
     return __awaiter(this, void 0, void 0, function () {
         var updatedNotes, data, error_1;
@@ -103,15 +121,12 @@ function getMemberIDByParams() {
 }
 function handleGetAllMembers() {
     return __awaiter(this, void 0, void 0, function () {
-        var data, memberDB, data, memberArray;
+        var memberDB, data, memberArray;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    console.log("attempting to load members");
-                    return [4 /*yield*/, axios.get('/member/get-member-from-cookie')];
+                case 0: return [4 /*yield*/, getMemberFromCookies()];
                 case 1:
-                    data = (_a.sent()).data;
-                    memberDB = data.memberDB;
+                    memberDB = _a.sent();
                     return [4 /*yield*/, axios.post('/member/getAllRoomMembers', { memberDB: memberDB })];
                 case 2:
                     data = (_a.sent()).data;
