@@ -132,8 +132,6 @@ async function handleLogin(event: any) {
 async function loadUserMainPage() {
 	try {
 		const userDB = await getUserFromCookies();
-		// const { data } = await axios.post('users/render-user-main-page', { userid });
-		// const { user, error } = data;
 
 		const pageTitle: HTMLElement = document.querySelector('.title');
 		pageTitle.innerHTML = `Welcome ${userDB.username}`;
@@ -209,12 +207,11 @@ async function handleUserInfoOpen() {
 }
 
 async function loadRoom() {
-	console.log('loading user cookies');
 	//@ts-ignore
 	const { data } = await axios.get('/users/get-user-from-cookies');
 	const { userDB } = data;
 	const roomHeader = document.querySelector('.room_header');
-	roomHeader.innerHTML = `<h1>Hello ${userDB.username}, what would you like to do?</h1>`;
+	roomHeader.innerHTML = `<h1>Hello ${userDB.username}!</h1><h2>what would you like to do?</h2>`;
 }
 
 async function handleAddUserToRoom() {

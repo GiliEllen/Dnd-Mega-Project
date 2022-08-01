@@ -345,14 +345,12 @@ function loadRoom() {
         var data, userDB, roomHeader;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    console.log('loading user cookies');
-                    return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
+                case 0: return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
                 case 1:
                     data = (_a.sent()).data;
                     userDB = data.userDB;
                     roomHeader = document.querySelector('.room_header');
-                    roomHeader.innerHTML = "<h1>Hello " + userDB.username + ", what would you like to do?</h1>";
+                    roomHeader.innerHTML = "<h1>Hello " + userDB.username + "!</h1><h2>what would you like to do?</h2>";
                     return [2 /*return*/];
             }
         });
