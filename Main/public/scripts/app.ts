@@ -1,5 +1,3 @@
-
-
 function loadBody() {
 	renderMembersToSendNewHandouts();
 	renderExistingHandouts();
@@ -8,6 +6,21 @@ function loadBody() {
 async function loadBodyDM() {
 	const memberDB = await getMemberFromCookies();
 	renderDmName(memberDB);
+	renderMembersNamesAndHitPoints()
+
+}
+
+async function renderMembersNamesAndHitPoints() {
+	const userInfoList = document.querySelector('.userInfoList__users__list')
+	const memberArray = await handleGetAllMembers();
+	console.log(memberArray)
+	let html ='';
+	memberArray.forEach((member) => {
+		if (member.role === 'user') {
+			html += `<li><div class="username">${member.user.username}</div><div class="hitPoints_container"><div id="hitPoints"></div><i class="fa-solid fa-heart"></i></li></div> `;
+		}
+	});
+	userInfoList.innerHTML = html;
 }
 
 function renderDmName(memberDB) {
@@ -95,6 +108,7 @@ async function renderMembersToSendNewHandouts() {
 
 async function handleSendNewHandouts(event) {
 	event.preventDefault();
+	console.log(event)
 	try {
 		//@ts-ignore
 		const { data } = await axios.get('/member/get-member-from-cookie');
@@ -122,7 +136,6 @@ async function handleSendNewHandouts(event) {
 		//@ts-ignore
 		const { data } = await axios.post('/handout/create-new-handout', { nameOfHandout, imgURL, memberDB });
 		const { handoutDB } = data;
-		console.log(handoutDB);
 		const sentHandout = await handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray);
 		if (sentHandout) console.log(`successfully created and sent new handouts to the users`);
 	} catch (error) {
@@ -210,6 +223,7 @@ async function handleSendExistingHandouts(event) {
 				existinhHandoutsCheckedIDArray.push(handoutID);
 			}
 		}
+		//@ts-ignore
 		const { data } = await axios.post('/handout/find-All-dm-handouts', { memberDB });
 		const { existingHandouts } = data;
 		const fullHandoutsToSend = [];

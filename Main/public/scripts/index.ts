@@ -1,4 +1,3 @@
-
 const newRoomForm = document.querySelector('#NewRoomForm');
 const newRoomName = document.querySelector('#roomName') as HTMLInputElement;
 const adiv: HTMLElement = document.querySelector('div');
@@ -223,7 +222,9 @@ async function handleUserInfoOpen() {
 async function loadRoom() {
 	//@ts-ignore
 	const { data } = await axios.get('/users/get-user-from-cookies');
+	console.log(data)
 	const { userDB } = data;
+	console.log(userDB)
 	const roomHeader = document.querySelector('.room_header');
 	roomHeader.innerHTML = `<h1>Hello ${userDB.username}!</h1><h2>what would you like to do?</h2>`;
 }

@@ -48,6 +48,30 @@ function loadBodyDM() {
                 case 1:
                     memberDB = _a.sent();
                     renderDmName(memberDB);
+                    renderMembersNamesAndHitPoints();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderMembersNamesAndHitPoints() {
+    return __awaiter(this, void 0, void 0, function () {
+        var userInfoList, memberArray, html;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    userInfoList = document.querySelector('.userInfoList__users__list');
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 1:
+                    memberArray = _a.sent();
+                    console.log(memberArray);
+                    html = '';
+                    memberArray.forEach(function (member) {
+                        if (member.role === 'user') {
+                            html += "<li><div class=\"username\">" + member.user.username + "</div><div class=\"hitPoints_container\"><div id=\"hitPoints\"></div><i class=\"fa-solid fa-heart\"></i></li></div> ";
+                        }
+                    });
+                    userInfoList.innerHTML = html;
                     return [2 /*return*/];
             }
         });
@@ -169,6 +193,7 @@ function handleSendNewHandouts(event) {
             switch (_a.label) {
                 case 0:
                     event.preventDefault();
+                    console.log(event);
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 6, , 7]);
@@ -205,7 +230,6 @@ function handleSendNewHandouts(event) {
                 case 4:
                     data = (_a.sent()).data;
                     handoutDB = data.handoutDB;
-                    console.log(handoutDB);
                     return [4 /*yield*/, handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray_1)];
                 case 5:
                     sentHandout = _a.sent();

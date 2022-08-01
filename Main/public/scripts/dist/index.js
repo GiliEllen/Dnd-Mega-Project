@@ -362,7 +362,9 @@ function loadRoom() {
                 case 0: return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
                 case 1:
                     data = (_a.sent()).data;
+                    console.log(data);
                     userDB = data.userDB;
+                    console.log(userDB);
                     roomHeader = document.querySelector('.room_header');
                     roomHeader.innerHTML = "<h1>Hello " + userDB.username + "!</h1><h2>what would you like to do?</h2>";
                     return [2 /*return*/];

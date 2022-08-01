@@ -6,7 +6,7 @@ body {
 }
 
 .session {
-    width: 60vw;
+    width: 840px;
     height: fit-content;
     background-color: rgb(25, 22, 51);
     margin: auto;
@@ -48,28 +48,23 @@ body {
     }
 
     &__contents {
-        display: flex;
-        flex-direction: column;
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr 1fr;
-        gap: 30px 30px;
+        gap: 32px;
         grid-template-areas:
-            ". ."
-            ". ."
-            ". ."
-            ". .";
-    }
-
-    .grid_item {
-        background-color: rgb(32, 29, 62);
-        height: 1fr;
-        width: 1fr;
+            "userInfoList userInfoList"
+            "worldMap CurrentMAp"
+            "Handouts Loot"
+            "notes notes";
+            justify-items: stretch; 
+            align-items: stretch; 
+            width: 100%; 
+            height: 100%; 
     }
 
     .userInfoList {
-        grid-column-start: 1;
-        grid-column-end: 3;
+        grid-area: userInfoList;
         border-radius: 5px;
         background-color: rgb(32, 29, 62);
         display: flex;
@@ -88,10 +83,45 @@ body {
         &__users {
             color: rgb(158, 152, 128);
 
+
             &__list {
+                width: 262px;
                 list-style-type: none;
+                display: flex;
+                flex-direction: column;
+                li {
+                    display: flex;
+                    justify-content: space-between;
+                    height: 50px;
+                }
             }
         }
     }
-}
+
+    .grid_item {
+        height: 262px;
+        background-color: rgb(32, 29, 62);
+        border: 2px solid rgb(70, 65, 110);
+        border-radius: 30px;
+    }
+
+    .notes {
+        grid-area: notes;
+    }
+
+    .worldMap {
+        grid-area: worldMap;
+    }
+
+    .currentMap {
+        grid-area: CurrentMAp;
+    }
+
+    .Handouts {
+        grid-area: Handouts;
+    }
+
+    .Loot {
+        grid-area: Loot;
+    }
 }

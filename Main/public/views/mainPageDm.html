@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ef6c5070b7.js" crossorigin="anonymous"></script>
 </head>
 
 <body onload="loadBodyDM()">
@@ -35,15 +36,18 @@
                     </ul>
                 </div>
             </div>
-            <div class="grid_item">
+            <div class="worldMap grid_item">
                 <h4>World Map</h4>
             </div>
-            <div class="grid_item">
+            <div class="currentMap grid_item">
                 <h4>Current Map</h4>
             </div>
             
-            <div class="grid_item" id="buttonContainer">
+            <div class="Handouts grid_item" id="buttonContainer">
                 <button onclick="handleGoTodHandouts()" type="submit">Handouts</button>
+            </div>
+            <div class="Loot grid_item" id="">
+                <button onclick="handleGoTodHandouts()" type="submit">Loot</button>
             </div>
             <label for="infoDump">Write here your notes:</label>
             <form onsubmit="handleSaveNotes(event)">
