@@ -14,6 +14,11 @@ const MemberSchema = new mongoose.Schema({
     role:{
         type:String,
         required:true
+    },
+    hitPoints:{
+        type:Number,
+        required:true,
+        default:15
     }
     
 })

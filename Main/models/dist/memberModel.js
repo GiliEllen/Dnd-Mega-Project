@@ -15,6 +15,11 @@ var MemberSchema = new mongoose_1["default"].Schema({
     role: {
         type: String,
         required: true
+    },
+    hitPoints: {
+        type: Number,
+        required: true,
+        "default": 15
     }
 });
 var MemberModel = mongoose_1["default"].model('Memmber', MemberSchema);

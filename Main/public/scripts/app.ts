@@ -17,7 +17,7 @@ async function renderMembersNamesAndHitPoints() {
 	let html ='';
 	memberArray.forEach((member) => {
 		if (member.role === 'user') {
-			html += `<li><div class="username">${member.user.username}</div><div class="hitPoints_container"><div id="hitPoints"></div><i class="fa-solid fa-heart"></i></li></div> `;
+			html += `<li><div class="username">${member.user.username}</div><div class="hitPoints_container"><div id="hitPoints">${member.hitPoints}</div><i class="fa-solid fa-heart"></i></li></div> `;
 		}
 	});
 	userInfoList.innerHTML = html;
