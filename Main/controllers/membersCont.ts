@@ -102,3 +102,18 @@ export async function findMyDm(req, res) {
 		res.send({error:error.message})
 	}
 }
+
+export async function updateSocketID(req, res) {
+	try {
+		const {socketId, memberDBToUpdate} = req.body;
+		if(!socketId || !memberDBToUpdate) throw new Error('no info from req.body');
+		const member = await MemberModel.findOne({
+			'room.name': memberDBToUpdate.room.name, role: "dm"
+		});
+		member.socketID = socketId;
+		const memberDB = await member.save()
+		res.send({memberDB})
+	} catch (error) {
+		res.send({error:error.message})
+	}
+}

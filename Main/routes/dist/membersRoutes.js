@@ -9,5 +9,6 @@ router
     .post('/FindMemberByRoom', membersCont_1.FindMember)
     .post('/getAllRoomMembers', membersCont_1.getAllRoomMembers)
     .post('/updateHit', membersCont_1.updateHit)
-    .post('/findMyDm', membersCont_1.findMyDm);
+    .post('/findMyDm', membersCont_1.findMyDm)
+    .post('/updateSocketID', membersCont_1.updateSocketID);
 exports["default"] = router;

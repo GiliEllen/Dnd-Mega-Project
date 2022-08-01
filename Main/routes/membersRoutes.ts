@@ -5,7 +5,8 @@ import {
 	getMemberFromCookie,
 	getAllRoomMembers,
 	updateHit,
-	findMyDm
+	findMyDm,
+	updateSocketID
 } from '../controllers/membersCont';
 
 const router = express.Router();
@@ -17,5 +18,6 @@ router
 	.post('/getAllRoomMembers', getAllRoomMembers)
 	.post('/updateHit', updateHit)
 	.post('/findMyDm', findMyDm)
+	.post('/updateSocketID', updateSocketID)
 
 export default router;

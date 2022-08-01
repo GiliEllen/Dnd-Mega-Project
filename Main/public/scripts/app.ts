@@ -1,8 +1,20 @@
 const socket = io();
 
 socket.on('connect', () => {
-	console.log(socket.id);
-});
+	console.log(socket.id)
+);
+
+socket.on('dmID', async (socketId) => {
+	const memberDBToUpdate = getMemberFromCookies;
+    const {data} = await axios.post('/member/updateSocketID', {socketId, memberDBToUpdate});
+	const {memberDB} = data;
+	console.log(memberDB.socketID)
+  })
+
+socket.on('updateHitForUser', async memberDB =>{
+	console.log(memberDB.hitPoints)
+	await renderMembersNamesAndHitPoints()
+})
 
 async function findMyDm(member){
 	const {data} = await axios.post('/member/findMyDm', {member})
@@ -21,8 +33,8 @@ async function loadBodyDM() {
 	renderMembersNamesAndHitPoints();
 	sessionStorage.setItem(`memberName`, `${memberDB.user.username}`);
 	sessionStorage.setItem(`memberRole`, `${memberDB.role}`);
-	socket.emit('getUserRole', sessionStorage.getItem(`memberRole`),(socket.id), sessionStorage.getItem(`memberName`));
-}
+	socket.emit('dmID', (socket.id, "this is id from dm"));
+};
 
 async function loadUserMainBody() {
 	const memberDB = await getMemberFromCookies();
@@ -292,6 +304,9 @@ async function handleChangeHitPoints(event) {
 		const {data} = await axios.post('/member/updateHit', {memberDBToUpdate, hitPoints})
 		const {memberDB} = data;
 		renderUserOwnHitpoints(memberDB);
+		const DM = await findMyDm(memberDB)
+
+		socket.emit('updateHitForUser', memberDB, DM.socketID)
 	} catch (error) {
 		console.log(error)
 	}

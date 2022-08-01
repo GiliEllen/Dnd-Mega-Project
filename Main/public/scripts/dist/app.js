@@ -34,10 +34,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var _this = this;
 var socket = io();
 socket.on('connect', function () {
     console.log(socket.id);
 });
+socket.on('dmID', function (socketId) { return __awaiter(_this, void 0, void 0, function () {
+    var memberDBToUpdate, data, memberDB;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                memberDBToUpdate = getMemberFromCookies;
+                return [4 /*yield*/, axios.post('/member/updateSocketID', { socketId: socketId, memberDBToUpdate: memberDBToUpdate })];
+            case 1:
+                data = (_a.sent()).data;
+                memberDB = data.memberDB;
+                console.log(memberDB.socketID);
+                return [2 /*return*/];
+        }
+    });
+}); });
+socket.on('updateHitForUser', function (memberDB) { return __awaiter(_this, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log(memberDB.hitPoints);
+                return [4 /*yield*/, renderMembersNamesAndHitPoints()];
+            case 1:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
 function findMyDm(member) {
     return __awaiter(this, void 0, void 0, function () {
         var data, memberDB;
@@ -69,12 +97,13 @@ function loadBodyDM() {
                     renderMembersNamesAndHitPoints();
                     sessionStorage.setItem("memberName", "" + memberDB.user.username);
                     sessionStorage.setItem("memberRole", "" + memberDB.role);
-                    socket.emit('getUserRole', sessionStorage.getItem("memberRole"), (socket.id), sessionStorage.getItem("memberName"));
+                    socket.emit('dmID', (socket.id, "this is id from dm"));
                     return [2 /*return*/];
             }
         });
     });
 }
+;
 function loadUserMainBody() {
     return __awaiter(this, void 0, void 0, function () {
         var memberDB;
@@ -469,11 +498,11 @@ function sendThisHandout(handout, membersToSendHandoutsArray) {
 }
 function handleChangeHitPoints(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var memberDBToUpdate, hitUpdater, hitPoints, data, memberDB, error_6;
+        var memberDBToUpdate, hitUpdater, hitPoints, data, memberDB, DM, error_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
+                    _a.trys.push([0, 4, , 5]);
                     event.preventDefault();
                     console.log("trying to update hit");
                     return [4 /*yield*/, getMemberFromCookies()];
@@ -494,12 +523,16 @@ function handleChangeHitPoints(event) {
                     data = (_a.sent()).data;
                     memberDB = data.memberDB;
                     renderUserOwnHitpoints(memberDB);
-                    return [3 /*break*/, 4];
+                    return [4 /*yield*/, findMyDm(memberDB)];
                 case 3:
+                    DM = _a.sent();
+                    socket.emit('updateHitForUser', memberDB, DM.socketID);
+                    return [3 /*break*/, 5];
+                case 4:
                     error_6 = _a.sent();
                     console.log(error_6);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
             }
         });
     });

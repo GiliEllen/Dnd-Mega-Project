@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.findMyDm = exports.updateHit = exports.getAllRoomMembers = exports.getMemberFromCookie = exports.FindMember = exports.createMember = void 0;
+exports.updateSocketID = exports.findMyDm = exports.updateHit = exports.getAllRoomMembers = exports.getMemberFromCookie = exports.FindMember = exports.createMember = void 0;
 var roomModel_1 = require("./../models/roomModel");
 var memberModel_1 = require("../models/memberModel");
 var jwt_simple_1 = require("jwt-simple");
@@ -228,3 +228,34 @@ function findMyDm(req, res) {
     });
 }
 exports.findMyDm = findMyDm;
+function updateSocketID(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, socketId, memberDBToUpdate, member, memberDB, error_7;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 3, , 4]);
+                    _a = req.body, socketId = _a.socketId, memberDBToUpdate = _a.memberDBToUpdate;
+                    if (!socketId || !memberDBToUpdate)
+                        throw new Error('no info from req.body');
+                    return [4 /*yield*/, memberModel_1["default"].findOne({
+                            'room.name': memberDBToUpdate.room.name, role: "dm"
+                        })];
+                case 1:
+                    member = _b.sent();
+                    member.socketID = socketId;
+                    return [4 /*yield*/, member.save()];
+                case 2:
+                    memberDB = _b.sent();
+                    res.send({ memberDB: memberDB });
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_7 = _b.sent();
+                    res.send({ error: error_7.message });
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.updateSocketID = updateSocketID;

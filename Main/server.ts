@@ -33,8 +33,14 @@ httpServer.listen(3000, () => {
 });
 
 io.on('connection', (socket) => {
-	console.log(`a user connected`);
+	socket.on('dmID', (socketID, msg) => {
+		console.log(msg);
+		socket.to(socketID).emit('dmID', socketID);
 	});
+	socket.on('updateHitForUser', (memberDB, socketID) => {
+		socket.to(socketID).emit('updateHitForUser', memberDB);
+	});
+});
 
 // io.listen(3000);
 
