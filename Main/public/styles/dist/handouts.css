@@ -138,6 +138,7 @@ body {
   gap: 30px;
 }
 .session__userHandouts .handoutCard {
+  color: #9e9880;
   width: 1fr;
   height: 350px;
   background-color: #201d3e;
