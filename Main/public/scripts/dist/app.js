@@ -107,25 +107,8 @@ function loadMainPageDM() {
         });
     });
 }
-function loadUserMainBody() {
-    return __awaiter(this, void 0, void 0, function () {
-        var memberDB;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, getMemberFromCookies()];
-                case 1:
-                    memberDB = _a.sent();
-                    renderUserName(memberDB);
-                    renderUserOwnHitpoints(memberDB);
-                    sessionStorage.setItem("memberName", "" + memberDB.user.username);
-                    sessionStorage.setItem("memberRole", "" + memberDB.role);
-                    sessionStorage.setItem("memberHitPoints", "" + memberDB.hitPoints);
-                    socket.emit('getUserRole', sessionStorage.getItem("memberRole"));
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
+// async function loadUserMainPage() {
+// }
 function getMapsFromDB(memberRoom) {
     return __awaiter(this, void 0, void 0, function () {
         var data, maps, error_3;
@@ -546,34 +529,26 @@ function handleChangeHitPoints(event) {
 }
 function loadUserMainPage() {
     return __awaiter(this, void 0, void 0, function () {
-        var memberDB, pageTitle, infoFromDB, roomID, maps, worldMapUrl, currentMapUrl, worldMap, currentMap, error_10;
+        var memberDB, error_10;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
+                    _a.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, getMemberFromCookies()];
                 case 1:
                     memberDB = _a.sent();
-                    pageTitle = document.querySelector('.title');
-                    pageTitle.innerHTML = "Welcome " + memberDB.user.username;
-                    infoFromDB = document.querySelector('.infoFromDB');
-                    infoFromDB.innerHTML = " \n\t\t\tname:" + memberDB.user.username + "\n\t\t\trole:" + memberDB.role;
-                    roomID = memberDB.room._id;
-                    return [4 /*yield*/, getMapsFromDB(roomID)];
+                    renderUserName(memberDB);
+                    renderUserOwnHitpoints(memberDB);
+                    sessionStorage.setItem("memberName", "" + memberDB.user.username);
+                    sessionStorage.setItem("memberRole", "" + memberDB.role);
+                    sessionStorage.setItem("memberHitPoints", "" + memberDB.hitPoints);
+                    socket.emit('getUserRole', sessionStorage.getItem("memberRole"));
+                    return [3 /*break*/, 3];
                 case 2:
-                    maps = _a.sent();
-                    worldMapUrl = maps.worldMap;
-                    currentMapUrl = maps.currentMap;
-                    worldMap = document.querySelector('.worldMap');
-                    worldMap.innerHTML = "<div class=\"worldMap\">world map \n\t\t\t\t<form onsubmit=\"handleEditWorldMap(event)\">\n\t\t\t\t\t<input type=\"url\" name=\"worldMapUpload\" >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + worldMapUrl + "\" alt=\"pic of map\">\n        \t</div>";
-                    currentMap = document.querySelector('.currentMap');
-                    currentMap.innerHTML = "<div class=\"currentMap\">current map\n\t\t\t\t<form onsubmit=\"handleEditCurrentMap(event)\">\n\t\t\t\t\t<input type='url' name='currentMapUpload' >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + currentMapUrl + "\" alt=\"pic of map\">\n       \t\t </div>";
-                    return [3 /*break*/, 4];
-                case 3:
                     error_10 = _a.sent();
                     console.error(error_10);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     });

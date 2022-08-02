@@ -51,15 +51,9 @@ async function loadMainPageDM() {
 	}
 }
 
-async function loadUserMainBody() {
-	const memberDB = await getMemberFromCookies();
-	renderUserName(memberDB);
-	renderUserOwnHitpoints(memberDB);
-	sessionStorage.setItem(`memberName`, `${memberDB.user.username}`);
-	sessionStorage.setItem(`memberRole`, `${memberDB.role}`);
-	sessionStorage.setItem(`memberHitPoints`, `${memberDB.hitPoints}`);
-	socket.emit('getUserRole', sessionStorage.getItem(`memberRole`));
-}
+// async function loadUserMainPage() {
+
+// }
 
 async function getMapsFromDB(memberRoom: string) {
 	try {
@@ -339,32 +333,39 @@ async function handleChangeHitPoints(event) {
 async function loadUserMainPage() {
 	try {
 		const memberDB = await getMemberFromCookies();
-		const pageTitle: HTMLElement = document.querySelector('.title');
-		pageTitle.innerHTML = `Welcome ${memberDB.user.username}`;
-		const infoFromDB: HTMLDivElement = document.querySelector('.infoFromDB');
-		infoFromDB.innerHTML = ` 
-			name:${memberDB.user.username}
-			role:${memberDB.role}`;
-		const roomID = memberDB.room._id;
-		const maps = await getMapsFromDB(roomID);
-		const worldMapUrl = maps.worldMap;
-		const currentMapUrl = maps.currentMap;
-		const worldMap: HTMLDivElement = document.querySelector('.worldMap');
-		worldMap.innerHTML = `<div class="worldMap">world map 
-				<form onsubmit="handleEditWorldMap(event)">
-					<input type="url" name="worldMapUpload" >
-					<button type="submit"> Upload a New Map</button>
-				</form>
-				<img src="${worldMapUrl}" alt="pic of map">
-        	</div>`;
-		const currentMap: HTMLDivElement = document.querySelector('.currentMap');
-		currentMap.innerHTML = `<div class="currentMap">current map
-				<form onsubmit="handleEditCurrentMap(event)">
-					<input type='url' name='currentMapUpload' >
-					<button type="submit"> Upload a New Map</button>
-				</form>
-				<img src="${currentMapUrl}" alt="pic of map">
-       		 </div>`;
+		renderUserName(memberDB);
+		renderUserOwnHitpoints(memberDB);
+		sessionStorage.setItem(`memberName`, `${memberDB.user.username}`);
+		sessionStorage.setItem(`memberRole`, `${memberDB.role}`);
+		sessionStorage.setItem(`memberHitPoints`, `${memberDB.hitPoints}`);
+		socket.emit('getUserRole', sessionStorage.getItem(`memberRole`));
+
+		// const pageTitle: HTMLElement = document.querySelector('.title');
+		// pageTitle.innerHTML = `Welcome ${memberDB.user.username}`;
+		// const infoFromDB: HTMLDivElement = document.querySelector('.infoFromDB');
+		// infoFromDB.innerHTML = ` 
+		// 	name:${memberDB.user.username}
+		// 	role:${memberDB.role}`;
+		// const roomID = memberDB.room._id;
+		// const maps = await getMapsFromDB(roomID);
+		// const worldMapUrl = maps.worldMap;
+		// const currentMapUrl = maps.currentMap;
+		// const worldMap: HTMLDivElement = document.querySelector('.worldMap');
+		// worldMap.innerHTML = `<div class="worldMap">world map 
+		// 		<form onsubmit="handleEditWorldMap(event)">
+		// 			<input type="url" name="worldMapUpload" >
+		// 			<button type="submit"> Upload a New Map</button>
+		// 		</form>
+		// 		<img src="${worldMapUrl}" alt="pic of map">
+        // 	</div>`;
+		// const currentMap: HTMLDivElement = document.querySelector('.currentMap');
+		// currentMap.innerHTML = `<div class="currentMap">current map
+		// 		<form onsubmit="handleEditCurrentMap(event)">
+		// 			<input type='url' name='currentMapUpload' >
+		// 			<button type="submit"> Upload a New Map</button>
+		// 		</form>
+		// 		<img src="${currentMapUrl}" alt="pic of map">
+       	// 	 </div>`;
 	} catch (error) {
 		console.error(error);
 	}
