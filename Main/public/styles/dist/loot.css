@@ -1,0 +1,176 @@
+body {
+  margin: 0%;
+  font-family: "Raleway", sans-serif;
+  background-color: #181632;
+  position: relative;
+}
+
+.session {
+  width: 840px;
+  height: fit-content;
+  background-color: #191633;
+  margin: auto;
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.session__header {
+  margin: 100px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-items: center;
+  text-align: center;
+  background-color: #716331;
+  background-image: linear-gradient(-75deg, transparent 0, transparent 5%, rgba(255, 255, 255, 0.5) 5%, rgba(255, 255, 255, 0.5) 10%, transparent 10%, transparent 100%);
+  background-size: 200% 100%;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  transition: 1.5s;
+  width: 60%;
+  justify-content: space-around;
+}
+.session__header i {
+  font-size: 3rem;
+}
+.session__header:hover {
+  background-position: -120% 0;
+}
+.session .box {
+  height: 200px;
+  width: 80%;
+  background-color: #201d3e;
+  border: 2px solid #46416e;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  color: #9e9880;
+  margin-bottom: 50px;
+}
+.session .box .header {
+  display: flex;
+  align-items: center;
+}
+.session .box .header h3 {
+  padding-left: 40px;
+}
+.session .box .header i {
+  color: #716331;
+}
+.session .box:hover {
+  border: 2px solid #9e9880;
+}
+.session .createAndSend .input_container,
+.session .chooseAndSend .input_container {
+  width: 70%;
+  height: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.session .createAndSend .input_container input,
+.session .chooseAndSend .input_container input {
+  width: 100%;
+  max-width: 400px;
+  height: 40px;
+  border: none;
+  background-color: #9e9880;
+  border-radius: 20px;
+}
+.session .createAndSend .input_container input::placeholder,
+.session .chooseAndSend .input_container input::placeholder {
+  color: white;
+  padding-left: 10px;
+  font-weight: bolder;
+  font-family: "Raleway", sans-serif;
+}
+.session .createAndSend .submit_btn,
+.session .chooseAndSend .submit_btn {
+  width: 200px;
+  height: 60px;
+  border: none;
+  border-radius: 50px;
+  background-color: #716331;
+  font-size: 1.5rem;
+  font-weight: bolder;
+  color: #cecdc8;
+  background-image: linear-gradient(-75deg, transparent 0, transparent 5%, rgba(255, 255, 255, 0.5) 5%, rgba(255, 255, 255, 0.5) 10%, transparent 10%, transparent 100%);
+  background-size: 200% 100%;
+  transition: 0.5s;
+}
+.session .createAndSend .submit_btn:hover,
+.session .chooseAndSend .submit_btn:hover {
+  background-position: -120% 0;
+  cursor: pointer;
+}
+.session .createAndSend h3,
+.session .chooseAndSend h3 {
+  font-size: 2rem;
+  color: #9e9880;
+}
+.session .createAndSend .existinhLootRoot,
+.session .chooseAndSend .existinhLootRoot {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+}
+.session .createAndSend .existinhLootRoot .LootCard,
+.session .chooseAndSend .existinhLootRoot .LootCard {
+  width: 150px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+.session .createAndSend .existinhLootRoot .LootCard img,
+.session .chooseAndSend .existinhLootRoot .LootCard img {
+  width: 100%;
+}
+.session__userLoot {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 30px;
+}
+.session__userLoot .handoutCard {
+  color: #9e9880;
+  width: 1fr;
+  height: 350px;
+  background-color: #201d3e;
+  border: 2px solid #46416e;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.session__userLoot .handoutCard img {
+  width: 80%;
+}
+
+#newLootForm,
+#existingLootForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  transition: all 1.5s;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 1.5s linear;
+}
+
+#createAndSend {
+  transition: height 0.5s;
+}
+
+#chooseAndSend {
+  transition: height 0.5s;
+}
