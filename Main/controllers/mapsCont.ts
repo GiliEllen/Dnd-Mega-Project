@@ -6,10 +6,11 @@ import jwt from 'jwt-simple';
 
 export async function getMaps(req, res) {
 	try{
-		console.log('helo')
-		const { roomID } = req.body;
-		if (!roomID) throw new Error('didnt get roomID');
-		const maps = await MapsModel.findOne({_id: roomID})
+
+		const { memberRoom } = req.body;
+		if (!memberRoom) throw new Error('didnt get roomID');
+		const maps = await MapsModel.findOne('roomID': memberRoom)
+		if(!maps) throw new Error ('couldnot find maps')
 		console.log(maps)
 		res.send({success:true, maps})
 	}

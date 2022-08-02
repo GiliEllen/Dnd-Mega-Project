@@ -56,14 +56,14 @@ function getMemberFromCookies() {
         });
     });
 }
-function getMapsFromDB(roomID) {
+function getMapsFromDB(memberRoom) {
     return __awaiter(this, void 0, void 0, function () {
         var data, maps, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios.post('maps/get-room-map', { roomID: roomID })];
+                    return [4 /*yield*/, axios.post('/maps/get-room-map', { memberRoom: memberRoom })];
                 case 1:
                     data = (_a.sent()).data;
                     maps = data.maps;
@@ -84,6 +84,7 @@ function loadMainPageDM() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
+                    console.log('helo');
                     return [4 /*yield*/, getMemberFromCookies()];
                 case 1:
                     memberDB = _a.sent();

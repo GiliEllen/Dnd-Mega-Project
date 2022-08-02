@@ -14,10 +14,10 @@ async function getMemberFromCookies() {
 	
 }
 
-async function getMapsFromDB(roomID:string) {
+async function getMapsFromDB(memberRoom:string) {
 	try{
 		//@ts-ignore
-		const { data } = await axios.post('maps/get-room-map', {roomID})
+		const { data } = await axios.post('/maps/get-room-map', {memberRoom})
 		const { maps } = data;
 		return maps
 	} catch (error) {
@@ -27,6 +27,7 @@ async function getMapsFromDB(roomID:string) {
 async function loadMainPageDM() {
 	// renderButtonsHandoutsLoot(userID);
 	try {
+		console.log('helo')
 		const memberDB = await getMemberFromCookies();
 		const memberRoom = memberDB.room._id
 		const worldData = await getMapsFromDB(memberRoom)

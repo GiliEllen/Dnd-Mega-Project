@@ -40,18 +40,19 @@ exports.uploadCurrentdMap = exports.uploadWorldMap = exports.getMaps = void 0;
 var mapsModel_1 = require("../models/mapsModel");
 function getMaps(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var roomID, maps, error_1;
+        var memberRoom, maps, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    console.log('helo');
-                    roomID = req.body.roomID;
-                    if (!roomID)
+                    memberRoom = req.body.memberRoom;
+                    if (!memberRoom)
                         throw new Error('didnt get roomID');
-                    return [4 /*yield*/, mapsModel_1["default"].findOne({ _id: roomID })];
+                    return [4 /*yield*/, mapsModel_1["default"].findOne('roomID', memberRoom)];
                 case 1:
                     maps = _a.sent();
+                    if (!maps)
+                        throw new Error('couldnot find maps');
                     console.log(maps);
                     res.send({ success: true, maps: maps });
                     return [3 /*break*/, 3];
