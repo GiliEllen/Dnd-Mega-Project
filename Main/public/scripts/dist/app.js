@@ -252,7 +252,7 @@ function handleSendNewHandouts(event) {
 }
 function loadMainPageUser() {
     return __awaiter(this, void 0, void 0, function () {
-        var memberDB, pageTitle, infoFromDB, roomID, maps, worldMap, currentMap, error_6;
+        var memberDB, pageTitle, infoFromDB, roomID, maps, worldMapUrl, currentMapUrl, worldMap, currentMap, error_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -268,9 +268,14 @@ function loadMainPageUser() {
                     return [4 /*yield*/, getMapsFromDB(roomID)];
                 case 2:
                     maps = _a.sent();
-                    console.log(maps);
+                    worldMapUrl = maps.worldMap;
+                    currentMapUrl = maps.currentMap;
                     worldMap = document.querySelector('.worldMap');
+                    worldMap.innerHTML =
+                        "<div class=\"worldMap\">world map \n\t\t\t\t<form onsubmit=\"handleEditWorldMap(event)\">\n\t\t\t\t\t<input type=\"url\" name=\"worldMapUpload\" >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + worldMapUrl + "\" alt=\"pic of map\">\n        \t</div>";
                     currentMap = document.querySelector('.currentMap');
+                    currentMap.innerHTML =
+                        "<div class=\"currentMap\">current map\n\t\t\t\t<form onsubmit=\"handleEditCurrentMap(event)\">\n\t\t\t\t\t<input type='url' name='currentMapUpload' >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + currentMapUrl + "\" alt=\"pic of map\">\n       \t\t </div>";
                     return [3 /*break*/, 4];
                 case 3:
                     error_6 = _a.sent();

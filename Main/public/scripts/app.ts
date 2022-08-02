@@ -170,9 +170,26 @@ async function loadMainPageUser() {
 			role:${memberDB.role}`;
 		const roomID = memberDB.room._id
 		const maps = await getMapsFromDB(roomID);
-		console.log(maps)
+		const worldMapUrl = maps.worldMap
+		const currentMapUrl = maps.currentMap
 		const worldMap: HTMLDivElement = document.querySelector('.worldMap')
+		worldMap.innerHTML = 
+			`<div class="worldMap">world map 
+				<form onsubmit="handleEditWorldMap(event)">
+					<input type="url" name="worldMapUpload" >
+					<button type="submit"> Upload a New Map</button>
+				</form>
+				<img src="${worldMapUrl}" alt="pic of map">
+        	</div>`
 		const currentMap: HTMLDivElement = document.querySelector('.currentMap')
+		currentMap.innerHTML = 
+			`<div class="currentMap">current map
+				<form onsubmit="handleEditCurrentMap(event)">
+					<input type='url' name='currentMapUpload' >
+					<button type="submit"> Upload a New Map</button>
+				</form>
+				<img src="${currentMapUrl}" alt="pic of map">
+       		 </div>`
 	} catch (error) {
 		console.error(error);
 	}
