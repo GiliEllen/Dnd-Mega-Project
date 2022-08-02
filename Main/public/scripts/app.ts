@@ -1,11 +1,16 @@
 const socket = io();
 
+const chooseAndSend = document.querySelector('.chooseAndSend');
+const existingHandoutsForm = document.querySelector('#existingHandoutsForm') as HTMLFormElement;
+// chooseAndSend.addEventListener('click', () => {
+// 	existingHandoutsForm.style.display = "flex"
+// })
+
 socket.on('connect', () => {
 	console.log(socket.id);
 });
 
 socket.on('update', async () => {
-	console.log(`trying to update`)
 	const success = await renderMembersNamesAndHitPoints();
 });
 

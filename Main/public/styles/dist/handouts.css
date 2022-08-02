@@ -1,0 +1,72 @@
+body {
+  margin: 0%;
+  font-family: "Raleway", sans-serif;
+  background-color: #181632;
+  position: relative;
+}
+
+.session {
+  width: 840px;
+  height: fit-content;
+  background-color: #191633;
+  margin: auto;
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.session__header {
+  margin: 100px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-items: center;
+  text-align: center;
+  background-color: #716331;
+  background-image: linear-gradient(-75deg, transparent 0, transparent 5%, rgba(255, 255, 255, 0.5) 5%, rgba(255, 255, 255, 0.5) 10%, transparent 10%, transparent 100%);
+  background-size: 200% 100%;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  transition: 1.5s;
+  width: 60%;
+  justify-content: space-around;
+}
+.session__header i {
+  font-size: 3rem;
+}
+.session__header:hover {
+  background-position: -120% 0;
+}
+.session .box {
+  height: 200px;
+  width: 80%;
+  background-color: #201d3e;
+  border: 2px solid #46416e;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  color: #9e9880;
+  margin-bottom: 50px;
+}
+.session .box .header {
+  display: flex;
+  align-items: center;
+}
+.session .box .header h3 {
+  padding-left: 40px;
+}
+.session .box .header i {
+  color: #716331;
+}
+.session .box:hover {
+  border: 2px solid #9e9880;
+}
+.session .box form {
+  width: 100%;
+  display: none;
+  flex-direction: column;
+}

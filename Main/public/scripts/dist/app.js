@@ -36,6 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 var socket = io();
+var chooseAndSend = document.querySelector('.chooseAndSend');
+var existingHandoutsForm = document.querySelector('#existingHandoutsForm');
+// chooseAndSend.addEventListener('click', () => {
+// 	existingHandoutsForm.style.display = "flex"
+// })
 socket.on('connect', function () {
     console.log(socket.id);
 });
@@ -43,9 +48,7 @@ socket.on('update', function () { return __awaiter(_this, void 0, void 0, functi
     var success;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                console.log("trying to update");
-                return [4 /*yield*/, renderMembersNamesAndHitPoints()];
+            case 0: return [4 /*yield*/, renderMembersNamesAndHitPoints()];
             case 1:
                 success = _a.sent();
                 return [2 /*return*/];
