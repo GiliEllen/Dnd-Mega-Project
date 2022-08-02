@@ -48,7 +48,7 @@ function getMaps(req, res) {
                     memberRoom = req.body.memberRoom;
                     if (!memberRoom)
                         throw new Error('didnt get roomID');
-                    return [4 /*yield*/, mapsModel_1["default"].findOne('roomID', memberRoom)];
+                    return [4 /*yield*/, mapsModel_1["default"].findOne({ 'roomID': memberRoom })];
                 case 1:
                     maps = _a.sent();
                     if (!maps)

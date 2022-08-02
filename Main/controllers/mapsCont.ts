@@ -9,7 +9,7 @@ export async function getMaps(req, res) {
 
 		const { memberRoom } = req.body;
 		if (!memberRoom) throw new Error('didnt get roomID');
-		const maps = await MapsModel.findOne('roomID': memberRoom)
+		const maps = await MapsModel.findOne({'roomID': memberRoom})
 		if(!maps) throw new Error ('couldnot find maps')
 		console.log(maps)
 		res.send({success:true, maps})
