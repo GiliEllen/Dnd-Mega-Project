@@ -39,29 +39,15 @@ var socket = io();
 socket.on('connect', function () {
     console.log(socket.id);
 });
-socket.on('dmID', function (socketId) { return __awaiter(_this, void 0, void 0, function () {
-    var memberDBToUpdate, data, memberDB;
+socket.on('update', function () { return __awaiter(_this, void 0, void 0, function () {
+    var success;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                memberDBToUpdate = getMemberFromCookies;
-                return [4 /*yield*/, axios.post('/member/updateSocketID', { socketId: socketId, memberDBToUpdate: memberDBToUpdate })];
-            case 1:
-                data = (_a.sent()).data;
-                memberDB = data.memberDB;
-                console.log(memberDB.socketID);
-                return [2 /*return*/];
-        }
-    });
-}); });
-socket.on('updateHitForUser', function (memberDB) { return __awaiter(_this, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                console.log(memberDB.hitPoints);
+                console.log("trying to update");
                 return [4 /*yield*/, renderMembersNamesAndHitPoints()];
             case 1:
-                _a.sent();
+                success = _a.sent();
                 return [2 /*return*/];
         }
     });
@@ -97,13 +83,11 @@ function loadBodyDM() {
                     renderMembersNamesAndHitPoints();
                     sessionStorage.setItem("memberName", "" + memberDB.user.username);
                     sessionStorage.setItem("memberRole", "" + memberDB.role);
-                    socket.emit('dmID', (socket.id, "this is id from dm"));
                     return [2 /*return*/];
             }
         });
     });
 }
-;
 function loadUserMainBody() {
     return __awaiter(this, void 0, void 0, function () {
         var memberDB;
@@ -137,24 +121,26 @@ function renderUserOwnHitpoints(memberDB) {
 }
 function renderMembersNamesAndHitPoints() {
     return __awaiter(this, void 0, void 0, function () {
-        var userInfoList, memberArray, html;
+        var userInfoList, memberArray, html_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     userInfoList = document.querySelector('.userInfoList__users__list');
+                    if (!userInfoList) return [3 /*break*/, 2];
                     return [4 /*yield*/, handleGetAllMembers()];
                 case 1:
                     memberArray = _a.sent();
                     console.log(memberArray);
-                    html = '';
+                    html_1 = '';
                     memberArray.forEach(function (member) {
                         if (member.role === 'user') {
-                            html += "<li><div class=\"username\">" + member.user
+                            html_1 += "<li><div class=\"username\">" + member.user
                                 .username + "</div><div class=\"hitPoints_container\"><div id=\"hitPoints\">" + member.hitPoints + "</div><i class=\"fa-solid fa-heart\"></i></li></div> ";
                         }
                     });
-                    userInfoList.innerHTML = html;
-                    return [2 /*return*/];
+                    userInfoList.innerHTML = html_1;
+                    _a.label = 2;
+                case 2: return [2 /*return*/];
             }
         });
     });
@@ -346,7 +332,7 @@ function handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray) {
 }
 function renderExistingHandouts() {
     return __awaiter(this, void 0, void 0, function () {
-        var memberDB, data, existingHandouts, existinhHandoutsRoot, html_1, error_3;
+        var memberDB, data, existingHandouts, existinhHandoutsRoot, html_2, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -359,11 +345,11 @@ function renderExistingHandouts() {
                     data = (_a.sent()).data;
                     existingHandouts = data.existingHandouts;
                     existinhHandoutsRoot = document.querySelector('.existinhHandoutsRoot');
-                    html_1 = '';
+                    html_2 = '';
                     existingHandouts.forEach(function (handoutObj) {
-                        html_1 += "<div class=\"handoutCard\"><img src=\"" + handoutObj.url + "\"><h3>" + handoutObj.name + "</h3><input name=\"" + handoutObj.name + "\" type=\"checkbox\" value=\"" + handoutObj._id + "\"> <label for=\"" + handoutObj._id + "\">PICK ME</label></div>";
+                        html_2 += "<div class=\"handoutCard\"><img src=\"" + handoutObj.url + "\"><h3>" + handoutObj.name + "</h3><input name=\"" + handoutObj.name + "\" type=\"checkbox\" value=\"" + handoutObj._id + "\"> <label for=\"" + handoutObj._id + "\">PICK ME</label></div>";
                     });
-                    existinhHandoutsRoot.innerHTML = html_1;
+                    existinhHandoutsRoot.innerHTML = html_2;
                     return [3 /*break*/, 4];
                 case 3:
                     error_3 = _a.sent();
@@ -376,7 +362,7 @@ function renderExistingHandouts() {
 }
 function renderMemberToSendExistingHandouts() {
     return __awaiter(this, void 0, void 0, function () {
-        var userListRoot, availableMembers, html_2, error_4;
+        var userListRoot, availableMembers, html_3, error_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -385,14 +371,14 @@ function renderMemberToSendExistingHandouts() {
                     return [4 /*yield*/, handleGetAllMembers()];
                 case 1:
                     availableMembers = _a.sent();
-                    html_2 = '';
+                    html_3 = '';
                     availableMembers.forEach(function (member) {
                         if (member.role === 'user') {
-                            html_2 += "<input id=\"memberName\" type=\"checkbox\" name=\"" + member.user.username + "\" value=\"" + member.user
+                            html_3 += "<input id=\"memberName\" type=\"checkbox\" name=\"" + member.user.username + "\" value=\"" + member.user
                                 ._id + "\">\n\t\t\t\t<label for=\"" + member.user.username + "\">" + member.user.username + "</label>";
                         }
                     });
-                    userListRoot.innerHTML = html_2;
+                    userListRoot.innerHTML = html_3;
                     return [3 /*break*/, 3];
                 case 2:
                     error_4 = _a.sent();
@@ -498,13 +484,12 @@ function sendThisHandout(handout, membersToSendHandoutsArray) {
 }
 function handleChangeHitPoints(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var memberDBToUpdate, hitUpdater, hitPoints, data, memberDB, DM, error_6;
+        var memberDBToUpdate, hitUpdater, hitPoints, data, memberDB, error_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 4, , 5]);
+                    _a.trys.push([0, 3, , 4]);
                     event.preventDefault();
-                    console.log("trying to update hit");
                     return [4 /*yield*/, getMemberFromCookies()];
                 case 1:
                     memberDBToUpdate = _a.sent();
@@ -512,10 +497,10 @@ function handleChangeHitPoints(event) {
                         throw new Error('member not found to update');
                     hitUpdater = event.target.id;
                     hitPoints = memberDBToUpdate.hitPoints;
-                    if (hitUpdater === "up") {
+                    if (hitUpdater === 'up') {
                         hitPoints++;
                     }
-                    else if (hitUpdater === "down") {
+                    else if (hitUpdater === 'down') {
                         hitPoints--;
                     }
                     return [4 /*yield*/, axios.post('/member/updateHit', { memberDBToUpdate: memberDBToUpdate, hitPoints: hitPoints })];
@@ -523,16 +508,13 @@ function handleChangeHitPoints(event) {
                     data = (_a.sent()).data;
                     memberDB = data.memberDB;
                     renderUserOwnHitpoints(memberDB);
-                    return [4 /*yield*/, findMyDm(memberDB)];
+                    socket.emit('updateHitForUser', true);
+                    return [3 /*break*/, 4];
                 case 3:
-                    DM = _a.sent();
-                    socket.emit('updateHitForUser', memberDB, DM.socketID);
-                    return [3 /*break*/, 5];
-                case 4:
                     error_6 = _a.sent();
                     console.log(error_6);
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });

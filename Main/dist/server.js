@@ -31,12 +31,9 @@ httpServer.listen(3000, () => {
     console.log('listening on *:3000');
 });
 io.on('connection', (socket) => {
-    socket.on('dmID', (socketID, msg) => {
-        console.log(msg);
-        socket.to(socketID).emit('dmID', socketID);
-    });
-    socket.on('updateHitForUser', (memberDB, socketID) => {
-        socket.to(socketID).emit('updateHitForUser', memberDB);
+    socket.on('updateHitForUser', (boleen) => {
+        if (boleen)
+            io.emit('update');
     });
 });
 // io.listen(3000);
