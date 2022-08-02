@@ -40,9 +40,31 @@ var adiv = document.querySelector('div');
 var isWorldMapClicked = false;
 var isCurrentMapClicked = false;
 var isUserInfoClicked = false;
+function getUserFromCookies() {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, userDB, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    console.log('loading room cookies');
+                    return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
+                case 1:
+                    data = (_a.sent()).data;
+                    userDB = data.userDB;
+                    return [2 /*return*/, userDB];
+                case 2:
+                    error_1 = _a.sent();
+                    console.error(error_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
 function HandleCreateNewRoom(ev) {
     return __awaiter(this, void 0, void 0, function () {
-        var newRoom, newRoomPassword, data, roomDB, role, error_1;
+        var newRoom, newRoomPassword, data, roomDB, role, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -52,6 +74,7 @@ function HandleCreateNewRoom(ev) {
                     _a.trys.push([1, 3, , 4]);
                     newRoom = ev.target.elements.roomName.value;
                     newRoomPassword = ev.target.elements.roomPass.value;
+                    console.log(newRoom, newRoomPassword);
                     return [4 /*yield*/, axios.post('/room/new-room', { newRoom: newRoom, newRoomPassword: newRoomPassword })];
                 case 2:
                     data = (_a.sent()).data;
@@ -60,8 +83,8 @@ function HandleCreateNewRoom(ev) {
                     handleCreateMember(roomDB, role);
                     return [3 /*break*/, 4];
                 case 3:
-                    error_1 = _a.sent();
-                    console.error(error_1);
+                    error_2 = _a.sent();
+                    console.error(error_2);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -70,7 +93,7 @@ function HandleCreateNewRoom(ev) {
 }
 function handleCreateMember(roomDB, role) {
     return __awaiter(this, void 0, void 0, function () {
-        var userDB, data, memberDB, error_2;
+        var userDB, data, memberDB, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -94,32 +117,10 @@ function handleCreateMember(roomDB, role) {
                     }
                     return [3 /*break*/, 4];
                 case 3:
-                    error_2 = _a.sent();
-                    console.error(error_2);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    });
-}
-function getUserFromCookies() {
-    return __awaiter(this, void 0, void 0, function () {
-        var data, userDB, error_3;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    console.log('loading room cookies');
-                    return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
-                case 1:
-                    data = (_a.sent()).data;
-                    userDB = data.userDB;
-                    return [2 /*return*/, userDB];
-                case 2:
                     error_3 = _a.sent();
                     console.error(error_3);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });
@@ -150,7 +151,7 @@ function HandleEnterRoom(ev) {
                             window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
                         }
                         else if (memberDB.role === 'user') {
-                            window.location.href = "../views/mainPageUser.htmlmemberID=" + memberDB._id;
+                            window.location.href = "../views/mainPageUser.html?memberID=" + memberDB._id;
                         }
                     }
                     else {

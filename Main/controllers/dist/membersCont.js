@@ -60,7 +60,6 @@ function createMember(req, res) {
                     JWTCookie = jwt_simple_1["default"].encode(cookie, secret);
                     res.cookie('memberId', JWTCookie);
                     res.send({ success: true, memberDB: memberDB, roomDB: roomDB });
-                    res.send({ memberDB: memberDB });
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _b.sent();
@@ -116,43 +115,26 @@ function FindMember(req, res) {
 exports.FindMember = FindMember;
 function getMemberFromCookie(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-<<<<<<< HEAD
-        var secret, memberId, decodedUserId, memberID, memberDB, error_3;
-=======
-        var secret, memberId, decodedMemberId, memberID, memberDB, error_3;
->>>>>>> carmel4
+        var secret, memberId, decodedMemberId, memberDB, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-<<<<<<< HEAD
-                    console.log("try to extract member from cookie");
-=======
->>>>>>> carmel4
                     secret = process.env.JWT_SECRET;
                     if (!secret)
                         throw new Error("couldn't load secret from .env");
                     memberId = req.cookies.memberId;
                     if (!memberId)
                         throw new Error("couldn't get memberID from cookies");
-<<<<<<< HEAD
-                    decodedUserId = jwt_simple_1["default"].decode(memberId, secret);
-                    memberID = decodedUserId.memberID;
-=======
                     decodedMemberId = jwt_simple_1["default"].decode(memberId, secret);
-                    memberID = decodedMemberId.memberID;
->>>>>>> carmel4
-                    return [4 /*yield*/, memberModel_1["default"].findById(memberID)];
+                    return [4 /*yield*/, memberModel_1["default"].findById(decodedMemberId.memberID)];
                 case 1:
                     memberDB = _a.sent();
                     res.send({ memberDB: memberDB });
                     return [3 /*break*/, 3];
                 case 2:
                     error_3 = _a.sent();
-<<<<<<< HEAD
                     res.send({ error: error_3.message });
-=======
->>>>>>> carmel4
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }

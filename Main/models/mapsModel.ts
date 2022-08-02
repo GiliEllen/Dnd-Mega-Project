@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import Joi from 'joi';
 
-const worldDataSchema = new mongoose.Schema({
+const mapsSchema = new mongoose.Schema({
     roomID:
     {
         type:String,
@@ -11,15 +11,15 @@ const worldDataSchema = new mongoose.Schema({
     worldMap:
     {
         type:String,
-        required:true,
+
     },
     currentMap:
     {
         type:String,
-        required:true
+        
     }
 })
 
-const worldDataModel = mongoose.model('worldDataModel',worldDataSchema);
+const MapsModel = mongoose.model('Maps',mapsSchema);
 
-export default worldDataModel;
+export default MapsModel;

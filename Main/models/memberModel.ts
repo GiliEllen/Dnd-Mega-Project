@@ -22,7 +22,7 @@ const MemberSchema = new mongoose.Schema({
     
 })
 
-const MemberModel = mongoose.model('Memmber',MemberSchema);
+const MemberModel = mongoose.model('Member',MemberSchema);
 
 export default MemberModel;
 

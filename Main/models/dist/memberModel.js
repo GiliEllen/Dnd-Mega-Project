@@ -21,7 +21,7 @@ var MemberSchema = new mongoose_1["default"].Schema({
         required: true
     }
 });
-var MemberModel = mongoose_1["default"].model('Memmber', MemberSchema);
+var MemberModel = mongoose_1["default"].model('Member', MemberSchema);
 exports["default"] = MemberModel;
 exports.UserValidation = joi_1["default"].object({
     room: joi_1["default"].object().required(),

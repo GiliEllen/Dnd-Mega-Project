@@ -13,9 +13,23 @@
     <link rel="manifest" href="/site.webmanifest">
 </head>
 
-<body onload="loadBody()">
-    <h4>World Map</h4>
-    <h4>Current Map</h4>
+<body onload="loadMainPageDM()">
+    <div class="title">home</div>
+    <div class="maps">
+        <div class="worldMap">world map 
+            <form onsubmit="handleEditWorldMap(event)">
+                <input type="url" name="worldMapUpload" >
+                <button type="submit"> Upload a New Map</button>
+            </form>
+            
+        </div>
+        <div class="currentMap">current map
+            <form onsubmit="handleEditCurrentMap(event)">
+                <input type='url' name='currentMapUpload' >
+                <button type="submit"> Upload a New Map</button>
+            </form>
+        </div>
+    </div>
 
     <div class="userInfoList"></div>
     <div id="buttonContainer">

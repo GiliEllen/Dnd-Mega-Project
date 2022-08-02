@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
@@ -35,3 +36,6 @@ app.use('/room', roomRoutes);
 import memberRoutes from './routes/membersRoutes';
 app.use('/member', memberRoutes);
 
+
+import mapsRoutes from './routes/mapsRoutes';
+app.use('/maps', mapsRoutes);
