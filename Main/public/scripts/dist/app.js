@@ -57,10 +57,22 @@ function getMemberFromCookies() {
         });
     });
 }
-// async function loadBodyDM() {
-// 	const memberDB = await getMemberFromCookies();
-// 	// socket.emit('dmID', socket.id, "this is id from dm");
-// }
+function loadBodyDMHndouts() {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDB = _a.sent();
+                    renderMembersToSendNewHandouts();
+                    renderExistingHandouts();
+                    renderMemberToSendExistingHandouts();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 function loadMainPageDM() {
     return __awaiter(this, void 0, void 0, function () {
         var memberDB, memberRoom, worldData, worldMapUrl, worldMapDiv, currentMapUrl, currentMapDiv, error_2;
@@ -68,7 +80,6 @@ function loadMainPageDM() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    console.log('helo');
                     return [4 /*yield*/, getMemberFromCookies()];
                 case 1:
                     memberDB = _a.sent();
@@ -376,7 +387,7 @@ function renderExistingHandouts() {
                     existinhHandoutsRoot = document.querySelector('.existinhHandoutsRoot');
                     html_2 = '';
                     existingHandouts.forEach(function (handoutObj) {
-                        html_2 += "<div class=\"handoutCard\"><img src=\"" + handoutObj.url + "\"><h3>" + handoutObj.name + "</h3><input name=\"" + handoutObj.name + "\" type=\"checkbox\" value=\"" + handoutObj._id + "\"> <label for=\"" + handoutObj._id + "\">PICK ME</label></div>";
+                        html_2 += "<div class=\"handoutCard\">\n\t\t\t\t\t\t<h3>" + handoutObj.name + "</h3>\n\t\t\t\t\t\t<img src=\"" + handoutObj.url + "\">\n\t\t\t\t\t\t<div class=\"checkboxContainer\"><input name=\"" + handoutObj.name + "\" type=\"checkbox\" value=\"" + handoutObj._id + "\"> \n\t\t\t\t\t\t<label for=\"" + handoutObj._id + "\">PICK ME</label></div>\n\t\t\t</div>";
                     });
                     existinhHandoutsRoot.innerHTML = html_2;
                     return [3 /*break*/, 4];

@@ -18,37 +18,40 @@
     <script src="https://kit.fontawesome.com/ef6c5070b7.js" crossorigin="anonymous"></script>
 </head>
 
-<body onload="loadBody()">
+<body onload="loadBodyDMHndouts()">
     <div class="session">
         <div class="session__header">
             <i class="fa-solid fa-book"></i><h1>DM Handouts</h1>
         </div>
-        <div class="createAndSend box">
+        <div id="createAndSend" class="createAndSend box">
             <div class="header">
                 <i class="fa-solid fa-pen"></i>
                 <h3>Create And Send New</h3>
             </div>
             <form id="newHandoutForm" onsubmit="handleSendNewHandouts(event)">
-                <label for="nameOfHandout">Enter Handout's name:</label>
-                <input name="nameOfHandout" type="text">
-                <label for="imgURL">Enter Handout's image URL:</label>
-                <input name="imgURL" type="url">
+                <div class="input_container">
+                    <input name="nameOfHandout" type="text" placeholder="Handout name">
+                </div>
+                <div class="input_container">
+                    <input name="imgURL" type="url" placeholder="image URL">
+                </div>
                 <label for="userList">Choose users to recive the handout:</label>
                 <div name="userList" class="userList" id="userList"></div>
-                <button type="submit">Send</button>
+                <button class="submit_btn" type="submit">Send</button>
             </form>
         </div>
 
-        <div class="chooseAndSend box">
+        <div id="chooseAndSend" class="chooseAndSend box">
             <div class="header">
                 <i class="fa-solid fa-share"></i>
                 <h3>Choose And Send Exisiting</h3>
             </div>
             <form id="existingHandoutsForm" onsubmit="handleSendExistingHandouts(event)">
+        
                 <div id="existinhHandoutsRoot" class="existinhHandoutsRoot"></div>
                 <label for="userListRoot">Choose users to recive the handout:</label>
                 <div name="userListRoot" class="userList" id="userListRoot"></div>
-                <button type="submit">Send</button>
+                <button class="submit_btn" type="submit">Send</button>
             </form>
         </div>
         <div class="root" id="root"></div>
@@ -56,6 +59,7 @@
 
 <script src="/socket.io/socket.io.js"></script>
     <script src="../scripts/dist/app.js"></script>
+    <script src="../scripts/dist/helpers.js"></script>
 </body>
 
 </html>

@@ -11,16 +11,16 @@ async function getMemberFromCookies() {
 		console.error(error);
 	}
 }
-// async function loadBodyDM() {
-// 	const memberDB = await getMemberFromCookies();
-
-// 	// socket.emit('dmID', socket.id, "this is id from dm");
-// }
+async function loadBodyDMHndouts() {
+	const memberDB = await getMemberFromCookies();
+	renderMembersToSendNewHandouts();
+	renderExistingHandouts();
+	renderMemberToSendExistingHandouts();
+}
 
 async function loadMainPageDM() {
 	// renderButtonsHandoutsLoot(userID);
 	try {
-		console.log('helo');
 		const memberDB = await getMemberFromCookies();
 		renderDmName(memberDB);
 		renderMembersNamesAndHitPoints();
@@ -231,7 +231,12 @@ async function renderExistingHandouts() {
 		const existinhHandoutsRoot = document.querySelector('.existinhHandoutsRoot');
 		let html = '';
 		existingHandouts.forEach((handoutObj) => {
-			html += `<div class="handoutCard"><img src="${handoutObj.url}"><h3>${handoutObj.name}</h3><input name="${handoutObj.name}" type="checkbox" value="${handoutObj._id}"> <label for="${handoutObj._id}">PICK ME</label></div>`;
+			html += `<div class="handoutCard">
+						<h3>${handoutObj.name}</h3>
+						<img src="${handoutObj.url}">
+						<div class="checkboxContainer"><input name="${handoutObj.name}" type="checkbox" value="${handoutObj._id}"> 
+						<label for="${handoutObj._id}">PICK ME</label></div>
+			</div>`;
 		});
 		existinhHandoutsRoot.innerHTML = html;
 	} catch (error) {
