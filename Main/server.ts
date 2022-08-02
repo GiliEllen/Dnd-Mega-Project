@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 
 const { createServer } = require('http');
 const { Server } = require('socket.io');
+import dotenv from 'dotenv';
 const app = express();
 const httpServer = createServer(app);
 const cors = require('cors');
@@ -54,3 +55,6 @@ import MemberModel from './models/memberModel';
 import UserModel from './models/usersModel';
 import { string } from 'joi';
 app.use('/handout', handoutRoutes);
+
+import mapsRoutes from './routes/mapsRoutes';
+app.use('/maps', mapsRoutes);

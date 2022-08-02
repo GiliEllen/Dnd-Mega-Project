@@ -23,5 +23,5 @@ var MemberSchema = new mongoose_1["default"].Schema({
         type: String
     }
 });
-var MemberModel = mongoose_1["default"].model('Memmber', MemberSchema);
+var MemberModel = mongoose_1["default"].model('Member', MemberSchema);
 exports["default"] = MemberModel;

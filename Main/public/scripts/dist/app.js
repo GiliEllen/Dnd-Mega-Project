@@ -35,6 +35,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> carmel5
 console.log('this is app.ts');
 function getMemberFromCookies() {
     return __awaiter(this, void 0, void 0, function () {
@@ -43,6 +46,7 @@ function getMemberFromCookies() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
+<<<<<<< HEAD
                     return [4 /*yield*/, axios.get('/member/get-user-from-cookies')];
 =======
 var _this = this;
@@ -73,6 +77,9 @@ function findMyDm(member) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, axios.post('/member/findMyDm', { member: member })];
 >>>>>>> gili3
+=======
+                    return [4 /*yield*/, axios.get('/member/get-member-from-cookie')];
+>>>>>>> carmel5
                 case 1:
                     data = (_a.sent()).data;
                     memberDB = data.memberDB;
@@ -90,18 +97,22 @@ function findMyDm(member) {
     });
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 function getWorldDataFromDB(roomID) {
+=======
+function getMapsFromDB(memberRoom) {
+>>>>>>> carmel5
     return __awaiter(this, void 0, void 0, function () {
-        var data, worldData, error_2;
+        var data, maps, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios.post('room/get-world-data', { roomID: roomID })];
+                    return [4 /*yield*/, axios.post('/maps/get-room-map', { memberRoom: memberRoom })];
                 case 1:
                     data = (_a.sent()).data;
-                    worldData = data.worldData;
-                    return [2 /*return*/, worldData];
+                    maps = data.maps;
+                    return [2 /*return*/, maps];
                 case 2:
                     error_2 = _a.sent();
                     console.error(error_2);
@@ -110,6 +121,7 @@ function getWorldDataFromDB(roomID) {
             }
         });
     });
+<<<<<<< HEAD
 =======
 function loadBody() {
     renderMembersToSendNewHandouts();
@@ -193,6 +205,41 @@ function renderMembersNamesAndHitPoints() {
 function renderDmName(memberDB) {
     var dmName = document.querySelector('#dmName');
     dmName.innerHTML = "Hello " + memberDB.user.username + "!";
+=======
+}
+function loadMainPageDM() {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, memberRoom, worldData, worldMapUrl, worldMapDiv, currentMapUrl, currentMapDiv, error_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    console.log('helo');
+                    return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDB = _a.sent();
+                    memberRoom = memberDB.room._id;
+                    return [4 /*yield*/, getMapsFromDB(memberRoom)];
+                case 2:
+                    worldData = _a.sent();
+                    worldMapUrl = worldData.worldMap;
+                    worldMapDiv = document.querySelector('.worldMap');
+                    worldMapDiv.innerHTML =
+                        "<div class=\"worldMap\">world map \n\t\t\t\t<form onsubmit=\"handleEditWorldMap(event)\">\n\t\t\t\t\t<input type=\"url\" name=\"worldMapUpload\" >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + worldMapUrl + "\" alt=\"pic of map\">\n        \t</div>";
+                    currentMapUrl = worldData.currentMap;
+                    currentMapDiv = document.querySelector('.currentMap');
+                    currentMapDiv.innerHTML =
+                        "<div class=\"currentMap\">current map\n\t\t\t\t<form onsubmit=\"handleEditCurrentMap(event)\">\n\t\t\t\t\t<input type='url' name='currentMapUpload' >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + currentMapUrl + "\" alt=\"pic of map\">\n       \t\t </div>";
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_3 = _a.sent();
+                    console.error(error_3);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+>>>>>>> carmel5
 }
 function renderUserName(memberDB) {
     var userName = document.querySelector('#userName');
@@ -211,7 +258,7 @@ function renderUserName(memberDB) {
 // }
 function handleSaveNotes(ev) {
     return __awaiter(this, void 0, void 0, function () {
-        var updatedNotes, data, error_3;
+        var updatedNotes, data, error_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -226,8 +273,8 @@ function handleSaveNotes(ev) {
                     console.log(data);
                     return [3 /*break*/, 4];
                 case 3:
-                    error_3 = _a.sent();
-                    console.log(error_3);
+                    error_4 = _a.sent();
+                    console.log(error_4);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -313,10 +360,14 @@ function renderMembersToSendNewHandouts() {
 function handleSendNewHandouts(event) {
     return __awaiter(this, void 0, void 0, function () {
 <<<<<<< HEAD
+<<<<<<< HEAD
         var availableMembers, userIDArray, nameOfHandout, imgURL, userList, userInputArray, i, userID, error_4;
 =======
         var data, memberDB, availableMembers, userIDArray_1, membersToSendHandoutsArray_1, nameOfHandout, imgURL, userList, userInputArray, i, userID, data, handoutDB, sentHandout, error_2;
 >>>>>>> gili3
+=======
+        var availableMembers, userIDArray, nameOfHandout, imgURL, userList, userInputArray, i, userID, error_5;
+>>>>>>> carmel5
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -350,8 +401,13 @@ function handleSendNewHandouts(event) {
                     console.log(userIDArray);
                     return [3 /*break*/, 3];
                 case 2:
+<<<<<<< HEAD
                     error_4 = _a.sent();
                     console.log(error_4);
+=======
+                    error_5 = _a.sent();
+                    console.log(error_5);
+>>>>>>> carmel5
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
 =======
@@ -382,6 +438,7 @@ function handleSendNewHandouts(event) {
         });
     });
 }
+<<<<<<< HEAD
 function handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray) {
     return __awaiter(this, void 0, void 0, function () {
         var data, sentHandouts;
@@ -445,14 +502,26 @@ function renderMemberToSendExistingHandouts() {
                     _a.trys.push([0, 2, , 3]);
 <<<<<<< HEAD
                     return [4 /*yield*/, getUserFromCookies()];
+=======
+function loadMainPageUser() {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, pageTitle, infoFromDB, roomID, maps, worldMapUrl, currentMapUrl, worldMap, currentMap, error_6;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, getMemberFromCookies()];
+>>>>>>> carmel5
                 case 1:
-                    userDB = _a.sent();
+                    memberDB = _a.sent();
                     pageTitle = document.querySelector('.title');
-                    pageTitle.innerHTML = "Welcome " + userDB.username;
+                    pageTitle.innerHTML = "Welcome " + memberDB.user.username;
                     infoFromDB = document.querySelector('.infoFromDB');
-                    infoFromDB.innerHTML = " \n\t\t\tname:" + userDB.username + "\n\t\t\trole:" + userDB.role;
-                    return [3 /*break*/, 3];
+                    infoFromDB.innerHTML = " \n\t\t\tname:" + memberDB.user.username + "\n\t\t\trole:" + memberDB.role;
+                    roomID = memberDB.room._id;
+                    return [4 /*yield*/, getMapsFromDB(roomID)];
                 case 2:
+<<<<<<< HEAD
                     error_5 = _a.sent();
                     console.error(error_5);
 =======
@@ -475,6 +544,85 @@ function renderMemberToSendExistingHandouts() {
 >>>>>>> gili3
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
+=======
+                    maps = _a.sent();
+                    worldMapUrl = maps.worldMap;
+                    currentMapUrl = maps.currentMap;
+                    worldMap = document.querySelector('.worldMap');
+                    worldMap.innerHTML =
+                        "<div class=\"worldMap\">world map \n\t\t\t\t<form onsubmit=\"handleEditWorldMap(event)\">\n\t\t\t\t\t<input type=\"url\" name=\"worldMapUpload\" >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + worldMapUrl + "\" alt=\"pic of map\">\n        \t</div>";
+                    currentMap = document.querySelector('.currentMap');
+                    currentMap.innerHTML =
+                        "<div class=\"currentMap\">current map\n\t\t\t\t<form onsubmit=\"handleEditCurrentMap(event)\">\n\t\t\t\t\t<input type='url' name='currentMapUpload' >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + currentMapUrl + "\" alt=\"pic of map\">\n       \t\t </div>";
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_6 = _a.sent();
+                    console.error(error_6);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+function handleEditWorldMap(event) {
+    return __awaiter(this, void 0, void 0, function () {
+        var member, roomID, mapUrl, worldMapDiv, data, error_7;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    event.preventDefault();
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 4, , 5]);
+                    return [4 /*yield*/, getMemberFromCookies()];
+                case 2:
+                    member = _a.sent();
+                    roomID = member.room._id;
+                    mapUrl = event.target.worldMapUpload.value;
+                    worldMapDiv = document.querySelector('.worldMap');
+                    worldMapDiv.innerHTML =
+                        "<div class=\"worldMap\">world map \n\t\t\t\t<form onsubmit=\"handleEditWorldMap(event)\">\n\t\t\t\t\t<input type=\"url\" name=\"worldMapUpload\" >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + mapUrl + "\" alt=\"pic of map\">\n        \t</div>";
+                    return [4 /*yield*/, axios.post('/maps/upload-world-map', { mapUrl: mapUrl, roomID: roomID })];
+                case 3:
+                    data = (_a.sent()).data;
+                    return [3 /*break*/, 5];
+                case 4:
+                    error_7 = _a.sent();
+                    console.error(error_7);
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+function handleEditCurrentMap(event) {
+    return __awaiter(this, void 0, void 0, function () {
+        var member, roomID, mapUrl, currentMapDiv, data, error_8;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    event.preventDefault();
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 4, , 5]);
+                    return [4 /*yield*/, getMemberFromCookies()];
+                case 2:
+                    member = _a.sent();
+                    roomID = member.room._id;
+                    mapUrl = event.target.currentMapUpload.value;
+                    currentMapDiv = document.querySelector('.currentMap');
+                    currentMapDiv.innerHTML =
+                        "<div class=\"currentMap\">current map\n\t\t\t\t<form onsubmit=\"handleEditCurrentMap(event)\">\n\t\t\t\t\t<input type='url' name='currentMapUpload' >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + mapUrl + "\" alt=\"pic of map\">\n       \t\t </div>";
+                    return [4 /*yield*/, axios.post('/maps/upload-current-map', { mapUrl: mapUrl, roomID: roomID })];
+                case 3:
+                    data = (_a.sent()).data;
+                    return [3 /*break*/, 5];
+                case 4:
+                    error_8 = _a.sent();
+                    console.error(error_8);
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+>>>>>>> carmel5
             }
         });
     });

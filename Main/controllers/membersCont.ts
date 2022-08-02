@@ -15,6 +15,7 @@ export async function createMember(req, res) {
 		const JWTCookie = jwt.encode(cookie, secret);
 		res.cookie('memberId', JWTCookie);
 		res.send({ success: true, memberDB, roomDB });
+		
 	} catch (error) {
 		res.send({ error: error.message });
 	}
@@ -51,11 +52,12 @@ export async function getMemberFromCookie(req, res) {
 	try {
 		const secret = process.env.JWT_SECRET;
 		if (!secret) throw new Error("couldn't load secret from .env");
-		let { memberId } = req.cookies;
+		const { memberId } = req.cookies;
 		if (!memberId) throw new Error("couldn't get memberID from cookies");
-		const decodedUserId = jwt.decode(memberId, secret);
-		const { memberID } = decodedUserId;
-		const memberDB = await MemberModel.findById(memberID);
+		
+		const decodedMemberId = jwt.decode(memberId, secret);
+		const memberDB = await MemberModel.findById(decodedMemberId.memberID);
+		
 		res.send({ memberDB });
 	} catch (error) {
 		res.send({ error: error.message });

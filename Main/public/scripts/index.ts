@@ -5,11 +5,25 @@ let isWorldMapClicked = false;
 let isCurrentMapClicked = false;
 let isUserInfoClicked = false;
 
+
+async function getUserFromCookies() {
+	try {
+		console.log('loading room cookies');
+		//@ts-ignore
+		const { data } = await axios.get('/users/get-user-from-cookies');
+		const { userDB } = data;
+		return userDB;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
 async function HandleCreateNewRoom(ev: any) {
 	ev.preventDefault();
 	try {
 		const newRoom = ev.target.elements.roomName.value;
 		const newRoomPassword = ev.target.elements.roomPass.value;
+		console.log(newRoom, newRoomPassword)
 		//@ts-ignore
 		const { data } = await axios.post('/room/new-room', { newRoom, newRoomPassword });
 		const { roomDB } = data;
@@ -41,17 +55,7 @@ async function handleCreateMember(roomDB, role) {
 }
 
 
-async function getUserFromCookies() {
-	try {
-		console.log('loading room cookies');
-		//@ts-ignore
-		const { data } = await axios.get('/users/get-user-from-cookies');
-		const { userDB } = data;
-		return userDB;
-	} catch (error) {
-		console.error(error);
-	}
-}
+
 
 async function HandleEnterRoom(ev: any) {
 	ev.preventDefault();
