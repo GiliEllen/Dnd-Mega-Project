@@ -6,8 +6,7 @@ import jwt from 'jwt-simple';
 export async function createMember(req, res) {
 	try {
 		const { roomDB, userDB, role } = req.body;
-		const handouts = [];
-		const member = new MemberModel({ room: roomDB, user: userDB, role, handouts });
+		const member = new MemberModel({ room: roomDB, user: userDB, role });
 		const memberDB = await member.save();
 
 		const cookie = { memberID: memberDB._id };
@@ -16,7 +15,6 @@ export async function createMember(req, res) {
 		const JWTCookie = jwt.encode(cookie, secret);
 		res.cookie('memberId', JWTCookie);
 		res.send({ success: true, memberDB, roomDB });
-		res.send({ memberDB });
 	} catch (error) {
 		res.send({ error: error.message });
 	}
@@ -51,7 +49,6 @@ export async function FindMember(req, res) {
 
 export async function getMemberFromCookie(req, res) {
 	try {
-		console.log(`try to extract member from cookie`);
 		const secret = process.env.JWT_SECRET;
 		if (!secret) throw new Error("couldn't load secret from .env");
 		let { memberId } = req.cookies;
@@ -72,5 +69,51 @@ export async function getAllRoomMembers(req, res) {
 		res.send({ memberArray });
 	} catch (error) {
 		res.send({ error: error.message });
+	}
+}
+
+export async function updateHit(req, res) {
+	try {
+		const { memberDBToUpdate, hitPoints } = req.body;
+		if (!memberDBToUpdate || !hitPoints) throw new Error('missing data from server');
+		const member = await MemberModel.findOne({
+			'user.username': memberDBToUpdate.user.username,
+			'room.name': memberDBToUpdate.room.name
+		});
+		if (!member) throw new Error('member not found');
+		member.hitPoints = hitPoints;
+		const memberDB = await member.save();
+		res.send({ memberDB });
+	} catch (error) {
+		res.send({ error: error.message });
+	}
+}
+
+export async function findMyDm(req, res) {
+	try {
+		const {member} = req.body;
+		if(!member) throw new Error('no info from req.body')
+		const memberDB = await MemberModel.findOne({
+			'room.name': member.room.name, role: "dm"
+		});
+		if(!memberDB) throw new Error('no memberDB found');
+		res.send({memberDB})
+ 	} catch (error) {
+		res.send({error:error.message})
+	}
+}
+
+export async function updateSocketID(req, res) {
+	try {
+		const {socketId, memberDBToUpdate} = req.body;
+		if(!socketId || !memberDBToUpdate) throw new Error('no info from req.body');
+		const member = await MemberModel.findOne({
+			'room.name': memberDBToUpdate.room.name, role: "dm"
+		});
+		member.socketID = socketId;
+		const memberDB = await member.save()
+		res.send({memberDB})
+	} catch (error) {
+		res.send({error:error.message})
 	}
 }

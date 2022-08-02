@@ -34,6 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+<<<<<<< HEAD
 console.log('this is app.ts');
 function getMemberFromCookies() {
     return __awaiter(this, void 0, void 0, function () {
@@ -43,19 +44,52 @@ function getMemberFromCookies() {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, axios.get('/member/get-user-from-cookies')];
+=======
+var _this = this;
+var socket = io();
+var chooseAndSend = document.querySelector('.chooseAndSend');
+var existingHandoutsForm = document.querySelector('#existingHandoutsForm');
+// chooseAndSend.addEventListener('click', () => {
+// 	existingHandoutsForm.style.display = "flex"
+// })
+socket.on('connect', function () {
+    console.log(socket.id);
+});
+socket.on('update', function () { return __awaiter(_this, void 0, void 0, function () {
+    var success;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, renderMembersNamesAndHitPoints()];
+            case 1:
+                success = _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+function findMyDm(member) {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, memberDB;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios.post('/member/findMyDm', { member: member })];
+>>>>>>> gili3
                 case 1:
                     data = (_a.sent()).data;
                     memberDB = data.memberDB;
                     return [2 /*return*/, memberDB];
+<<<<<<< HEAD
                 case 2:
                     error_1 = _a.sent();
                     console.error(error_1);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
+=======
+>>>>>>> gili3
             }
         });
     });
 }
+<<<<<<< HEAD
 function getWorldDataFromDB(roomID) {
     return __awaiter(this, void 0, void 0, function () {
         var data, worldData, error_2;
@@ -76,6 +110,94 @@ function getWorldDataFromDB(roomID) {
             }
         });
     });
+=======
+function loadBody() {
+    renderMembersToSendNewHandouts();
+    renderExistingHandouts();
+    renderMemberToSendExistingHandouts();
+}
+function loadBodyDM() {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDB = _a.sent();
+                    renderDmName(memberDB);
+                    renderMembersNamesAndHitPoints();
+                    sessionStorage.setItem("memberName", "" + memberDB.user.username);
+                    sessionStorage.setItem("memberRole", "" + memberDB.role);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function loadUserMainBody() {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDB = _a.sent();
+                    renderUserName(memberDB);
+                    renderUserOwnHitpoints(memberDB);
+                    sessionStorage.setItem("memberName", "" + memberDB.user.username);
+                    sessionStorage.setItem("memberRole", "" + memberDB.role);
+                    sessionStorage.setItem("memberHitPoints", "" + memberDB.hitPoints);
+                    socket.emit('getUserRole', sessionStorage.getItem("memberRole"));
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderUserOwnHitpoints(memberDB) {
+    return __awaiter(this, void 0, void 0, function () {
+        var userInfoListInfoname, hitPointsNum;
+        return __generator(this, function (_a) {
+            userInfoListInfoname = document.querySelector('.userInfoList__Info__name');
+            userInfoListInfoname.innerHTML = memberDB.user.username;
+            hitPointsNum = document.querySelector('.hitPointsNum');
+            hitPointsNum.innerHTML = memberDB.hitPoints;
+            return [2 /*return*/];
+        });
+    });
+}
+function renderMembersNamesAndHitPoints() {
+    return __awaiter(this, void 0, void 0, function () {
+        var userInfoList, memberArray, html_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    userInfoList = document.querySelector('.userInfoList__users__list');
+                    if (!userInfoList) return [3 /*break*/, 2];
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 1:
+                    memberArray = _a.sent();
+                    console.log(memberArray);
+                    html_1 = '';
+                    memberArray.forEach(function (member) {
+                        if (member.role === 'user') {
+                            html_1 += "<li><div class=\"username\">" + member.user
+                                .username + "</div><div class=\"hitPoints_container\"><div id=\"hitPoints\">" + member.hitPoints + "</div><i class=\"fa-solid fa-heart\"></i></li></div> ";
+                        }
+                    });
+                    userInfoList.innerHTML = html_1;
+                    _a.label = 2;
+                case 2: return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderDmName(memberDB) {
+    var dmName = document.querySelector('#dmName');
+    dmName.innerHTML = "Hello " + memberDB.user.username + "!";
+}
+function renderUserName(memberDB) {
+    var userName = document.querySelector('#userName');
+    userName.innerHTML = "Hello " + memberDB.user.username + "!";
+>>>>>>> gili3
 }
 // function loadBody() {
 // 	// renderButtonsHandoutsLoot(userID);
@@ -151,15 +273,12 @@ function getMemberIDByParams() {
 }
 function handleGetAllMembers() {
     return __awaiter(this, void 0, void 0, function () {
-        var data, memberDB, data, memberArray;
+        var memberDB, data, memberArray;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    console.log("attempting to load members");
-                    return [4 /*yield*/, axios.get('/member/get-member-from-cookie')];
+                case 0: return [4 /*yield*/, getMemberFromCookies()];
                 case 1:
-                    data = (_a.sent()).data;
-                    memberDB = data.memberDB;
+                    memberDB = _a.sent();
                     return [4 /*yield*/, axios.post('/member/getAllRoomMembers', { memberDB: memberDB })];
                 case 2:
                     data = (_a.sent()).data;
@@ -168,10 +287,6 @@ function handleGetAllMembers() {
             }
         });
     });
-}
-function handleCreateAndSendHandouts() {
-    var memberID = getMemberIDByParams();
-    window.location.href = "../views/handoutsDm.html?memberID=" + memberID;
 }
 function renderMembersToSendNewHandouts() {
     return __awaiter(this, void 0, void 0, function () {
@@ -197,25 +312,41 @@ function renderMembersToSendNewHandouts() {
 }
 function handleSendNewHandouts(event) {
     return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
         var availableMembers, userIDArray, nameOfHandout, imgURL, userList, userInputArray, i, userID, error_4;
+=======
+        var data, memberDB, availableMembers, userIDArray_1, membersToSendHandoutsArray_1, nameOfHandout, imgURL, userList, userInputArray, i, userID, data, handoutDB, sentHandout, error_2;
+>>>>>>> gili3
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 3]);
                     event.preventDefault();
-                    console.dir(event);
-                    return [4 /*yield*/, handleGetAllMembers()];
+                    console.log(event);
+                    _a.label = 1;
                 case 1:
+                    _a.trys.push([1, 6, , 7]);
+                    return [4 /*yield*/, axios.get('/member/get-member-from-cookie')];
+                case 2:
+                    data = (_a.sent()).data;
+                    memberDB = data.memberDB;
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 3:
                     availableMembers = _a.sent();
-                    userIDArray = [];
+                    userIDArray_1 = [];
+                    membersToSendHandoutsArray_1 = [];
                     nameOfHandout = event.target.nameOfHandout.value;
                     imgURL = event.target.imgURL.value;
+                    if (!imgURL || !nameOfHandout)
+                        throw new Error('Missing field');
                     userList = document.querySelector('#userList');
                     userInputArray = userList.getElementsByTagName('input');
                     for (i = 0; i < userInputArray.length; i++) {
-                        userID = userInputArray[i].value;
-                        userIDArray.push(userID);
+                        if (userInputArray[i].checked) {
+                            userID = userInputArray[i].value;
+                            userIDArray_1.push(userID);
+                        }
                     }
+<<<<<<< HEAD
                     console.log(userIDArray);
                     return [3 /*break*/, 3];
                 case 2:
@@ -223,17 +354,96 @@ function handleSendNewHandouts(event) {
                     console.log(error_4);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
+=======
+                    if (userIDArray_1.length === 0)
+                        throw new Error('no user chosen');
+                    availableMembers.forEach(function (member) {
+                        userIDArray_1.forEach(function (userId) {
+                            if (member.user._id === userId)
+                                membersToSendHandoutsArray_1.push(member);
+                        });
+                    });
+                    return [4 /*yield*/, axios.post('/handout/create-new-handout', { nameOfHandout: nameOfHandout, imgURL: imgURL, memberDB: memberDB })];
+                case 4:
+                    data = (_a.sent()).data;
+                    handoutDB = data.handoutDB;
+                    return [4 /*yield*/, handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray_1)];
+                case 5:
+                    sentHandout = _a.sent();
+                    if (sentHandout)
+                        console.log("successfully created and sent new handouts to the users");
+                    return [3 /*break*/, 7];
+                case 6:
+                    error_2 = _a.sent();
+                    console.log(error_2);
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
             }
         });
     });
 }
+function handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray) {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, sentHandouts;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios.post('/handout/Linkhandout', { handoutDB: handoutDB, membersToSendHandoutsArray: membersToSendHandoutsArray })];
+                case 1:
+                    data = (_a.sent()).data;
+                    sentHandouts = data.sentHandouts;
+                    console.log(sentHandouts);
+                    if (sentHandouts.length)
+                        return [2 /*return*/, true];
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderExistingHandouts() {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, data, existingHandouts, existinhHandoutsRoot, html_2, error_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDB = _a.sent();
+                    return [4 /*yield*/, axios.post('/handout/find-All-dm-handouts', { memberDB: memberDB })];
+                case 2:
+                    data = (_a.sent()).data;
+                    existingHandouts = data.existingHandouts;
+                    existinhHandoutsRoot = document.querySelector('.existinhHandoutsRoot');
+                    html_2 = '';
+                    existingHandouts.forEach(function (handoutObj) {
+                        html_2 += "<div class=\"handoutCard\"><img src=\"" + handoutObj.url + "\"><h3>" + handoutObj.name + "</h3><input name=\"" + handoutObj.name + "\" type=\"checkbox\" value=\"" + handoutObj._id + "\"> <label for=\"" + handoutObj._id + "\">PICK ME</label></div>";
+                    });
+                    existinhHandoutsRoot.innerHTML = html_2;
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_3 = _a.sent();
+                    console.log(error_3);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+>>>>>>> gili3
+            }
+        });
+    });
+}
+<<<<<<< HEAD
 function loadUserMainPage() {
     return __awaiter(this, void 0, void 0, function () {
         var userDB, pageTitle, infoFromDB, error_5;
+=======
+function renderMemberToSendExistingHandouts() {
+    return __awaiter(this, void 0, void 0, function () {
+        var userListRoot, availableMembers, html_3, error_4;
+>>>>>>> gili3
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
+<<<<<<< HEAD
                     return [4 /*yield*/, getUserFromCookies()];
                 case 1:
                     userDB = _a.sent();
@@ -245,8 +455,156 @@ function loadUserMainPage() {
                 case 2:
                     error_5 = _a.sent();
                     console.error(error_5);
+=======
+                    userListRoot = document.querySelector('#userListRoot');
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 1:
+                    availableMembers = _a.sent();
+                    html_3 = '';
+                    availableMembers.forEach(function (member) {
+                        if (member.role === 'user') {
+                            html_3 += "<input id=\"memberName\" type=\"checkbox\" name=\"" + member.user.username + "\" value=\"" + member.user
+                                ._id + "\">\n\t\t\t\t<label for=\"" + member.user.username + "\">" + member.user.username + "</label>";
+                        }
+                    });
+                    userListRoot.innerHTML = html_3;
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_4 = _a.sent();
+                    console.log(error_4);
+>>>>>>> gili3
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+function getMemberFromCookies() {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, memberDB;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios.get('/member/get-member-from-cookie')];
+                case 1:
+                    data = (_a.sent()).data;
+                    memberDB = data.memberDB;
+                    return [2 /*return*/, memberDB];
+            }
+        });
+    });
+}
+function handleSendExistingHandouts(event) {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, availableMembers, userIDArray_2, membersToSendHandoutsArray_2, userListRoot, userInputArray, i, userID, existinhHandoutsRoot, existinhHandoutsInputArray, existinhHandoutsCheckedIDArray, i, handoutID, data, existingHandouts_1, fullHandoutsToSend_1, error_5;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 4, , 5]);
+                    event.preventDefault();
+                    memberDB = getMemberFromCookies();
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 1:
+                    availableMembers = _a.sent();
+                    userIDArray_2 = [];
+                    membersToSendHandoutsArray_2 = [];
+                    userListRoot = document.querySelector('#userListRoot');
+                    userInputArray = userListRoot.getElementsByTagName('input');
+                    for (i = 0; i < userInputArray.length; i++) {
+                        if (userInputArray[i].checked) {
+                            userID = userInputArray[i].value;
+                            userIDArray_2.push(userID);
+                        }
+                    }
+                    if (userIDArray_2.length === 0)
+                        throw new Error('no user chosen');
+                    availableMembers.forEach(function (member) {
+                        userIDArray_2.forEach(function (userId) {
+                            if (member.user._id === userId)
+                                membersToSendHandoutsArray_2.push(member);
+                        });
+                    });
+                    existinhHandoutsRoot = document.querySelector('#existinhHandoutsRoot');
+                    existinhHandoutsInputArray = existinhHandoutsRoot.getElementsByTagName('input');
+                    existinhHandoutsCheckedIDArray = [];
+                    for (i = 0; i < existinhHandoutsInputArray.length; i++) {
+                        if (existinhHandoutsInputArray[i].checked) {
+                            handoutID = existinhHandoutsInputArray[i].value;
+                            existinhHandoutsCheckedIDArray.push(handoutID);
+                        }
+                    }
+                    return [4 /*yield*/, axios.post('/handout/find-All-dm-handouts', { memberDB: memberDB })];
+                case 2:
+                    data = (_a.sent()).data;
+                    existingHandouts_1 = data.existingHandouts;
+                    fullHandoutsToSend_1 = [];
+                    existinhHandoutsCheckedIDArray.forEach(function (handoutCheckedID) {
+                        existingHandouts_1.forEach(function (handout) {
+                            if (handout._id === handoutCheckedID)
+                                fullHandoutsToSend_1.push(handout);
+                        });
+                    });
+                    return [4 /*yield*/, fullHandoutsToSend_1.forEach(function (handout) {
+                            sendThisHandout(handout, membersToSendHandoutsArray_2);
+                        })];
+                case 3:
+                    _a.sent();
+                    window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
+                    return [3 /*break*/, 5];
+                case 4:
+                    error_5 = _a.sent();
+                    console.log(error_5);
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+function sendThisHandout(handout, membersToSendHandoutsArray) {
+    return __awaiter(this, void 0, void 0, function () {
+        var sentHandout;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, handleLinkMemberAndHandout(handout, membersToSendHandoutsArray)];
+                case 1:
+                    sentHandout = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function handleChangeHitPoints(event) {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDBToUpdate, hitUpdater, hitPoints, data, memberDB, error_6;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    event.preventDefault();
+                    return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDBToUpdate = _a.sent();
+                    if (!memberDBToUpdate)
+                        throw new Error('member not found to update');
+                    hitUpdater = event.target.id;
+                    hitPoints = memberDBToUpdate.hitPoints;
+                    if (hitUpdater === 'up') {
+                        hitPoints++;
+                    }
+                    else if (hitUpdater === 'down') {
+                        hitPoints--;
+                    }
+                    return [4 /*yield*/, axios.post('/member/updateHit', { memberDBToUpdate: memberDBToUpdate, hitPoints: hitPoints })];
+                case 2:
+                    data = (_a.sent()).data;
+                    memberDB = data.memberDB;
+                    renderUserOwnHitpoints(memberDB);
+                    socket.emit('updateHitForUser', true);
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_6 = _a.sent();
+                    console.log(error_6);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });

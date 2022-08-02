@@ -69,7 +69,7 @@ async function HandleEnterRoom(ev: any) {
 			if (memberDB.role === 'dm') {
 				window.location.href = `../views/mainPageDm.html?memberID=${memberDB._id}`;
 			} else if (memberDB.role === 'user') {
-				window.location.href = `../views/mainPageUser.htmlmemberID=${memberDB._id}`;
+				window.location.href = `../views/mainPageUser.html?memberID=${memberDB._id}`;
 			}
 		} else {
 			if (error) handleErrorMember(error);
@@ -82,9 +82,22 @@ async function HandleEnterRoom(ev: any) {
 function handleErrorMember(error) {
 	const roomRoot = document.querySelector('#roomRoot');
 	if (error.includes('Error01')) {
-		roomRoot.innerHTML = `<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2></br><button onclick="handleAddUserToRoom()">Yes</button><button onclick="handleDeleteThis()">Cancel</button>`;
+		const yesRoomNoUser = document.querySelector('.yesRoomNoUser') as HTMLFormElement;
+		yesRoomNoUser.style.display = "inline";
+		const RoomForm = document.querySelector('#RoomForm') as HTMLFormElement;
+		RoomForm.style.display = 'none';
 	} else if (error.includes('Error02')) {
 		roomRoot.innerHTML = "<h2>Passwords don't match, please try again</h2>";
+	}
+}
+function handleDeleteThis(event) {
+	try {
+		const yesRoomNoUser = document.querySelector('.yesRoomNoUser') as HTMLFormElement;
+		yesRoomNoUser.style.display = 'none';
+		const RoomForm = document.querySelector('#RoomForm') as HTMLFormElement;
+		RoomForm.style.display = "flex";
+	} catch (error) {
+		console.log(error)
 	}
 }
 
@@ -129,6 +142,9 @@ async function handleLogin(event: any) {
 	}
 }
 
+async function loadUserMainPage() {
+	try {
+		const userDB = await getUserFromCookies();
 
 
 function handleWorldMapOpen() {
@@ -194,15 +210,17 @@ async function handleUserInfoOpen() {
 }
 
 async function loadRoom() {
-	console.log('loading user cookies');
 	//@ts-ignore
 	const { data } = await axios.get('/users/get-user-from-cookies');
+	console.log(data)
 	const { userDB } = data;
+	console.log(userDB)
 	const roomHeader = document.querySelector('.room_header');
-	roomHeader.innerHTML = `<h1>Hello ${userDB.username}, what would you like to do?</h1>`;
+	roomHeader.innerHTML = `<h1>Hello ${userDB.username}!</h1><h2>what would you like to do?</h2>`;
 }
 
-async function handleAddUserToRoom() {
+async function handleAddUserToRoom(event) {
+	event.preventDefault()
 	console.log('trying to add user to this room')
 	const existingRoominput = document.querySelector('#existingRoomName') as HTMLInputElement;
 	const existingRoom = existingRoominput.value;

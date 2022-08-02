@@ -7,28 +7,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="../styles/dist/handouts.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ef6c5070b7.js" crossorigin="anonymous"></script>
 </head>
 
-<body onload="renderMembersToSendNewHandouts()">
-    <form onsubmit="handleChooseHandouts(event)">
-        <h4>Do you wish to:</h4>
-        <button id="existingHandout" type="submit">Choose existing handout</button>
-        <button id="creatingHandout" type="submit">Create a new handout</button>
-    </form>
-    <form id="newHandoutForm" onsubmit="handleSendNewHandouts(event)">
-        <label for="nameOfHandout">Enter Handout's name:</label>
-        <input name="nameOfHandout" type="text">
-        <label for="imgURL">Enter Handout's image URL:</label>
-        <input name="imgURL" type="url">
-        <label for="userList">Choose users to recive the handout:</label>
-        <div name="userList" class="userList" id="userList"></div>
-        <button type="submit">Send</button>
-    </form>
+<body onload="loadBody()">
+    <div class="session">
+        <div class="session__header">
+            <i class="fa-solid fa-book"></i><h1>DM Handouts</h1>
+        </div>
+        <div class="createAndSend box">
+            <div class="header">
+                <i class="fa-solid fa-pen"></i>
+                <h3>Create And Send New</h3>
+            </div>
+            <form id="newHandoutForm" onsubmit="handleSendNewHandouts(event)">
+                <label for="nameOfHandout">Enter Handout's name:</label>
+                <input name="nameOfHandout" type="text">
+                <label for="imgURL">Enter Handout's image URL:</label>
+                <input name="imgURL" type="url">
+                <label for="userList">Choose users to recive the handout:</label>
+                <div name="userList" class="userList" id="userList"></div>
+                <button type="submit">Send</button>
+            </form>
+        </div>
 
-    <div class="root" id="root"></div>
+        <div class="chooseAndSend box">
+            <div class="header">
+                <i class="fa-solid fa-share"></i>
+                <h3>Choose And Send Exisiting</h3>
+            </div>
+            <form id="existingHandoutsForm" onsubmit="handleSendExistingHandouts(event)">
+                <div id="existinhHandoutsRoot" class="existinhHandoutsRoot"></div>
+                <label for="userListRoot">Choose users to recive the handout:</label>
+                <div name="userListRoot" class="userList" id="userListRoot"></div>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+        <div class="root" id="root"></div>
+    </div>
+
+<script src="/socket.io/socket.io.js"></script>
     <script src="../scripts/dist/app.js"></script>
-
 </body>
 
 </html>

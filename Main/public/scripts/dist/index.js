@@ -150,7 +150,7 @@ function HandleEnterRoom(ev) {
                             window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
                         }
                         else if (memberDB.role === 'user') {
-                            window.location.href = "../views/mainPageUser.htmlmemberID=" + memberDB._id;
+                            window.location.href = "../views/mainPageUser.html?memberID=" + memberDB._id;
                         }
                     }
                     else {
@@ -170,10 +170,24 @@ function HandleEnterRoom(ev) {
 function handleErrorMember(error) {
     var roomRoot = document.querySelector('#roomRoot');
     if (error.includes('Error01')) {
-        roomRoot.innerHTML = "<h2>It Seems this room does not contain this user </br> do you wish to add this user to this room?</h2></br><button onclick=\"handleAddUserToRoom()\">Yes</button><button onclick=\"handleDeleteThis()\">Cancel</button>";
+        var yesRoomNoUser = document.querySelector('.yesRoomNoUser');
+        yesRoomNoUser.style.display = "inline";
+        var RoomForm = document.querySelector('#RoomForm');
+        RoomForm.style.display = 'none';
     }
     else if (error.includes('Error02')) {
         roomRoot.innerHTML = "<h2>Passwords don't match, please try again</h2>";
+    }
+}
+function handleDeleteThis(event) {
+    try {
+        var yesRoomNoUser = document.querySelector('.yesRoomNoUser');
+        yesRoomNoUser.style.display = 'none';
+        var RoomForm = document.querySelector('#RoomForm');
+        RoomForm.style.display = "flex";
+    }
+    catch (error) {
+        console.log(error);
     }
 }
 function handleRegister(event) {
@@ -321,25 +335,26 @@ function loadRoom() {
         var data, userDB, roomHeader;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    console.log('loading user cookies');
-                    return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
+                case 0: return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
                 case 1:
                     data = (_a.sent()).data;
+                    console.log(data);
                     userDB = data.userDB;
+                    console.log(userDB);
                     roomHeader = document.querySelector('.room_header');
-                    roomHeader.innerHTML = "<h1>Hello " + userDB.username + ", what would you like to do?</h1>";
+                    roomHeader.innerHTML = "<h1>Hello " + userDB.username + "!</h1><h2>what would you like to do?</h2>";
                     return [2 /*return*/];
             }
         });
     });
 }
-function handleAddUserToRoom() {
+function handleAddUserToRoom(event) {
     return __awaiter(this, void 0, void 0, function () {
         var existingRoominput, existingRoom, data, roomDB, role;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    event.preventDefault();
                     console.log('trying to add user to this room');
                     existingRoominput = document.querySelector('#existingRoomName');
                     existingRoom = existingRoominput.value;

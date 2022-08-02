@@ -36,20 +36,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getAllRoomMembers = exports.getMemberFromCookie = exports.FindMember = exports.createMember = void 0;
+exports.updateSocketID = exports.findMyDm = exports.updateHit = exports.getAllRoomMembers = exports.getMemberFromCookie = exports.FindMember = exports.createMember = void 0;
 var roomModel_1 = require("./../models/roomModel");
 var memberModel_1 = require("../models/memberModel");
 var jwt_simple_1 = require("jwt-simple");
 function createMember(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, roomDB, userDB, role, handouts, member, memberDB, cookie, secret, JWTCookie, error_1;
+        var _a, roomDB, userDB, role, member, memberDB, cookie, secret, JWTCookie, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
                     _a = req.body, roomDB = _a.roomDB, userDB = _a.userDB, role = _a.role;
-                    handouts = [];
-                    member = new memberModel_1["default"]({ room: roomDB, user: userDB, role: role, handouts: handouts });
+                    member = new memberModel_1["default"]({ room: roomDB, user: userDB, role: role });
                     return [4 /*yield*/, member.save()];
                 case 1:
                     memberDB = _b.sent();
@@ -60,7 +59,6 @@ function createMember(req, res) {
                     JWTCookie = jwt_simple_1["default"].encode(cookie, secret);
                     res.cookie('memberId', JWTCookie);
                     res.send({ success: true, memberDB: memberDB, roomDB: roomDB });
-                    res.send({ memberDB: memberDB });
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _b.sent();
@@ -126,9 +124,12 @@ function getMemberFromCookie(req, res) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
 <<<<<<< HEAD
+<<<<<<< HEAD
                     console.log("try to extract member from cookie");
 =======
 >>>>>>> carmel4
+=======
+>>>>>>> gili3
                     secret = process.env.JWT_SECRET;
                     if (!secret)
                         throw new Error("couldn't load secret from .env");
@@ -183,3 +184,97 @@ function getAllRoomMembers(req, res) {
     });
 }
 exports.getAllRoomMembers = getAllRoomMembers;
+function updateHit(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, memberDBToUpdate, hitPoints, member, memberDB, error_5;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 3, , 4]);
+                    _a = req.body, memberDBToUpdate = _a.memberDBToUpdate, hitPoints = _a.hitPoints;
+                    if (!memberDBToUpdate || !hitPoints)
+                        throw new Error('missing data from server');
+                    return [4 /*yield*/, memberModel_1["default"].findOne({
+                            'user.username': memberDBToUpdate.user.username,
+                            'room.name': memberDBToUpdate.room.name
+                        })];
+                case 1:
+                    member = _b.sent();
+                    if (!member)
+                        throw new Error('member not found');
+                    member.hitPoints = hitPoints;
+                    return [4 /*yield*/, member.save()];
+                case 2:
+                    memberDB = _b.sent();
+                    res.send({ memberDB: memberDB });
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_5 = _b.sent();
+                    res.send({ error: error_5.message });
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.updateHit = updateHit;
+function findMyDm(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var member, memberDB, error_6;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    member = req.body.member;
+                    if (!member)
+                        throw new Error('no info from req.body');
+                    return [4 /*yield*/, memberModel_1["default"].findOne({
+                            'room.name': member.room.name, role: "dm"
+                        })];
+                case 1:
+                    memberDB = _a.sent();
+                    if (!memberDB)
+                        throw new Error('no memberDB found');
+                    res.send({ memberDB: memberDB });
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_6 = _a.sent();
+                    res.send({ error: error_6.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.findMyDm = findMyDm;
+function updateSocketID(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, socketId, memberDBToUpdate, member, memberDB, error_7;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 3, , 4]);
+                    _a = req.body, socketId = _a.socketId, memberDBToUpdate = _a.memberDBToUpdate;
+                    if (!socketId || !memberDBToUpdate)
+                        throw new Error('no info from req.body');
+                    return [4 /*yield*/, memberModel_1["default"].findOne({
+                            'room.name': memberDBToUpdate.room.name, role: "dm"
+                        })];
+                case 1:
+                    member = _b.sent();
+                    member.socketID = socketId;
+                    return [4 /*yield*/, member.save()];
+                case 2:
+                    memberDB = _b.sent();
+                    res.send({ memberDB: memberDB });
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_7 = _b.sent();
+                    res.send({ error: error_7.message });
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.updateSocketID = updateSocketID;

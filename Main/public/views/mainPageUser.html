@@ -1,25 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="dist/style.css">
-    <title>Document</title>
+    <title>User Home</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="../styles/dist/mainPageDm.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ef6c5070b7.js" crossorigin="anonymous"></script>
 </head>
-<body onload = "loadUserMainPage()">
-    <div class="rapper">
-        <div class="title">home</div>
+
+<body onload="loadUserMainBody()">
+    <div class="session">
+        <div class="session__headers">
+            <h1 id="userName">Hello USER</h1>
+            <h2>You Are One Of This Room Players</h2>
+        </div>
+        <div class="session__contents">
+            <div class="userInfoList">
+                <div class="userInfoList__Info">
+                    <div class="userInfoList__Info__name"></div>
+                    <div class="userInfoList__Info__HitContainer">
+                        <form onclick="handleChangeHitPoints(event)">
+                            <div class="hitControllers">
+                                <i id="up" class="fa-solid fa-angle-up"></i>
+                                <i id="down" class="fa-solid fa-angle-down"></i>
+                            </div>
+                            <div class="hitPointsNum"></div>
+                            <i class="fa-solid fa-heart"></i>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="worldMap grid_item">
+                <i class="fa-solid fa-map"></i>
+                <h4>World Map</h4>
+            </div>
+            <div class="currentMap grid_item">
+                <i class="fa-solid fa-map-location"></i>
+                <h4>Current Map</h4>
+            </div>
+
+            <a href="./handoutsDm.html">
+                <div class="Handouts grid_item" id="buttonContainer">
+                    <i class="fa-solid fa-book"></i>
+                    <h4>Handouts</h4>
+                </div>
+            </a>
+            <a href="./lootDm.html">
+                <div class="Loot grid_item" id="">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <h4>Loot</h4>
+                </div>
+            </a>
+            <!-- <label for="infoDump">Write here your notes:</label> -->
+            <!-- <form onsubmit="handleSaveNotes(event)">
+                <input type="text" name="infoDump" id="infoDump">
+                <button type="submit">Save</button>
+            </form> -->
+        </div>
+        <!-- 
         <div class="maps">
-            <div onclick="handleWorldMapOpen()" class="worldMap">world map </div>
-            <div onclick="handleCurrentMapOpen()" class="currentMap">current map</div>
+            <div onclick="handleWorldMapOpen()" class="worldMap">
+                <i class="fa-solid fa-map"></i>
+                <h3>World Map</h3>
+            </div>
+            <div onclick="handleCurrentMapOpen()" class="currentMap">
+                <i class="fa-solid fa-map-location"></i>
+                <h3>current Map</h3>
+            </div>
         </div>
-        <div class="userInfo" onclick="handleUserInfoOpen()">
+        <form onsubmit="handleChangeHitPoints(event)">
             <h3>user info</h3>
-            <div class="infoFromDB"></div>
-        </div>
+            <div class="userInfo">
+                <input name="hitInput" type="number">
+            </div>
+            <button type="submit">Click Here To update hit</button>
+        </form> -->
     </div>
-    <script src="../scripts/dist/index.js"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../scripts/dist/app.js"></script>
 </body>
+
 </html>

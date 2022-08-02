@@ -1,30 +1,44 @@
-import express from "express";
-import mongoose from "mongoose";
+import express from 'express';
+import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
 
-require('dotenv').config()
+const { createServer } = require('http');
+const { Server } = require('socket.io');
+const app = express();
+const httpServer = createServer(app);
+const cors = require('cors');
+const io = new Server(httpServer);
+
+require('dotenv').config();
 
 app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.json());
+app.use(cors());
 
 const mongodb_uri = process.env.MONGODB_URI;
 
-mongoose.connect(mongodb_uri).then(res => {
-  console.log("Connected to DB");
-}).catch(err => {
-  console.log('At mongoose.connect:')
-  console.error(err.message)
+mongoose
+	.connect(mongodb_uri)
+	.then((res) => {
+		console.log('Connected to DB');
+	})
+	.catch((err) => {
+		console.log('At mongoose.connect:');
+		console.error(err.message);
+	});
+
+httpServer.listen(3000, () => {
+	console.log('listening on *:3000');
 });
 
-server.listen(3000, () => {
-  console.log('listening on *:3000');
+io.on('connection', (socket) => {
+  socket.on('updateHitForUser', (boleen) => {
+    if(boleen) io.emit('update')
+  })
 });
+
+// io.listen(3000);
 
 import usersRoutes from './routes/usersRoutes';
 app.use('/users', usersRoutes);
@@ -35,3 +49,8 @@ app.use('/room', roomRoutes);
 import memberRoutes from './routes/membersRoutes';
 app.use('/member', memberRoutes);
 
+import handoutRoutes from './routes/handoutsRoutes';
+import MemberModel from './models/memberModel';
+import UserModel from './models/usersModel';
+import { string } from 'joi';
+app.use('/handout', handoutRoutes);
