@@ -202,7 +202,7 @@ async function handleSendNewHandouts(event) {
 		const { data } = await axios.post('/handout/create-new-handout', { nameOfHandout, imgURL, memberDB });
 		const { handoutDB } = data;
 		const sentHandout = await handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray);
-		 window.location.href = "../views/mainPageDm.html?memberID=${memberDB._id}";
+		window.location.href = '../views/mainPageDm.html?memberID=${memberDB._id}';
 	} catch (error) {
 		console.log(error);
 	}
@@ -343,7 +343,7 @@ async function loadUserMainPage() {
 		// const pageTitle: HTMLElement = document.querySelector('.title');
 		// pageTitle.innerHTML = `Welcome ${memberDB.user.username}`;
 		// const infoFromDB: HTMLDivElement = document.querySelector('.infoFromDB');
-		// infoFromDB.innerHTML = ` 
+		// infoFromDB.innerHTML = `
 		// 	name:${memberDB.user.username}
 		// 	role:${memberDB.role}`;
 		// const roomID = memberDB.room._id;
@@ -351,13 +351,13 @@ async function loadUserMainPage() {
 		// const worldMapUrl = maps.worldMap;
 		// const currentMapUrl = maps.currentMap;
 		// const worldMap: HTMLDivElement = document.querySelector('.worldMap');
-		// worldMap.innerHTML = `<div class="worldMap">world map 
+		// worldMap.innerHTML = `<div class="worldMap">world map
 		// 		<form onsubmit="handleEditWorldMap(event)">
 		// 			<input type="url" name="worldMapUpload" >
 		// 			<button type="submit"> Upload a New Map</button>
 		// 		</form>
 		// 		<img src="${worldMapUrl}" alt="pic of map">
-        // 	</div>`;
+		// 	</div>`;
 		// const currentMap: HTMLDivElement = document.querySelector('.currentMap');
 		// currentMap.innerHTML = `<div class="currentMap">current map
 		// 		<form onsubmit="handleEditCurrentMap(event)">
@@ -365,7 +365,7 @@ async function loadUserMainPage() {
 		// 			<button type="submit"> Upload a New Map</button>
 		// 		</form>
 		// 		<img src="${currentMapUrl}" alt="pic of map">
-       	// 	 </div>`;
+		// 	 </div>`;
 	} catch (error) {
 		console.error(error);
 	}
@@ -411,4 +411,25 @@ async function handleEditCurrentMap(event) {
 	} catch (error) {
 		console.error(error);
 	}
+}
+
+async function loadUserHandoutBody(){
+	await renderUserHandout();
+}
+
+async function renderUserHandout() {
+	const memberDB = await getMemberFromCookies();
+	const userHandouts = document.querySelector('#userHandouts');
+	//@ts-ignore
+	const { data } = await axios.post('/handout/find-All-dm-handouts', { memberDB });
+	const { existingHandouts } = data;
+
+	let html = '';
+		existingHandouts.forEach((handoutObj) => {
+			html += `<div class="handoutCard">
+						<h3>${handoutObj.name}</h3>
+						<img src="${handoutObj.url}">
+			</div>`;
+		});
+		userHandouts.innerHTML = html;
 }

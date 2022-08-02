@@ -122,6 +122,18 @@ body {
 .session .createAndSend .existinhHandoutsRoot .handoutCard img, .session .chooseAndSend .existinhHandoutsRoot .handoutCard img {
   width: 100%;
 }
+.session__userHandouts {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.session__userHandouts .handoutCard {
+  width: 300px;
+  height: 400px;
+}
+.session__userHandouts .handoutCard img {
+  width: 80%;
+}
 
 #newHandoutForm, #existingHandoutsForm {
   width: 100%;

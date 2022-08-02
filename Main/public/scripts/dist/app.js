@@ -324,7 +324,7 @@ function handleSendNewHandouts(event) {
                     return [4 /*yield*/, handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray_1)];
                 case 5:
                     sentHandout = _a.sent();
-                    window.location.href = "../views/mainPageDm.html?memberID=${memberDB._id}";
+                    window.location.href = '../views/mainPageDm.html?memberID=${memberDB._id}';
                     return [3 /*break*/, 7];
                 case 6:
                     error_5 = _a.sent();
@@ -609,6 +609,41 @@ function handleEditCurrentMap(event) {
                     console.error(error_12);
                     return [3 /*break*/, 5];
                 case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+function loadUserHandoutBody() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, renderUserHandout()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderUserHandout() {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, userHandouts, data, existingHandouts, html;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDB = _a.sent();
+                    userHandouts = document.querySelector('#userHandouts');
+                    return [4 /*yield*/, axios.post('/handout/find-All-dm-handouts', { memberDB: memberDB })];
+                case 2:
+                    data = (_a.sent()).data;
+                    existingHandouts = data.existingHandouts;
+                    html = '';
+                    existingHandouts.forEach(function (handoutObj) {
+                        html += "<div class=\"handoutCard\">\n\t\t\t\t\t\t<h3>" + handoutObj.name + "</h3>\n\t\t\t\t\t\t<img src=\"" + handoutObj.url + "\">\n\t\t\t</div>";
+                    });
+                    userHandouts.innerHTML = html;
+                    return [2 /*return*/];
             }
         });
     });
