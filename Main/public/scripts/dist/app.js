@@ -341,8 +341,7 @@ function handleSendNewHandouts(event) {
                     return [4 /*yield*/, handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray_1)];
                 case 5:
                     sentHandout = _a.sent();
-                    if (sentHandout)
-                        console.log("successfully created and sent new handouts to the users");
+                    window.location.href = "../views/mainPageDm.html?memberID=${memberDB._id}";
                     return [3 /*break*/, 7];
                 case 6:
                     error_5 = _a.sent();
@@ -363,8 +362,6 @@ function handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray) {
                     data = (_a.sent()).data;
                     sentHandouts = data.sentHandouts;
                     console.log(sentHandouts);
-                    if (sentHandouts.length)
-                        return [2 /*return*/, true];
                     return [2 /*return*/];
             }
         });

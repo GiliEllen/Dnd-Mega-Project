@@ -208,7 +208,7 @@ async function handleSendNewHandouts(event) {
 		const { data } = await axios.post('/handout/create-new-handout', { nameOfHandout, imgURL, memberDB });
 		const { handoutDB } = data;
 		const sentHandout = await handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray);
-		if (sentHandout) console.log(`successfully created and sent new handouts to the users`);
+		 window.location.href = "../views/mainPageDm.html?memberID=${memberDB._id}";
 	} catch (error) {
 		console.log(error);
 	}
@@ -219,7 +219,6 @@ async function handleLinkMemberAndHandout(handoutDB, membersToSendHandoutsArray)
 	const { data } = await axios.post('/handout/Linkhandout', { handoutDB, membersToSendHandoutsArray });
 	const { sentHandouts } = data;
 	console.log(sentHandouts);
-	if (sentHandouts.length) return true;
 }
 
 async function renderExistingHandouts() {
