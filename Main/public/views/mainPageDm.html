@@ -18,29 +18,13 @@
     <script src="https://kit.fontawesome.com/ef6c5070b7.js" crossorigin="anonymous"></script>
 </head>
 
-<body onload="loadBodyDM()">
+<body onload="loadMainPageDM()">
+    
     <div class="session">
         <div class="session__headers">
             <h1 id="dmName">Hello USER</h1>
             <h2>You Are The Dm In This Room</h2>
         </div>
-<body onload="loadMainPageDM()">
-    <div class="title">home</div>
-    <div class="maps">
-        <div class="worldMap">world map 
-            <form onsubmit="handleEditWorldMap(event)">
-                <input type="url" name="worldMapUpload" >
-                <button type="submit"> Upload a New Map</button>
-            </form>
-            
-        </div>
-        <div class="currentMap">current map
-            <form onsubmit="handleEditCurrentMap(event)">
-                <input type='url' name='currentMapUpload' >
-                <button type="submit"> Upload a New Map</button>
-            </form>
-        </div>
-    </div>
 
         <div class="session__contents">
             <div class="userInfoList">
@@ -53,13 +37,22 @@
                     </ul>
                 </div>
             </div>
-            <div class="worldMap grid_item">
+            <div class="worldMap grid_item"> 
                 <i class="fa-solid fa-map"></i>
                 <h4>World Map</h4>
+                <form onsubmit="handleEditWorldMap(event)">
+                    <input type="url" name="worldMapUpload" >
+                    <button type="submit"> Upload a New Map</button>
+                </form> 
             </div>
+
             <div class="currentMap grid_item">
                 <i class="fa-solid fa-map-location"></i>
                 <h4>Current Map</h4>
+                <form onsubmit="handleEditCurrentMap(event)">
+                    <input type='url' name='currentMapUpload' >
+                    <button type="submit"> Upload a New Map</button>
+                </form>
             </div>
 
             <a href="./handoutsDm.html">

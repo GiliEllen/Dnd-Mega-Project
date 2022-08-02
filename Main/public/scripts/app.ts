@@ -1,23 +1,54 @@
+//@ts-ignore
 const socket = io();
 
 async function getMemberFromCookies() {
 	try {
 		//@ts-ignore
 		const { data } = await axios.get('/member/get-member-from-cookie');
-		const {  memberDB  } = data;
-		return  memberDB ;
+		const { memberDB } = data;
+		return memberDB;
 	} catch (error) {
 		console.error(error);
 	}
-	
 }
-async function loadBodyDM() {
-	const memberDB = await getMemberFromCookies();
-	renderDmName(memberDB);
-	renderMembersNamesAndHitPoints();
-	sessionStorage.setItem(`memberName`, `${memberDB.user.username}`);
-	sessionStorage.setItem(`memberRole`, `${memberDB.role}`);
-	// socket.emit('dmID', socket.id, "this is id from dm");
+// async function loadBodyDM() {
+// 	const memberDB = await getMemberFromCookies();
+
+// 	// socket.emit('dmID', socket.id, "this is id from dm");
+// }
+
+async function loadMainPageDM() {
+	// renderButtonsHandoutsLoot(userID);
+	try {
+		console.log('helo');
+		const memberDB = await getMemberFromCookies();
+		renderDmName(memberDB);
+		renderMembersNamesAndHitPoints();
+		sessionStorage.setItem(`memberName`, `${memberDB.user.username}`);
+		sessionStorage.setItem(`memberRole`, `${memberDB.role}`);
+		const memberRoom = memberDB.room._id;
+		const worldData = await getMapsFromDB(memberRoom);
+		const worldMapUrl = worldData.worldMap;
+		const worldMapDiv: HTMLDivElement = document.querySelector('.worldMap');
+		worldMapDiv.innerHTML = `<div class="worldMap">world map 
+				<form onsubmit="handleEditWorldMap(event)">
+					<input type="url" name="worldMapUpload" >
+					<button type="submit"> Upload a New Map</button>
+				</form>
+				<img src="${worldMapUrl}" alt="pic of map">
+        	</div>`;
+		const currentMapUrl = worldData.currentMap;
+		const currentMapDiv: HTMLDivElement = document.querySelector('.currentMap');
+		currentMapDiv.innerHTML = `<div class="currentMap">current map
+				<form onsubmit="handleEditCurrentMap(event)">
+					<input type='url' name='currentMapUpload' >
+					<button type="submit"> Upload a New Map</button>
+				</form>
+				<img src="${currentMapUrl}" alt="pic of map">
+       		 </div>`;
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 async function loadUserMainBody() {
@@ -28,12 +59,14 @@ async function loadUserMainBody() {
 	sessionStorage.setItem(`memberRole`, `${memberDB.role}`);
 	sessionStorage.setItem(`memberHitPoints`, `${memberDB.hitPoints}`);
 	socket.emit('getUserRole', sessionStorage.getItem(`memberRole`));
-async function getMapsFromDB(memberRoom:string) {
-	try{
+}
+
+async function getMapsFromDB(memberRoom: string) {
+	try {
 		//@ts-ignore
-		const { data } = await axios.post('/maps/get-room-map', {memberRoom})
+		const { data } = await axios.post('/maps/get-room-map', { memberRoom });
 		const { maps } = data;
-		return maps
+		return maps;
 	} catch (error) {
 		console.error(error);
 	}
@@ -59,35 +92,6 @@ async function renderMembersNamesAndHitPoints() {
 			}
 		});
 		userInfoList.innerHTML = html;
-async function loadMainPageDM() {
-	// renderButtonsHandoutsLoot(userID);
-	try {
-		console.log('helo')
-		const memberDB = await getMemberFromCookies();
-		const memberRoom = memberDB.room._id
-		const worldData = await getMapsFromDB(memberRoom)
-		const worldMapUrl = worldData.worldMap
-		const worldMapDiv:HTMLDivElement = document.querySelector('.worldMap')
-		worldMapDiv.innerHTML = 
-			`<div class="worldMap">world map 
-				<form onsubmit="handleEditWorldMap(event)">
-					<input type="url" name="worldMapUpload" >
-					<button type="submit"> Upload a New Map</button>
-				</form>
-				<img src="${worldMapUrl}" alt="pic of map">
-        	</div>`
-		const currentMapUrl = worldData.currentMap
-		const currentMapDiv:HTMLDivElement = document.querySelector('.currentMap')
-		currentMapDiv.innerHTML = 
-			`<div class="currentMap">current map
-				<form onsubmit="handleEditCurrentMap(event)">
-					<input type='url' name='currentMapUpload' >
-					<button type="submit"> Upload a New Map</button>
-				</form>
-				<img src="${currentMapUrl}" alt="pic of map">
-       		 </div>`
-	} catch (error) {
-		console.error(error)
 	}
 }
 
@@ -252,18 +256,11 @@ async function renderMemberToSendExistingHandouts() {
 	}
 }
 
-async function getMemberFromCookies() {
-	//@ts-ignore
-	const { data } = await axios.get('/member/get-member-from-cookie');
-	const { memberDB } = data;
-	return memberDB;
-}
-
 async function handleSendExistingHandouts(event) {
 	try {
 		event.preventDefault();
 		//@ts-ignore
-		const memberDB = getMemberFromCookies();
+		const memberDB = await getMemberFromCookies();
 		const availableMembers = await handleGetAllMembers();
 		const userIDArray = [];
 		const membersToSendHandoutsArray = [];
@@ -324,6 +321,7 @@ async function handleChangeHitPoints(event) {
 		} else if (hitUpdater === 'down') {
 			hitPoints--;
 		}
+		//@ts-ignore
 		const { data } = await axios.post('/member/updateHit', { memberDBToUpdate, hitPoints });
 		const { memberDB } = data;
 		renderUserOwnHitpoints(memberDB);
@@ -334,9 +332,7 @@ async function handleChangeHitPoints(event) {
 	}
 }
 
-
 async function loadUserMainPage() {
-async function loadMainPageUser() {
 	try {
 		const memberDB = await getMemberFromCookies();
 		const pageTitle: HTMLElement = document.querySelector('.title');
@@ -345,75 +341,69 @@ async function loadMainPageUser() {
 		infoFromDB.innerHTML = ` 
 			name:${memberDB.user.username}
 			role:${memberDB.role}`;
-		const roomID = memberDB.room._id
+		const roomID = memberDB.room._id;
 		const maps = await getMapsFromDB(roomID);
-		const worldMapUrl = maps.worldMap
-		const currentMapUrl = maps.currentMap
-		const worldMap: HTMLDivElement = document.querySelector('.worldMap')
-		worldMap.innerHTML = 
-			`<div class="worldMap">world map 
+		const worldMapUrl = maps.worldMap;
+		const currentMapUrl = maps.currentMap;
+		const worldMap: HTMLDivElement = document.querySelector('.worldMap');
+		worldMap.innerHTML = `<div class="worldMap">world map 
 				<form onsubmit="handleEditWorldMap(event)">
 					<input type="url" name="worldMapUpload" >
 					<button type="submit"> Upload a New Map</button>
 				</form>
 				<img src="${worldMapUrl}" alt="pic of map">
-        	</div>`
-		const currentMap: HTMLDivElement = document.querySelector('.currentMap')
-		currentMap.innerHTML = 
-			`<div class="currentMap">current map
+        	</div>`;
+		const currentMap: HTMLDivElement = document.querySelector('.currentMap');
+		currentMap.innerHTML = `<div class="currentMap">current map
 				<form onsubmit="handleEditCurrentMap(event)">
 					<input type='url' name='currentMapUpload' >
 					<button type="submit"> Upload a New Map</button>
 				</form>
 				<img src="${currentMapUrl}" alt="pic of map">
-       		 </div>`
+       		 </div>`;
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-async function handleEditWorldMap(event){
+async function handleEditWorldMap(event) {
 	event.preventDefault();
-	try{
-		const member = await getMemberFromCookies()
-		const roomID = member.room._id
-		const mapUrl = event.target.worldMapUpload.value
-		const worldMapDiv:HTMLDivElement = document.querySelector('.worldMap')
-		worldMapDiv.innerHTML = 
-			`<div class="worldMap">world map 
+	try {
+		const member = await getMemberFromCookies();
+		const roomID = member.room._id;
+		const mapUrl = event.target.worldMapUpload.value;
+		const worldMapDiv: HTMLDivElement = document.querySelector('.worldMap');
+		worldMapDiv.innerHTML = `<div class="worldMap">world map 
 				<form onsubmit="handleEditWorldMap(event)">
 					<input type="url" name="worldMapUpload" >
 					<button type="submit"> Upload a New Map</button>
 				</form>
 				<img src="${mapUrl}" alt="pic of map">
-        	</div>`
+        	</div>`;
 		//@ts-ignore
-		const { data } = await axios.post('/maps/upload-world-map', {mapUrl, roomID} )
-	}
-	catch(error){
-		console.error(error)
+		const { data } = await axios.post('/maps/upload-world-map', { mapUrl, roomID });
+	} catch (error) {
+		console.error(error);
 	}
 }
 
 async function handleEditCurrentMap(event) {
 	event.preventDefault();
-	try{
-		const member = await getMemberFromCookies()
-		const roomID = member.room._id
-		const mapUrl = event.target.currentMapUpload.value
-		const currentMapDiv:HTMLDivElement = document.querySelector('.currentMap')
-		currentMapDiv.innerHTML = 
-			`<div class="currentMap">current map
+	try {
+		const member = await getMemberFromCookies();
+		const roomID = member.room._id;
+		const mapUrl = event.target.currentMapUpload.value;
+		const currentMapDiv: HTMLDivElement = document.querySelector('.currentMap');
+		currentMapDiv.innerHTML = `<div class="currentMap">current map
 				<form onsubmit="handleEditCurrentMap(event)">
 					<input type='url' name='currentMapUpload' >
 					<button type="submit"> Upload a New Map</button>
 				</form>
 				<img src="${mapUrl}" alt="pic of map">
-       		 </div>`
+       		 </div>`;
 		//@ts-ignore
-		const { data } = await axios.post('/maps/upload-current-map', {mapUrl, roomID} )
-	}
-	catch(error){
-		console.error(error)
+		const { data } = await axios.post('/maps/upload-current-map', { mapUrl, roomID });
+	} catch (error) {
+		console.error(error);
 	}
 }

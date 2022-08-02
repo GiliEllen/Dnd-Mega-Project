@@ -260,6 +260,9 @@ function handleLogin(event) {
         });
     });
 }
+// async function loadUserMainPage() {
+// 	try {
+// 		const userDB = await getUserFromCookies();
 function handleWorldMapOpen() {
     try {
         var worldMap = document.querySelector('.worldMap');

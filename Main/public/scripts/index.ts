@@ -146,9 +146,9 @@ async function handleLogin(event: any) {
 	}
 }
 
-async function loadUserMainPage() {
-	try {
-		const userDB = await getUserFromCookies();
+// async function loadUserMainPage() {
+// 	try {
+// 		const userDB = await getUserFromCookies();
 
 
 function handleWorldMapOpen() {
