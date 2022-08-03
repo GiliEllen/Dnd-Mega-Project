@@ -107,8 +107,16 @@ function loadMainPageDM() {
         });
     });
 }
-// async function loadUserMainPage() {
-// }
+function loadBodyDMLoot() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            renderMembersToSendNewLoot();
+            renderExistingLoot();
+            renderMemberToSendExistingLoot();
+            return [2 /*return*/];
+        });
+    });
+}
 function getMapsFromDB(memberRoom) {
     return __awaiter(this, void 0, void 0, function () {
         var data, maps, error_3;
@@ -643,6 +651,240 @@ function renderUserHandout() {
                         html += "<div class=\"handoutCard\">\n\t\t\t\t\t\t<h3>" + handoutObj.name + "</h3>\n\t\t\t\t\t\t<img src=\"" + handoutObj.url + "\">\n\t\t\t</div>";
                     });
                     userHandouts.innerHTML = html;
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderMembersToSendNewLoot() {
+    return __awaiter(this, void 0, void 0, function () {
+        var userListNewLoot, availableMembers, html;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    userListNewLoot = document.querySelector('#userListNewLoot');
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 1:
+                    availableMembers = _a.sent();
+                    html = '';
+                    availableMembers.forEach(function (member) {
+                        if (member.role === 'user') {
+                            html += "<input type=\"checkbox\" name=\"" + member.user.username + "\" value=\"" + member.user._id + "\">\n\t\t\t<label for=\"" + member.user.username + "\">" + member.user.username + "</label>";
+                        }
+                    });
+                    userListNewLoot.innerHTML = html;
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function handleSendNewLoot(event) {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, memberDB, availableMembers, userIDArray_3, membersToSendLootArray_1, nameOfLoot, imgURL, userListNewLoot, userInputArray, i, userID, data, lootDB, sentLoot, error_13;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    event.preventDefault();
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 6, , 7]);
+                    return [4 /*yield*/, axios.get('/member/get-member-from-cookie')];
+                case 2:
+                    data = (_a.sent()).data;
+                    memberDB = data.memberDB;
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 3:
+                    availableMembers = _a.sent();
+                    userIDArray_3 = [];
+                    membersToSendLootArray_1 = [];
+                    nameOfLoot = event.target.nameOfLoot.value;
+                    imgURL = event.target.imgURL.value;
+                    if (!imgURL || !nameOfLoot)
+                        throw new Error('Missing field');
+                    userListNewLoot = document.querySelector('#userListNewLoot');
+                    userInputArray = userListNewLoot.getElementsByTagName('input');
+                    for (i = 0; i < userInputArray.length; i++) {
+                        if (userInputArray[i].checked) {
+                            userID = userInputArray[i].value;
+                            userIDArray_3.push(userID);
+                        }
+                    }
+                    if (userIDArray_3.length === 0)
+                        throw new Error('no user chosen');
+                    availableMembers.forEach(function (member) {
+                        userIDArray_3.forEach(function (userId) {
+                            if (member.user._id === userId)
+                                membersToSendLootArray_1.push(member);
+                        });
+                    });
+                    return [4 /*yield*/, axios.post('/Loot/create-new-Loot', { nameOfLoot: nameOfLoot, imgURL: imgURL, memberDB: memberDB })];
+                case 4:
+                    data = (_a.sent()).data;
+                    lootDB = data.lootDB;
+                    return [4 /*yield*/, handleLinkMemberAndLoot(lootDB, membersToSendLootArray_1)];
+                case 5:
+                    sentLoot = _a.sent();
+                    window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
+                    return [3 /*break*/, 7];
+                case 6:
+                    error_13 = _a.sent();
+                    console.log(error_13);
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderExistingLoot() {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, data, existingLoot, existinhLootRoot, html_4, error_14;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDB = _a.sent();
+                    return [4 /*yield*/, axios.post('/loot/find-All-dm-loot', { memberDB: memberDB })];
+                case 2:
+                    data = (_a.sent()).data;
+                    existingLoot = data.existingLoot;
+                    existinhLootRoot = document.querySelector('#existinhLootRoot');
+                    html_4 = '';
+                    existingLoot.forEach(function (lootObj) {
+                        html_4 += "<div class=\"lootCard\">\n\t\t\t\t\t\t<h3>" + lootObj.name + "</h3>\n\t\t\t\t\t\t<img src=\"" + lootObj.url + "\">\n\t\t\t\t\t\t<div class=\"checkboxContainer\"><input name=\"" + lootObj.name + "\" type=\"checkbox\" value=\"" + lootObj._id + "\"> \n\t\t\t\t\t\t<label for=\"" + lootObj._id + "\">PICK ME</label></div>\n\t\t\t</div>";
+                    });
+                    existinhLootRoot.innerHTML = html_4;
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_14 = _a.sent();
+                    console.log(error_14);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+function handleLinkMemberAndLoot(lootDB, membersToSendLootArray) {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, sentLoot;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios.post('/Loot/LinkLoot', { lootDB: lootDB, membersToSendLootArray: membersToSendLootArray })];
+                case 1:
+                    data = (_a.sent()).data;
+                    sentLoot = data.sentLoot;
+                    console.log(sentLoot);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderMemberToSendExistingLoot() {
+    return __awaiter(this, void 0, void 0, function () {
+        var userListLootRoot, availableMembers, html_5, error_15;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    userListLootRoot = document.querySelector('#userListLootRoot');
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 1:
+                    availableMembers = _a.sent();
+                    html_5 = '';
+                    availableMembers.forEach(function (member) {
+                        if (member.role === 'user') {
+                            html_5 += "<input id=\"memberName\" type=\"checkbox\" name=\"" + member.user.username + "\" value=\"" + member.user
+                                ._id + "\">\n\t\t\t\t<label for=\"" + member.user.username + "\">" + member.user.username + "</label>";
+                        }
+                    });
+                    userListLootRoot.innerHTML = html_5;
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_15 = _a.sent();
+                    console.log(error_15);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+function handleSendExistingLoot(event) {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, availableMembers, userIDArray_4, membersToSendLootArray_2, userListLootRoot, userInputArray, i, userID, existinhLootRoot, existinhLootInputArray, existinhLootCheckedIDArray, i, lootID, data, existingLoot_1, fullHLootToSend_1, error_16;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 5, , 6]);
+                    event.preventDefault();
+                    return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDB = _a.sent();
+                    return [4 /*yield*/, handleGetAllMembers()];
+                case 2:
+                    availableMembers = _a.sent();
+                    userIDArray_4 = [];
+                    membersToSendLootArray_2 = [];
+                    userListLootRoot = document.querySelector('#userListLootRoot');
+                    userInputArray = userListLootRoot.getElementsByTagName('input');
+                    for (i = 0; i < userInputArray.length; i++) {
+                        if (userInputArray[i].checked) {
+                            userID = userInputArray[i].value;
+                            userIDArray_4.push(userID);
+                        }
+                    }
+                    if (userIDArray_4.length === 0)
+                        throw new Error('no user chosen');
+                    availableMembers.forEach(function (member) {
+                        userIDArray_4.forEach(function (userId) {
+                            if (member.user._id === userId)
+                                membersToSendLootArray_2.push(member);
+                        });
+                    });
+                    existinhLootRoot = document.querySelector('#existinhLootRoot');
+                    existinhLootInputArray = existinhLootRoot.getElementsByTagName('input');
+                    existinhLootCheckedIDArray = [];
+                    for (i = 0; i < existinhLootInputArray.length; i++) {
+                        if (existinhLootInputArray[i].checked) {
+                            lootID = existinhLootInputArray[i].value;
+                            existinhLootCheckedIDArray.push(lootID);
+                        }
+                    }
+                    return [4 /*yield*/, axios.post('/loot/find-All-dm-loot', { memberDB: memberDB })];
+                case 3:
+                    data = (_a.sent()).data;
+                    existingLoot_1 = data.existingLoot;
+                    fullHLootToSend_1 = [];
+                    existinhLootCheckedIDArray.forEach(function (lootCheckedID) {
+                        existingLoot_1.forEach(function (loot) {
+                            if (loot._id === lootCheckedID)
+                                fullHLootToSend_1.push(loot);
+                        });
+                    });
+                    return [4 /*yield*/, fullHLootToSend_1.forEach(function (loot) {
+                            sendThisLoot(loot, membersToSendLootArray_2);
+                        })];
+                case 4:
+                    _a.sent();
+                    window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
+                    return [3 /*break*/, 6];
+                case 5:
+                    error_16 = _a.sent();
+                    console.log(error_16);
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
+            }
+        });
+    });
+}
+function sendThisLoot(loot, membersToSendLootArray) {
+    return __awaiter(this, void 0, void 0, function () {
+        var sentLoot;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, handleLinkMemberAndHandout(loot, membersToSendLootArray)];
+                case 1:
+                    sentLoot = _a.sent();
                     return [2 /*return*/];
             }
         });

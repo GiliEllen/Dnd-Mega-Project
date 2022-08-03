@@ -131,13 +131,13 @@ body {
 .session .chooseAndSend .existinhLootRoot .LootCard img {
   width: 100%;
 }
-.session__userLoot {
+.session .existinhLootRoot {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 30px;
 }
-.session__userLoot .handoutCard {
+.session .existinhLootRoot .lootCard {
   color: #9e9880;
   width: 1fr;
   height: 350px;
@@ -148,7 +148,7 @@ body {
   flex-direction: column;
   align-items: center;
 }
-.session__userLoot .handoutCard img {
+.session .existinhLootRoot .lootCard img {
   width: 80%;
 }
 

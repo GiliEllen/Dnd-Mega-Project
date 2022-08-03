@@ -51,9 +51,11 @@ async function loadMainPageDM() {
 	}
 }
 
-// async function loadUserMainPage() {
-
-// }
+async function loadBodyDMLoot() {
+	renderMembersToSendNewLoot();
+	renderExistingLoot();
+	renderMemberToSendExistingLoot();
+}
 
 async function getMapsFromDB(memberRoom: string) {
 	try {
@@ -432,4 +434,155 @@ async function renderUserHandout() {
 			</div>`;
 		});
 		userHandouts.innerHTML = html;
+}
+
+
+
+async function renderMembersToSendNewLoot() {
+	const userListNewLoot = document.querySelector('#userListNewLoot');
+	const availableMembers = await handleGetAllMembers();
+	let html = '';
+	availableMembers.forEach((member) => {
+		if (member.role === 'user') {
+			html += `<input type="checkbox" name="${member.user.username}" value="${member.user._id}">
+			<label for="${member.user.username}">${member.user.username}</label>`;
+		}
+	});
+	userListNewLoot.innerHTML = html;
+}
+
+async function handleSendNewLoot(event) {
+	event.preventDefault();
+	try {
+		//@ts-ignore
+		const { data } = await axios.get('/member/get-member-from-cookie');
+		const { memberDB } = data;
+		const availableMembers = await handleGetAllMembers();
+		const userIDArray = [];
+		const membersToSendLootArray = [];
+		const nameOfLoot = event.target.nameOfLoot.value;
+		const imgURL = event.target.imgURL.value;
+		if (!imgURL || !nameOfLoot) throw new Error('Missing field');
+		const userListNewLoot = document.querySelector('#userListNewLoot');
+		const userInputArray = userListNewLoot.getElementsByTagName('input');
+		for (let i = 0; i < userInputArray.length; i++) {
+			if (userInputArray[i].checked) {
+				let userID = userInputArray[i].value;
+				userIDArray.push(userID);
+			}
+		}
+		if (userIDArray.length === 0) throw new Error('no user chosen');
+		availableMembers.forEach((member) => {
+			userIDArray.forEach((userId) => {
+				if (member.user._id === userId) membersToSendLootArray.push(member);
+			});
+		});
+		//@ts-ignore
+		const { data } = await axios.post('/Loot/create-new-Loot', { nameOfLoot, imgURL, memberDB });
+		const { lootDB } = data;
+		const sentLoot = await handleLinkMemberAndLoot(lootDB, membersToSendLootArray);
+		window.location.href = `../views/mainPageDm.html?memberID=${memberDB._id}`;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+async function renderExistingLoot() {
+	try {
+		const memberDB = await getMemberFromCookies();
+		//@ts-ignore
+		const { data } = await axios.post('/loot/find-All-dm-loot', { memberDB });
+		const { existingLoot } = data;
+		const existinhLootRoot = document.querySelector('#existinhLootRoot');
+		let html = '';
+		existingLoot.forEach((lootObj) => {
+			html += `<div class="lootCard">
+						<h3>${lootObj.name}</h3>
+						<img src="${lootObj.url}">
+						<div class="checkboxContainer"><input name="${lootObj.name}" type="checkbox" value="${lootObj._id}"> 
+						<label for="${lootObj._id}">PICK ME</label></div>
+			</div>`;
+		});
+		existinhLootRoot.innerHTML = html;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+async function handleLinkMemberAndLoot(lootDB, membersToSendLootArray) {
+	//@ts-ignore
+	const { data } = await axios.post('/Loot/LinkLoot', { lootDB, membersToSendLootArray });
+	const { sentLoot } = data;
+	console.log(sentLoot);
+}
+
+async function renderMemberToSendExistingLoot() {
+	try {
+		const userListLootRoot = document.querySelector('#userListLootRoot');
+		const availableMembers = await handleGetAllMembers();
+		let html = '';
+		availableMembers.forEach((member) => {
+			if (member.role === 'user') {
+				html += `<input id="memberName" type="checkbox" name="${member.user.username}" value="${member.user
+					._id}">
+				<label for="${member.user.username}">${member.user.username}</label>`;
+			}
+		});
+		userListLootRoot.innerHTML = html;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+async function handleSendExistingLoot(event) {
+	try {
+		event.preventDefault();
+		//@ts-ignore
+		const memberDB = await getMemberFromCookies();
+		const availableMembers = await handleGetAllMembers();
+		const userIDArray = [];
+		const membersToSendLootArray = [];
+		const userListLootRoot = document.querySelector('#userListLootRoot');
+		const userInputArray = userListLootRoot.getElementsByTagName('input');
+		for (let i = 0; i < userInputArray.length; i++) {
+			if (userInputArray[i].checked) {
+				let userID = userInputArray[i].value;
+				userIDArray.push(userID);
+			}
+		}
+		if (userIDArray.length === 0) throw new Error('no user chosen');
+		availableMembers.forEach((member) => {
+			userIDArray.forEach((userId) => {
+				if (member.user._id === userId) membersToSendLootArray.push(member);
+			});
+		});
+		const existinhLootRoot = document.querySelector('#existinhLootRoot');
+		const existinhLootInputArray = existinhLootRoot.getElementsByTagName('input');
+		const existinhLootCheckedIDArray = [];
+		for (let i = 0; i < existinhLootInputArray.length; i++) {
+			if (existinhLootInputArray[i].checked) {
+				let lootID = existinhLootInputArray[i].value;
+				existinhLootCheckedIDArray.push(lootID);
+			}
+		}
+		//@ts-ignore
+		const { data } = await axios.post('/loot/find-All-dm-loot', { memberDB });
+		const { existingLoot } = data;
+		const fullHLootToSend = [];
+		existinhLootCheckedIDArray.forEach((lootCheckedID) => {
+			existingLoot.forEach((loot) => {
+				if (loot._id === lootCheckedID) fullHLootToSend.push(loot);
+			});
+		});
+		await fullHLootToSend.forEach((loot) => {
+			sendThisLoot(loot, membersToSendLootArray);
+		});
+		window.location.href = `../views/mainPageDm.html?memberID=${memberDB._id}`;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+async function sendThisLoot(loot, membersToSendLootArray) {
+	const sentLoot = await handleLinkMemberAndHandout(loot, membersToSendLootArray);
 }

@@ -43,10 +43,9 @@ const roomRoutes_1 = __importDefault(require("./routes/roomRoutes"));
 app.use('/room', roomRoutes_1.default);
 const membersRoutes_1 = __importDefault(require("./routes/membersRoutes"));
 app.use('/member', membersRoutes_1.default);
-<<<<<<< HEAD
 const handoutsRoutes_1 = __importDefault(require("./routes/handoutsRoutes"));
 app.use('/handout', handoutsRoutes_1.default);
-=======
+const lootRoutes_1 = __importDefault(require("./routes/lootRoutes"));
+app.use('/loot', lootRoutes_1.default);
 const mapsRoutes_1 = __importDefault(require("./routes/mapsRoutes"));
 app.use('/maps', mapsRoutes_1.default);
->>>>>>> carmel5

@@ -51,10 +51,10 @@ import memberRoutes from './routes/membersRoutes';
 app.use('/member', memberRoutes);
 
 import handoutRoutes from './routes/handoutsRoutes';
-import MemberModel from './models/memberModel';
-import UserModel from './models/usersModel';
-import { string } from 'joi';
 app.use('/handout', handoutRoutes);
+
+import lootRoutes from './routes/lootRoutes';
+app.use('/loot', lootRoutes);
 
 import mapsRoutes from './routes/mapsRoutes';
 app.use('/maps', mapsRoutes);

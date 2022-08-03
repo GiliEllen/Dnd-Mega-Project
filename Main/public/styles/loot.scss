@@ -160,13 +160,13 @@ body {
         }
     }
 
-    &__userLoot {
+    .existinhLootRoot {
         width: 100%;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         gap: 30px;
 
-        .handoutCard {
+        .lootCard {
             color: rgb(158, 152, 128);
             width: 1fr;
             height: 350px;
