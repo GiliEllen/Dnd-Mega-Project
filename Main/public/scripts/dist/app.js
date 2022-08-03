@@ -75,11 +75,11 @@ function loadBodyDMHndouts() {
 }
 function loadMainPageDM() {
     return __awaiter(this, void 0, void 0, function () {
-        var memberDB, memberRoom, worldData, worldMapUrl, worldMapDiv, currentMapUrl, currentMapDiv, error_2;
+        var memberDB, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
+                    _a.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, getMemberFromCookies()];
                 case 1:
                     memberDB = _a.sent();
@@ -87,22 +87,12 @@ function loadMainPageDM() {
                     renderMembersNamesAndHitPoints();
                     sessionStorage.setItem("memberName", "" + memberDB.user.username);
                     sessionStorage.setItem("memberRole", "" + memberDB.role);
-                    memberRoom = memberDB.room._id;
-                    return [4 /*yield*/, getMapsFromDB(memberRoom)];
+                    return [3 /*break*/, 3];
                 case 2:
-                    worldData = _a.sent();
-                    worldMapUrl = worldData.worldMap;
-                    worldMapDiv = document.querySelector('.worldMap');
-                    worldMapDiv.innerHTML = "<div class=\"worldMap\">world map \n\t\t\t\t<form onsubmit=\"handleEditWorldMap(event)\">\n\t\t\t\t\t<input type=\"url\" name=\"worldMapUpload\" >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + worldMapUrl + "\" alt=\"pic of map\">\n        \t</div>";
-                    currentMapUrl = worldData.currentMap;
-                    currentMapDiv = document.querySelector('.currentMap');
-                    currentMapDiv.innerHTML = "<div class=\"currentMap\">current map\n\t\t\t\t<form onsubmit=\"handleEditCurrentMap(event)\">\n\t\t\t\t\t<input type='url' name='currentMapUpload' >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + currentMapUrl + "\" alt=\"pic of map\">\n       \t\t </div>";
-                    return [3 /*break*/, 4];
-                case 3:
                     error_2 = _a.sent();
                     console.error(error_2);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     });

@@ -14,32 +14,11 @@ const existingLootForm = document.querySelector('#existingLootForm') as HTMLForm
 
 const session = document.querySelector('.session') as HTMLDivElement;
 
-if (createAndSend) {
-	createAndSend.addEventListener('click', (event) => {
-		createAndSend.style.height = '500px';
-		newHandoutForm.style.display = 'flex';
-		newHandoutForm.style.visibility = 'visible';
-		newHandoutForm.style.opacity = '1';
-	});
-	chooseAndSend.addEventListener('click', (event) => {
-		chooseAndSend.style.height = 'fit-content';
-		existingHandoutsForm.style.display = 'flex';
-		existingHandoutsForm.style.visibility = 'visible';
-		existingHandoutsForm.style.opacity = '1';
-	});
-}
-
-if (createAndSendLoot) {
-	createAndSendLoot.addEventListener('click', (event) => {
-		createAndSendLoot.style.height = '500px';
-		newLootForm.style.display = 'flex';
-		newLootForm.style.visibility = 'visible';
-		newLootForm.style.opacity = '1';
-	});
-	chooseAndSendLoot.addEventListener('click', (event) => {
-		chooseAndSendLoot.style.height = 'fit-content';
-		existingLootForm.style.display = 'flex';
-		existingLootForm.style.visibility = 'visible';
-		existingLootForm.style.opacity = '1';
-	});
-}
+createAndSend.addEventListener('click', () => {
+	createAndSend.classList.toggle('active');
+	newHandoutForm.classList.toggle('active');
+})
+chooseAndSend.addEventListener('click', () => {
+	chooseAndSend.classList.toggle('active');
+	existingHandoutsForm.classList.toggle('active');
+})

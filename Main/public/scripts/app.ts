@@ -26,26 +26,26 @@ async function loadMainPageDM() {
 		renderMembersNamesAndHitPoints();
 		sessionStorage.setItem(`memberName`, `${memberDB.user.username}`);
 		sessionStorage.setItem(`memberRole`, `${memberDB.role}`);
-		const memberRoom = memberDB.room._id;
-		const worldData = await getMapsFromDB(memberRoom);
-		const worldMapUrl = worldData.worldMap;
-		const worldMapDiv: HTMLDivElement = document.querySelector('.worldMap');
-		worldMapDiv.innerHTML = `<div class="worldMap">world map 
-				<form onsubmit="handleEditWorldMap(event)">
-					<input type="url" name="worldMapUpload" >
-					<button type="submit"> Upload a New Map</button>
-				</form>
-				<img src="${worldMapUrl}" alt="pic of map">
-        	</div>`;
-		const currentMapUrl = worldData.currentMap;
-		const currentMapDiv: HTMLDivElement = document.querySelector('.currentMap');
-		currentMapDiv.innerHTML = `<div class="currentMap">current map
-				<form onsubmit="handleEditCurrentMap(event)">
-					<input type='url' name='currentMapUpload' >
-					<button type="submit"> Upload a New Map</button>
-				</form>
-				<img src="${currentMapUrl}" alt="pic of map">
-       		 </div>`;
+		// const memberRoom = memberDB.room._id;
+		// const worldData = await getMapsFromDB(memberRoom);
+		// const worldMapUrl = worldData.worldMap;
+		// const worldMapDiv: HTMLDivElement = document.querySelector('.worldMap');
+		// worldMapDiv.innerHTML = `<div class="worldMap">world map 
+		// 		<form onsubmit="handleEditWorldMap(event)">
+		// 			<input type="url" name="worldMapUpload" >
+		// 			<button type="submit"> Upload a New Map</button>
+		// 		</form>
+		// 		<img src="${worldMapUrl}" alt="pic of map">
+        // 	</div>`;
+		// const currentMapUrl = worldData.currentMap;
+		// const currentMapDiv: HTMLDivElement = document.querySelector('.currentMap');
+		// currentMapDiv.innerHTML = `<div class="currentMap">current map
+		// 		<form onsubmit="handleEditCurrentMap(event)">
+		// 			<input type='url' name='currentMapUpload' >
+		// 			<button type="submit"> Upload a New Map</button>
+		// 		</form>
+		// 		<img src="${currentMapUrl}" alt="pic of map">
+       	// 	 </div>`;
 	} catch (error) {
 		console.error(error);
 	}

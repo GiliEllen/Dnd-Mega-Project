@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Send Handouts</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -28,14 +28,14 @@
                 <i class="fa-solid fa-pen"></i>
                 <h3>Create And Send New</h3>
             </div>
-            <form id="newHandoutForm" onsubmit="handleSendNewHandouts(event)">
+            <form id="newHandoutForm" class="newHandoutForm" onsubmit="handleSendNewHandouts(event)">
                 <div class="input_container">
                     <input name="nameOfHandout" type="text" placeholder="Handout name">
                 </div>
                 <div class="input_container">
                     <input name="imgURL" type="url" placeholder="image URL">
                 </div>
-                <label for="userList">Choose users to recive the handout:</label>
+                <label for="userList">Choose users to recieve the handout:</label>
                 <div name="userList" class="userList" id="userList"></div>
                 <button class="submit_btn" type="submit">Send</button>
             </form>
@@ -46,7 +46,7 @@
                 <i class="fa-solid fa-share"></i>
                 <h3>Choose And Send Exisiting</h3>
             </div>
-            <form id="existingHandoutsForm" onsubmit="handleSendExistingHandouts(event)">
+            <form id="existingHandoutsForm" class="existingHandoutsForm" onsubmit="handleSendExistingHandouts(event)">
         
                 <div id="existinhHandoutsRoot" class="existinhHandoutsRoot"></div>
                 <label for="userListRoot">Choose users to recive the handout:</label>
