@@ -19,6 +19,10 @@
 </head>
 
 <body onload="loadUserMainPage()">
+    <div class="mapsDiv">
+        <i class="fa-solid fa-xmark" id="closeDiv"></i>
+        <div class="mapsDiv__Wrapper"></div>
+    </div>
     <div class="session">
         <div class="session__headers">
             <h1 id="userName">Hello USER</h1>
@@ -40,7 +44,7 @@
                     </div>
                 </div>
             </div>
-            <div onclick="openWorldMap()" class="worldMap grid_item" >
+            <div class="worldMap grid_item" >
                 <div class="worldMapImg"> 
 					<img src="" alt="pic of map">
 					<button onclick="closeWorldMap(event)">X</button>
@@ -48,7 +52,7 @@
                 <i class="fa-solid fa-map"></i>
                 <h4>World Map</h4>
             </div>
-            <div  onclick="openCurrentMap()" class="currentMap grid_item">
+            <div class="currentMap grid_item">
                 <i class="fa-solid fa-map-location"></i>
                 <h4>Current Map</h4>
             </div>

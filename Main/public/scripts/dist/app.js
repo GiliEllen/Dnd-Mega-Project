@@ -512,11 +512,12 @@ function handleChangeHitPoints(event) {
 }
 function loadUserMainPage() {
     return __awaiter(this, void 0, void 0, function () {
-        var memberDB, roomID, maps, worldMapUrl, currentMapUrl, worldMap_1, error_9;
+        var mapsDivWrapper, memberDB, mapDB, error_9;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
+                    mapsDivWrapper = document.querySelector('.mapsDiv__Wrapper');
                     return [4 /*yield*/, getMemberFromCookies()];
                 case 1:
                     memberDB = _a.sent();
@@ -526,14 +527,10 @@ function loadUserMainPage() {
                     sessionStorage.setItem("memberRole", "" + memberDB.role);
                     sessionStorage.setItem("memberHitPoints", "" + memberDB.hitPoints);
                     socket.emit('getUserRole', sessionStorage.getItem("memberRole"));
-                    console.log(memberDB);
-                    roomID = memberDB.room._id;
-                    return [4 /*yield*/, getMapsFromDB(roomID)];
+                    return [4 /*yield*/, handleGetMap()];
                 case 2:
-                    maps = _a.sent();
-                    worldMapUrl = maps.worldMap;
-                    currentMapUrl = maps.currentMap;
-                    worldMap_1 = document.querySelector('.worldMap');
+                    mapDB = _a.sent();
+                    mapsDivWrapper.innerHTML += "<img src=\"" + mapDB.worldMap + "\" id=\"worldMapID\">\n\t\t<img src=\"" + mapDB.currentMap + "\" id=\"currentMapID\">";
                     return [3 /*break*/, 4];
                 case 3:
                     error_9 = _a.sent();

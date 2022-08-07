@@ -315,6 +315,7 @@ async function handleChangeHitPoints(event) {
 
 async function loadUserMainPage() {
 	try {
+		const mapsDivWrapper = document.querySelector('.mapsDiv__Wrapper');
 		const memberDB = await getMemberFromCookies();
 		renderUserName(memberDB);
 		renderUserOwnHitpoints(memberDB);
@@ -322,25 +323,12 @@ async function loadUserMainPage() {
 		sessionStorage.setItem(`memberRole`, `${memberDB.role}`);
 		sessionStorage.setItem(`memberHitPoints`, `${memberDB.hitPoints}`);
 		socket.emit('getUserRole', sessionStorage.getItem(`memberRole`));
-		console.log(memberDB);
-		const roomID = memberDB.room._id;
-		const maps = await getMapsFromDB(roomID);
-		const worldMapUrl = maps.worldMap;
-		const currentMapUrl = maps.currentMap;
-		const worldMap: HTMLDivElement = document.querySelector('.worldMap');
-		// worldMap.innerHTML = `	<div class="worldMapImg">
-		// 			<img src="${worldMapUrl}" alt="pic of map">
-		// 			<button onclick="closeWorldMap(event)">X</button>
-		// 		</div>
-		// 		<i class="fa-solid fa-map"></i>
-		//     	<h4>World Map</h4>`;
-		// const currentMap: HTMLDivElement = document.querySelector('.currentMap');
-		// currentMap.innerHTML = `<div class="currentMapImg">
-		// 		<img src="${currentMapUrl}" alt="pic of map">
-		// 		<button onclick="closeCurrentMap(event)">X</button>
-		// 	</div>
-		// 	<i class="fa-solid fa-map-location"></i>
-		//     <h4>Current Map</h4>`;
+
+		const mapDB = await handleGetMap();
+		mapsDivWrapper.innerHTML += `<img src="${mapDB.worldMap}" id="worldMapID">
+		<img src="${mapDB.currentMap}" id="currentMapID">`;
+
+
 	} catch (error) {
 		console.error(error);
 	}
