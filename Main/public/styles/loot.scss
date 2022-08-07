@@ -82,8 +82,8 @@ body {
     }
 
 
-    .createAndSend,
-    .chooseAndSend {
+    .createAndSendLoot,
+    .chooseAndSendLoot {
         .input_container {
             width: 70%;
             height: 5rem;
@@ -158,9 +158,36 @@ body {
                 }
             }
         }
+
+        .newLootForm,
+        .existingLootForm {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            height: max-content;
+            transition: all 1.5s;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1.5s linear;
+        }
+
+        .newLootForm.active,
+        .existingLootForm.active {
+            display: flex;
+        }
     }
 
-    .existinhLootRoot {
+    .createAndSendLoot.active {
+        height: 500px;
+        display: flex;
+    }
+
+    .chooseAndSendLoot.active {
+        height: fit-content;
+        display: flex;
+    }
+
+    &__userLoot {
         width: 100%;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
@@ -184,25 +211,13 @@ body {
     }
 }
 
-#newLootForm,
-#existingLootForm {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    height: max-content;
-    transition: all 1.5s;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s, opacity 1.5s linear;
-}
 
-#createAndSend {
+
+
+#createAndSendLoot {
     transition: height 0.5s;
 }
 
-#chooseAndSend {
+#chooseAndSendLoot {
     transition: height 0.5s;
 }

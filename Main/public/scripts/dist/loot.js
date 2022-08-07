@@ -9,6 +9,6 @@ createAndSendLoot.addEventListener('click', function () {
     newLootForm.classList.toggle('active');
 });
 chooseAndSendLoot.addEventListener('click', function () {
-    chooseAndSend.classList.toggle('active');
+    chooseAndSendLoot.classList.toggle('active');
     existingLootForm.classList.toggle('active');
 });

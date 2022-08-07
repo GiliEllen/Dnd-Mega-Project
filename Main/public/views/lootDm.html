@@ -23,12 +23,12 @@
         <div class="session__header">
             <i class="fa-solid fa-book"></i><h1>DM Loot</h1>
         </div>
-        <div id="createAndSendLoot" class="createAndSend box">
+        <div id="createAndSendLoot" class="createAndSendLoot box">
             <div class="header">
                 <i class="fa-solid fa-pen"></i>
                 <h3>Create And Send New</h3>
             </div>
-            <form id="newLootForm" onsubmit="handleSendNewLoot(event)">
+            <form id="newLootForm" class="newLootForm" onsubmit="handleSendNewLoot(event)">
                 <div class="input_container">
                     <input name="nameOfLoot" type="text" placeholder="Loot name">
                 </div>
@@ -41,12 +41,12 @@
             </form>
         </div>
 
-        <div id="chooseAndSendLoot" class="chooseAndSend box">
+        <div id="chooseAndSendLoot" class="chooseAndSendLoot box">
             <div class="header">
                 <i class="fa-solid fa-share"></i>
                 <h3>Choose And Send Exisiting</h3>
             </div>
-            <form id="existingLootForm" onsubmit="handleSendExistingLoot(event)">
+            <form id="existingLootForm" class="existingLootForm" onsubmit="handleSendExistingLoot(event)">
                 <div id="existinhLootRoot" class="existinhLootRoot"></div>
                 <label for="userListLootRoot">Choose users to recive the Loot:</label>
                 <div name="userListLootRoot" class="userList" id="userListLootRoot"></div>
@@ -58,7 +58,7 @@
 
 <script src="/socket.io/socket.io.js"></script>
     <script src="../scripts/dist/app.js"></script>
-    <script src="../scripts/dist/helpers.js"></script>
+    <script src="../scripts/dist/loot.js"></script>
 </body>
 
 </html>
