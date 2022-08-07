@@ -548,7 +548,8 @@ function handleEditWorldMap(event) {
                 case 3:
                     data = (_a.sent()).data;
                     worldmapDB = data.worldmapDB;
-                    console.log(worldmapDB);
+                    event.target.worldMapUpload.value = '';
+                    location.reload();
                     return [3 /*break*/, 5];
                 case 4:
                     error_10 = _a.sent();
@@ -578,7 +579,8 @@ function handleEditCurrentMap(event) {
                 case 3:
                     data = (_a.sent()).data;
                     currentMapDB = data.currentMapDB;
-                    console.log(currentMapDB);
+                    event.target.currentMapUpload.value = '';
+                    location.reload();
                     return [3 /*break*/, 5];
                 case 4:
                     error_11 = _a.sent();

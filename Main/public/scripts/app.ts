@@ -319,8 +319,9 @@ async function handleEditWorldMap(event) {
 		//@ts-ignore
 		const { data } = await axios.post('/maps/upload-world-map', { mapUrl, memberDB });
 		const { worldmapDB } = data;
-		console.log(worldmapDB);
-	} catch (error) {
+		event.target.worldMapUpload.value = '';
+		location.reload();
+		} catch (error) {
 		console.error(error);
 	}
 }
@@ -334,7 +335,8 @@ async function handleEditCurrentMap(event) {
 		//@ts-ignore
 		const { data } = await axios.post('/maps/upload-current-map', { mapUrl, memberDB });
 		const { currentMapDB } = data;
-		console.log(currentMapDB);
+		event.target.currentMapUpload.value = '';
+		location.reload();
 	} catch (error) {
 		console.error(error);
 	}

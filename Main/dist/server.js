@@ -31,9 +31,7 @@ httpServer.listen(3000, () => {
     console.log('listening on *:3000');
 });
 io.on('connection', (socket) => {
-    console.log(`user Connected`);
     socket.on('updateHitForUser', (boleen) => {
-        console.log(`server trying to update user`);
         if (boleen)
             io.emit('update');
     });

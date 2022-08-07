@@ -134,15 +134,15 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 50px;
 }
-.session .createAndSendLoot .existinhLootRoot .LootCard,
-.session .chooseAndSendLoot .existinhLootRoot .LootCard {
+.session .createAndSendLoot .existinhLootRoot .lootCard,
+.session .chooseAndSendLoot .existinhLootRoot .lootCard {
   width: 150px;
   height: 300px;
   display: flex;
   flex-direction: column;
 }
-.session .createAndSendLoot .existinhLootRoot .LootCard img,
-.session .chooseAndSendLoot .existinhLootRoot .LootCard img {
+.session .createAndSendLoot .existinhLootRoot .lootCard img,
+.session .chooseAndSendLoot .existinhLootRoot .lootCard img {
   width: 100%;
 }
 .session .createAndSendLoot .newLootForm,
