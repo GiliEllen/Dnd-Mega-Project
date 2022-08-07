@@ -40,11 +40,15 @@
                     </div>
                 </div>
             </div>
-            <div class="worldMap grid_item">
+            <div onclick="openWorldMap()" class="worldMap grid_item" >
+                <div class="worldMapImg"> 
+					<img src="" alt="pic of map">
+					<button onclick="closeWorldMap(event)">X</button>
+				</div>
                 <i class="fa-solid fa-map"></i>
                 <h4>World Map</h4>
             </div>
-            <div class="currentMap grid_item">
+            <div  onclick="openCurrentMap()" class="currentMap grid_item">
                 <i class="fa-solid fa-map-location"></i>
                 <h4>Current Map</h4>
             </div>
