@@ -117,7 +117,7 @@ async function handleRegister(event: any) {
 		if (register) {
 			window.location.href = '../views/room.html';
 		}
-		if (error) throw error;
+		if (error) throw handleError(error);
 		console.log(data);
 	} catch (error) {
 		console.error(error);
@@ -135,7 +135,7 @@ async function handleLogin(event: any) {
 
 		const { login, user, error } = data;
 		console.log(error);
-		if (error) throw error;
+		if (error) handleError(error);
 		if (login) {
 			window.location.href = '../views/room.html';
 		}
@@ -143,11 +143,6 @@ async function handleLogin(event: any) {
 		console.error(error);
 	}
 }
-
-// async function loadUserMainPage() {
-// 	try {
-// 		const userDB = await getUserFromCookies();
-
 
 function handleWorldMapOpen() {
 	try {
@@ -240,4 +235,16 @@ function getMemberIdByParams() {
 	const urlParams = new URLSearchParams(queryString);
 	const memberID = urlParams.get('memberID');
 	return memberID;
+}
+
+function handleError(error) {
+	const errorRoot = document.querySelector('.errorRoot')
+	if(error.includes("User with that email can't be found")) errorRoot.innerHTML = "User with that email can't be found"
+	if(error.includes("Email or password do not match")) errorRoot.innerHTML = "Email or password do not match"
+	if(error.includes('"password" length must be at least 6 characters long')) errorRoot.innerHTML = 'The password length must be at least 6 characters long'
+	if(error.includes('"password" should contain at least 1 special character')) errorRoot.innerHTML = 'The password should contain at least 1 special character'
+	if(error.includes('"password" should contain at least 1 lowercase character')) errorRoot.innerHTML = 'The password should contain at least 1 lowercase character'
+	if(error.includes('"password" should contain at least 1 uppercase character')) errorRoot.innerHTML = 'The password should contain at least 1 uppercase character'
+	if(error.includes('"password" length must be less than or equal to 16 characters long')) errorRoot.innerHTML = 'password length must be less than or equal to 16 characters long'
+	if (error.includes('"repeatPassword" must be [ref:password]')) errorRoot.innerHTML = "Password doesn't match";
 }

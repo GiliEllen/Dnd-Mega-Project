@@ -83,6 +83,10 @@ body {
 .session__right form span:hover {
   background-position: -120% 0;
 }
+.session__right .errorRoot {
+  font-size: 1.5rem;
+  color: red;
+}
 .session__left {
   width: 40%;
   height: 100%;
