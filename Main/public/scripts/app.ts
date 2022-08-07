@@ -437,7 +437,6 @@ async function renderUserHandout() {
 }
 
 
-
 async function renderMembersToSendNewLoot() {
 	const userListNewLoot = document.querySelector('#userListNewLoot');
 	const availableMembers = await handleGetAllMembers();
