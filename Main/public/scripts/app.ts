@@ -10,7 +10,7 @@ const currentMapIcon = document.querySelector('.fa-map-location');
 
 socket.on('connect', () => {
 	console.log(socket.id)
-);
+});
 
 socket.on('update', async () => {
 	console.log(`trying to update`)
@@ -552,6 +552,7 @@ if (mapsDiv) {
 		const worldMapID = document.querySelector('#worldMapID');
 		const currentMapID = document.querySelector('#currentMapID');
 
+		//@ts-ignore
 		if (event.target.id === 'closeDiv') {
 			mapsDiv.classList.remove('active');
 			worldMapID.classList.remove('active')
@@ -563,6 +564,7 @@ if (mapsDiv) {
 
 async function handleGetMap() {
 	const memberDB = await getMemberFromCookies();
+	//@ts-ignore
 	const { data } = await axios.post('/maps/getMap', { memberDB });
 	const { MapDB } = data;
 	return MapDB;

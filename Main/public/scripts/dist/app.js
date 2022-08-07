@@ -913,6 +913,7 @@ if (mapsDiv) {
     mapsDiv.addEventListener('click', function (event) {
         var worldMapID = document.querySelector('#worldMapID');
         var currentMapID = document.querySelector('#currentMapID');
+        //@ts-ignore
         if (event.target.id === 'closeDiv') {
             mapsDiv.classList.remove('active');
             worldMapID.classList.remove('active');
