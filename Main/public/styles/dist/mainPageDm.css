@@ -42,6 +42,7 @@ body .fa-solid:hover {
 }
 .mapsDiv__Wrapper img {
   width: 100%;
+  height: 100%;
 }
 .mapsDiv__Wrapper #worldMapID, .mapsDiv__Wrapper #currentMapID {
   display: none;
