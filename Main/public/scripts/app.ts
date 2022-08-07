@@ -8,6 +8,15 @@ const closeDiv = document.querySelector('#closeDiv');
 const worldMapIcon = document.querySelector('.fa-map');
 const currentMapIcon = document.querySelector('.fa-map-location');
 
+socket.on('connect', () => {
+	console.log(socket.id)
+);
+
+socket.on('update', async () => {
+	console.log(`trying to update`)
+	const success = await renderMembersNamesAndHitPoints();
+});
+
 async function getMemberFromCookies() {
 	try {
 		//@ts-ignore
@@ -93,39 +102,6 @@ function renderUserName(memberDB) {
 	userName.innerHTML = `Hello ${memberDB.user.username}!`;
 }
 
-// function renderButtonsHandoutsLoot(userID) {
-// 	const buttonContainer = document.querySelector('#buttonContainer');
-// 	const sendHandouts = document.createElement('a');
-// 	const sendLoot = document.createElement('a');
-
-// 	sendHandouts.href = `handoutsDm.html?${userID}"`;
-// 	sendHandouts.innerHTML = `<button>Send Handouts</button>`;
-// 	buttonContainer.appendChild(sendHandouts);
-
-// 	sendLoot.href = `lootDm.html?${userID}"`;
-// 	sendLoot.innerHTML = `<button>Send Loot</button>`;
-// 	buttonContainer.appendChild(sendLoot);
-// }
-
-// function handleChooseHandouts(event) {
-// 	event.preventDefault();
-// 	const handoutType = event.submitter.id;
-// 	if (handoutType === 'creatingHandout') {
-// 		renderCreateHandout();
-// 	} else if (handoutType === 'creatingHandout') {
-// 		chooseHandout();
-// 	}
-// }
-
-// function renderCreateHandout() {
-// 	try {
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// }
-// function chooseHandout() {
-// 	const root = document.querySelector('#root');
-// }
 function getMemberIDByParams() {
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);

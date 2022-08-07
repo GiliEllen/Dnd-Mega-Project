@@ -34,6 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var _this = this;
 //@ts-ignore
 var socket = io();
 var worldMap = document.querySelector('.worldMap');
@@ -42,6 +43,22 @@ var mapsDiv = document.querySelector('.mapsDiv');
 var closeDiv = document.querySelector('#closeDiv');
 var worldMapIcon = document.querySelector('.fa-map');
 var currentMapIcon = document.querySelector('.fa-map-location');
+socket.on('connect', function () {
+    console.log(socket.id);
+});
+socket.on('update', function () { return __awaiter(_this, void 0, void 0, function () {
+    var success;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log("trying to update");
+                return [4 /*yield*/, renderMembersNamesAndHitPoints()];
+            case 1:
+                success = _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
 function getMemberFromCookies() {
     return __awaiter(this, void 0, void 0, function () {
         var data, memberDB, error_1;
@@ -186,35 +203,6 @@ function renderUserName(memberDB) {
     var userName = document.querySelector('#userName');
     userName.innerHTML = "Hello " + memberDB.user.username + "!";
 }
-// function renderButtonsHandoutsLoot(userID) {
-// 	const buttonContainer = document.querySelector('#buttonContainer');
-// 	const sendHandouts = document.createElement('a');
-// 	const sendLoot = document.createElement('a');
-// 	sendHandouts.href = `handoutsDm.html?${userID}"`;
-// 	sendHandouts.innerHTML = `<button>Send Handouts</button>`;
-// 	buttonContainer.appendChild(sendHandouts);
-// 	sendLoot.href = `lootDm.html?${userID}"`;
-// 	sendLoot.innerHTML = `<button>Send Loot</button>`;
-// 	buttonContainer.appendChild(sendLoot);
-// }
-// function handleChooseHandouts(event) {
-// 	event.preventDefault();
-// 	const handoutType = event.submitter.id;
-// 	if (handoutType === 'creatingHandout') {
-// 		renderCreateHandout();
-// 	} else if (handoutType === 'creatingHandout') {
-// 		chooseHandout();
-// 	}
-// }
-// function renderCreateHandout() {
-// 	try {
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// }
-// function chooseHandout() {
-// 	const root = document.querySelector('#root');
-// }
 function getMemberIDByParams() {
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
