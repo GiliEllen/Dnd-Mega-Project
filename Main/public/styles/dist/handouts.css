@@ -65,6 +65,20 @@ body {
 .session .box:hover {
   border: 2px solid #9e9880;
 }
+.session .createAndSend,
+.session .chooseAndSend {
+  position: relative;
+}
+.session .createAndSend .fa-xmark,
+.session .chooseAndSend .fa-xmark {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+.session .createAndSend .fa-xmark:hover,
+.session .chooseAndSend .fa-xmark:hover {
+  cursor: pointer;
+}
 .session .createAndSend .input_container,
 .session .chooseAndSend .input_container {
   width: 70%;

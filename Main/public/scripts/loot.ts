@@ -6,14 +6,27 @@ const newLootForm = document.querySelector('#newLootForm') as HTMLFormElement;
 const chooseAndSendLoot = document.querySelector('#chooseAndSendLoot') as HTMLDivElement;
 const existingLootForm = document.querySelector('#existingLootForm') as HTMLFormElement;
 
-const session = document.querySelector('.session') as HTMLDivElement;
+createAndSendLoot.addEventListener('click', (event) => {
+	createAndSendLoot.classList.add('active');
+	newLootForm.classList.add('active');
 
+	chooseAndSendLoot.classList.remove('active');
+	existingLootForm.classList.remove('active');
 
-createAndSendLoot.addEventListener('click', () => {
-	createAndSendLoot.classList.toggle('active');
-	newLootForm.classList.toggle('active');
-})
-chooseAndSendLoot.addEventListener('click', () => {
-	chooseAndSendLoot.classList.toggle('active');
-	existingLootForm.classList.toggle('active');
-})
+	if (event.target.id === 'close_New') {
+		createAndSendLoot.classList.remove('active');
+		newLootForm.classList.remove('active');
+	}
+});
+chooseAndSendLoot.addEventListener('click', (event) => {
+	chooseAndSendLoot.classList.add('active');
+	existingLootForm.classList.add('active');
+
+	createAndSendLoot.classList.remove('active');
+	newLootForm.classList.remove('active');
+
+	if (event.target.id === 'close_Existing') {
+		chooseAndSendLoot.classList.remove('active');
+		existingLootForm.classList.remove('active');
+	}
+});

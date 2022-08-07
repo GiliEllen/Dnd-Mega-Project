@@ -83,6 +83,15 @@ body {
 
     .createAndSend,
     .chooseAndSend {
+        position: relative;
+        .fa-xmark {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            &:hover {
+                cursor: pointer;
+            }
+        }
         .input_container {
             width: 70%;
             height: 5rem;
