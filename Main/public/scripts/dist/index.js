@@ -47,7 +47,6 @@ function getUserFromCookies() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    console.log('loading room cookies');
                     return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
                 case 1:
                     data = (_a.sent()).data;
@@ -148,8 +147,11 @@ function HandleEnterRoom(ev) {
                     return [4 /*yield*/, axios.post('/member/FindMemberByRoom', { existingRoom: existingRoom, existingRoomPass: existingRoomPass, userDB: userDB })];
                 case 3:
                     data = (_a.sent()).data;
-                    console.log(data);
                     success = data.success, memberDB = data.memberDB, error = data.error, roomDB = data.roomDB;
+                    if (!roomDB)
+                        handleErrorEnterRoom(error);
+                    if (error)
+                        handleErrorMember(error);
                     if (success) {
                         if (memberDB.role === 'dm') {
                             window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
@@ -157,10 +159,6 @@ function HandleEnterRoom(ev) {
                         else if (memberDB.role === 'user') {
                             window.location.href = "../views/mainPageUser.html?memberID=" + memberDB._id;
                         }
-                    }
-                    else {
-                        if (error)
-                            handleErrorMember(error);
                     }
                     return [3 /*break*/, 5];
                 case 4:
@@ -173,15 +171,13 @@ function HandleEnterRoom(ev) {
     });
 }
 function handleErrorMember(error) {
+    console.log(error);
     var roomRoot = document.querySelector('#roomRoot');
     if (error.includes('Error01')) {
         var yesRoomNoUser = document.querySelector('.yesRoomNoUser');
         yesRoomNoUser.style.display = 'inline';
         var RoomForm = document.querySelector('#RoomForm');
         RoomForm.style.display = 'none';
-    }
-    else if (error.includes('Error02')) {
-        roomRoot.innerHTML = "<h2>Passwords don't match, please try again</h2>";
     }
 }
 function handleDeleteThis(event) {
@@ -343,9 +339,7 @@ function loadRoom() {
                 case 0: return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
                 case 1:
                     data = (_a.sent()).data;
-                    console.log(data);
                     userDB = data.userDB;
-                    console.log(userDB);
                     roomHeader = document.querySelector('.room_header');
                     roomHeader.innerHTML = "<h1>Hello " + userDB.username + "!</h1><h2>what would you like to do?</h2>";
                     return [2 /*return*/];
@@ -363,7 +357,6 @@ function handleAddUserToRoom(event) {
                     console.log('trying to add user to this room');
                     existingRoominput = document.querySelector('#existingRoomName');
                     existingRoom = existingRoominput.value;
-                    console.log(existingRoom);
                     return [4 /*yield*/, axios.post('/room/findRoom', { existingRoom: existingRoom })];
                 case 1:
                     data = (_a.sent()).data;
@@ -415,4 +408,11 @@ function handleErrorRoom(error) {
         errorRootNewRoom.innerHTML = 'password length must be less than or equal to 16 characters long';
     if (error.includes('"repeatPassword" must be [ref:password]'))
         errorRoot.innerHTML = "Password doesn't match";
+}
+function handleErrorEnterRoom(error) {
+    var errorRootExistingRoom = document.querySelector('.errorRootExistingRoom');
+    if (error.includes("Cannot read properties of null (reading 'name')"))
+        errorRootExistingRoom.innerHTML = "Couldn't find this room";
+    if (error.includes('Error02'))
+        errorRootExistingRoom.innerHTML = "Passwords don't match";
 }

@@ -1,3 +1,4 @@
+
 const newRoomForm = document.querySelector('#NewRoomForm');
 const newRoomName = document.querySelector('#roomName') as HTMLInputElement;
 const adiv: HTMLElement = document.querySelector('div');
@@ -7,7 +8,6 @@ let isUserInfoClicked = false;
 
 async function getUserFromCookies() {
 	try {
-		console.log('loading room cookies');
 		//@ts-ignore
 		const { data } = await axios.get('/users/get-user-from-cookies');
 		const { userDB } = data;
@@ -66,32 +66,30 @@ async function HandleEnterRoom(ev: any) {
 		const { userDB } = data;
 		//@ts-ignore
 		const { data } = await axios.post('/member/FindMemberByRoom', { existingRoom, existingRoomPass, userDB });
-		console.log(data);
 		const { success, memberDB, error, roomDB } = data;
+		if(!roomDB) handleErrorEnterRoom(error)
+		if (error) handleErrorMember(error);
 		if (success) {
 			if (memberDB.role === 'dm') {
 				window.location.href = `../views/mainPageDm.html?memberID=${memberDB._id}`;
 			} else if (memberDB.role === 'user') {
 				window.location.href = `../views/mainPageUser.html?memberID=${memberDB._id}`;
 			}
-		} else {
-			if (error) handleErrorMember(error);
-		}
+		} 
 	} catch (error) {
 		console.error(error);
 	}
 }
 
 function handleErrorMember(error) {
+	console.log(error)
 	const roomRoot = document.querySelector('#roomRoot');
 	if (error.includes('Error01')) {
 		const yesRoomNoUser = document.querySelector('.yesRoomNoUser') as HTMLFormElement;
 		yesRoomNoUser.style.display = 'inline';
 		const RoomForm = document.querySelector('#RoomForm') as HTMLFormElement;
 		RoomForm.style.display = 'none';
-	} else if (error.includes('Error02')) {
-		roomRoot.innerHTML = "<h2>Passwords don't match, please try again</h2>";
-	}
+	} 
 }
 function handleDeleteThis(event) {
 	try {
@@ -210,9 +208,7 @@ async function handleUserInfoOpen() {
 async function loadRoom() {
 	//@ts-ignore
 	const { data } = await axios.get('/users/get-user-from-cookies');
-	console.log(data);
 	const { userDB } = data;
-	console.log(userDB);
 	const roomHeader = document.querySelector('.room_header');
 	roomHeader.innerHTML = `<h1>Hello ${userDB.username}!</h1><h2>what would you like to do?</h2>`;
 }
@@ -222,7 +218,6 @@ async function handleAddUserToRoom(event) {
 	console.log('trying to add user to this room');
 	const existingRoominput = document.querySelector('#existingRoomName') as HTMLInputElement;
 	const existingRoom = existingRoominput.value;
-	console.log(existingRoom);
 	//@ts-ignore
 	const { data } = await axios.post('/room/findRoom', { existingRoom });
 	const { roomDB } = data;
@@ -269,4 +264,11 @@ function handleErrorRoom(error) {
 	errorRootNewRoom.innerHTML = 'password length must be less than or equal to 16 characters long';
 	if (error.includes('"repeatPassword" must be [ref:password]')) errorRoot.innerHTML = "Password doesn't match";
 
+}
+
+function handleErrorEnterRoom(error) {
+	const errorRootExistingRoom = document.querySelector('.errorRootExistingRoom')
+	if(error.includes(`Cannot read properties of null (reading 'name')`)) errorRootExistingRoom.innerHTML = "Couldn't find this room"
+	if (error.includes('Error02')) errorRootExistingRoom.innerHTML = "Passwords don't match";
+	
 }
