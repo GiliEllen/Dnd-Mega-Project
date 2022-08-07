@@ -167,6 +167,44 @@ body .fa-solid:hover {
   align-items: center;
   color: #9e9880;
 }
+.session .grid_item .input_container {
+  width: 90%;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.session .grid_item .input_container input {
+  width: 100%;
+  max-width: 400px;
+  height: 40px;
+  border: none;
+  background-color: #9e9880;
+  border-radius: 20px;
+}
+.session .grid_item .input_container input::placeholder {
+  color: white;
+  padding-left: 10px;
+  font-weight: bolder;
+  font-family: "Raleway", sans-serif;
+}
+.session .grid_item .submit_btn {
+  width: 200px;
+  height: 50px;
+  border: none;
+  border-radius: 50px;
+  background-color: #716331;
+  font-size: 1.5rem;
+  font-weight: bolder;
+  color: #cecdc8;
+  background-image: linear-gradient(-75deg, transparent 0, transparent 5%, rgba(255, 255, 255, 0.5) 5%, rgba(255, 255, 255, 0.5) 10%, transparent 10%, transparent 100%);
+  background-size: 200% 100%;
+  transition: 0.5s;
+}
+.session .grid_item .submit_btn:hover {
+  background-position: -120% 0;
+  cursor: pointer;
+}
 .session .grid_item .currentMapImg {
   display: none;
   position: fixed;

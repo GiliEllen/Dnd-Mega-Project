@@ -41,21 +41,25 @@
                     </ul>
                 </div>
             </div>
-            <div class="worldMap grid_item"> 
+            <div class="worldMap grid_item">
                 <i class="fa-solid fa-map"></i>
                 <h4>World Map</h4>
                 <form onsubmit="handleEditWorldMap(event)">
-                    <input type="url" name="worldMapUpload" >
-                    <button type="submit"> Upload a New Map</button>
-                </form> 
+                    <div class="input_container">
+                        <input placeholder="Edit World Map" type="url" name="worldMapUpload">
+                        <button class="submit_btn" type="submit">Upload</button>
+                    </div>
+                </form>
             </div>
 
             <div class="currentMap grid_item">
                 <i class="fa-solid fa-map-location"></i>
                 <h4>Current Map</h4>
                 <form onsubmit="handleEditCurrentMap(event)">
-                    <input type='url' name='currentMapUpload' >
-                    <button type="submit"> Upload a New Map</button>
+                    <div class="input_container">
+                        <input placeholder="Edit Current Map" type='url' name='currentMapUpload'>
+                        <button class="submit_btn" type="submit">Upload</button>
+                    </div>
                 </form>
             </div>
 
