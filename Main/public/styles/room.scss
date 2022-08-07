@@ -71,7 +71,7 @@ body {
         .formContainer {
             z-index: 1;
             width: 40%;
-            height: 60%;
+            height: 65%;
             border-radius: 5px;
             background-color: rgb(32, 29, 62);
             display: flex;
@@ -93,9 +93,10 @@ body {
                 display: flex;
                 flex-direction: column;
                 width: 95%;
-                height: 80%;
+                height: 70%;
                 align-items: center;
                 justify-content: space-evenly;
+                align-self: center;
 
                 .input_container {
                     width: 70%;
@@ -152,6 +153,12 @@ body {
                 h3 {
                     font-size: 2rem;
                     color: rgb(158, 152, 128);
+                    margin: 0;
+                }
+
+                .errorRootNewRoom {
+                    font-size: 1.5rem;
+                    color: red;
                 }
             }
         }

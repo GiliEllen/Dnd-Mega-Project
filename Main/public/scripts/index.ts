@@ -5,7 +5,6 @@ let isWorldMapClicked = false;
 let isCurrentMapClicked = false;
 let isUserInfoClicked = false;
 
-
 async function getUserFromCookies() {
 	try {
 		console.log('loading room cookies');
@@ -23,30 +22,14 @@ async function HandleCreateNewRoom(ev: any) {
 	try {
 		const newRoom = ev.target.elements.roomName.value;
 		const newRoomPassword = ev.target.elements.roomPass.value;
-		console.log(newRoom, newRoomPassword)
 		//@ts-ignore
 		const { data } = await axios.post('/room/new-room', { newRoom, newRoomPassword });
-		const { roomDB } = data;
-		const role = 'dm';
-		handleCreateMember(roomDB, role);
-	} catch (error) {
-		console.error(error);
-	}
-}
-
-async function handleCreateMember(roomDB, role) {
-	try {
-		console.log('enter creat member function');
-		const userDB = await getUserFromCookies();
-		//@ts-ignore
-		const { data } = await axios.post('/member/create-Member', { roomDB, userDB, role });
-		console.log(data);
-		const { memberDB } = data;
-		console.log(memberDB);
-		if (memberDB.role === 'dm') {
-			window.location.href = `../views/mainPageDm.html?memberID=${memberDB._id}`;;
-		} else if (memberDB.role === 'user') {
-			window.location.href = `../views/mainPageUser.html?memberID=${memberDB._id}`;
+		const { roomDB, error } = data;
+		if (error) {
+			handleErrorRoom(error);
+		} else {
+			const role = 'dm';
+			handleCreateMember(roomDB, role);
 		}
 		
 	} catch (error) {
@@ -54,6 +37,24 @@ async function handleCreateMember(roomDB, role) {
 	}
 }
 
+async function handleCreateMember(roomDB, role) {
+	try {
+		const userDB = await getUserFromCookies();
+		//@ts-ignore
+		const { data } = await axios.post('/member/create-Member', { roomDB, userDB, role });
+		if (!data) throw new Error('Could not create member');
+		const { memberDB } = data;
+		if (!memberDB) throw new Error('Could extraxt member from data');
+
+		if (memberDB.role === 'dm') {
+			window.location.href = `../views/mainPageDm.html?memberID=${memberDB._id}`;
+		} else if (memberDB.role === 'user') {
+			window.location.href = `../views/mainPageUser.html?memberID=${memberDB._id}`;
+		}
+	} catch (error) {
+		console.error(error);
+	}
+}
 
 async function HandleEnterRoom(ev: any) {
 	ev.preventDefault();
@@ -85,7 +86,7 @@ function handleErrorMember(error) {
 	const roomRoot = document.querySelector('#roomRoot');
 	if (error.includes('Error01')) {
 		const yesRoomNoUser = document.querySelector('.yesRoomNoUser') as HTMLFormElement;
-		yesRoomNoUser.style.display = "inline";
+		yesRoomNoUser.style.display = 'inline';
 		const RoomForm = document.querySelector('#RoomForm') as HTMLFormElement;
 		RoomForm.style.display = 'none';
 	} else if (error.includes('Error02')) {
@@ -97,9 +98,9 @@ function handleDeleteThis(event) {
 		const yesRoomNoUser = document.querySelector('.yesRoomNoUser') as HTMLFormElement;
 		yesRoomNoUser.style.display = 'none';
 		const RoomForm = document.querySelector('#RoomForm') as HTMLFormElement;
-		RoomForm.style.display = "flex";
+		RoomForm.style.display = 'flex';
 	} catch (error) {
-		console.log(error)
+		console.log(error);
 	}
 }
 
@@ -129,7 +130,7 @@ async function handleLogin(event: any) {
 	try {
 		const email = event.target.email.value;
 		const password = event.target.password.value;
-		if(!email || !password) throw new Error('Missing either email or password')
+		if (!email || !password) throw new Error('Missing either email or password');
 		//@ts-ignore
 		const { data } = await axios.post('/users/login', { password, email });
 
@@ -209,25 +210,25 @@ async function handleUserInfoOpen() {
 async function loadRoom() {
 	//@ts-ignore
 	const { data } = await axios.get('/users/get-user-from-cookies');
-	console.log(data)
+	console.log(data);
 	const { userDB } = data;
-	console.log(userDB)
+	console.log(userDB);
 	const roomHeader = document.querySelector('.room_header');
 	roomHeader.innerHTML = `<h1>Hello ${userDB.username}!</h1><h2>what would you like to do?</h2>`;
 }
 
 async function handleAddUserToRoom(event) {
-	event.preventDefault()
-	console.log('trying to add user to this room')
+	event.preventDefault();
+	console.log('trying to add user to this room');
 	const existingRoominput = document.querySelector('#existingRoomName') as HTMLInputElement;
 	const existingRoom = existingRoominput.value;
-	console.log(existingRoom)
+	console.log(existingRoom);
 	//@ts-ignore
-	const {data} = await axios.post("/room/findRoom", {existingRoom});
-	const {roomDB} = data;
-	console.log(roomDB)
-	const role = "user"
-	handleCreateMember(roomDB,role)
+	const { data } = await axios.post('/room/findRoom', { existingRoom });
+	const { roomDB } = data;
+	console.log(roomDB);
+	const role = 'user';
+	handleCreateMember(roomDB, role);
 }
 
 function getMemberIdByParams() {
@@ -238,13 +239,34 @@ function getMemberIdByParams() {
 }
 
 function handleError(error) {
-	const errorRoot = document.querySelector('.errorRoot')
-	if(error.includes("User with that email can't be found")) errorRoot.innerHTML = "User with that email can't be found"
-	if(error.includes("Email or password do not match")) errorRoot.innerHTML = "Email or password do not match"
-	if(error.includes('"password" length must be at least 6 characters long')) errorRoot.innerHTML = 'The password length must be at least 6 characters long'
-	if(error.includes('"password" should contain at least 1 special character')) errorRoot.innerHTML = 'The password should contain at least 1 special character'
-	if(error.includes('"password" should contain at least 1 lowercase character')) errorRoot.innerHTML = 'The password should contain at least 1 lowercase character'
-	if(error.includes('"password" should contain at least 1 uppercase character')) errorRoot.innerHTML = 'The password should contain at least 1 uppercase character'
-	if(error.includes('"password" length must be less than or equal to 16 characters long')) errorRoot.innerHTML = 'password length must be less than or equal to 16 characters long'
+	const errorRoot = document.querySelector('.errorRoot');
+	if (error.includes("User with that email can't be found"))
+		errorRoot.innerHTML = "User with that email can't be found";
+	if (error.includes('Email or password do not match')) errorRoot.innerHTML = 'Email or password do not match';
+	if (error.includes('"password" length must be at least 6 characters long'))
+		errorRoot.innerHTML = 'The password length must be at least 6 characters long';
+	if (error.includes('"password" should contain at least 1 special character'))
+		errorRoot.innerHTML = 'The password should contain at least 1 special character';
+	if (error.includes('"password" should contain at least 1 lowercase character'))
+		errorRoot.innerHTML = 'The password should contain at least 1 lowercase character';
+	if (error.includes('"password" should contain at least 1 uppercase character'))
+		errorRoot.innerHTML = 'The password should contain at least 1 uppercase character';
+	if (error.includes('"password" length must be less than or equal to 16 characters long'))
+		errorRoot.innerHTML = 'password length must be less than or equal to 16 characters long';
 	if (error.includes('"repeatPassword" must be [ref:password]')) errorRoot.innerHTML = "Password doesn't match";
+}
+function handleErrorRoom(error) {
+	const errorRootNewRoom = document.querySelector('.errorRootNewRoom');
+	if (error.includes('"password" length must be at least 6 characters long'))
+	errorRootNewRoom.innerHTML = 'The password length must be at least 6 characters long';
+	if (error.includes('"password" should contain at least 1 special character'))
+	errorRootNewRoom.innerHTML = 'The password should contain at least 1 special character';
+	if (error.includes('"password" should contain at least 1 lowercase character'))
+	errorRootNewRoom.innerHTML = 'The password should contain at least 1 lowercase character';
+	if (error.includes('"password" should contain at least 1 uppercase character'))
+	errorRootNewRoom.innerHTML = 'The password should contain at least 1 uppercase character';
+	if (error.includes('"password" length must be less than or equal to 16 characters long'))
+	errorRootNewRoom.innerHTML = 'password length must be less than or equal to 16 characters long';
+	if (error.includes('"repeatPassword" must be [ref:password]')) errorRoot.innerHTML = "Password doesn't match";
+
 }

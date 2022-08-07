@@ -39,14 +39,19 @@ exports.__esModule = true;
 exports.getRoom = exports.addRoom = void 0;
 var roomModel_1 = require("./../models/roomModel");
 var jwt_simple_1 = require("jwt-simple");
+var roomModel_2 = require("./../models/roomModel");
 function addRoom(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, newRoom, newRoomPassword, room, roomDB, cookie, secret, JWTCookie;
+        var _a, newRoom, newRoomPassword, error, room, roomDB, cookie, secret, JWTCookie, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
+                    _b.trys.push([0, 2, , 3]);
                     console.log(req.body);
                     _a = req.body, newRoom = _a.newRoom, newRoomPassword = _a.newRoomPassword;
+                    error = roomModel_2.RoomValidation.validate({ name: newRoom, password: newRoomPassword }).error;
+                    if (error)
+                        throw error;
                     room = new roomModel_1["default"]({ name: newRoom, password: newRoomPassword });
                     return [4 /*yield*/, room.save()];
                 case 1:
@@ -56,9 +61,14 @@ function addRoom(req, res) {
                     if (!secret)
                         throw new Error("Couldn't find secret");
                     JWTCookie = jwt_simple_1["default"].encode(cookie, secret);
-                    res.cookie("Room", JWTCookie);
+                    res.cookie('Room', JWTCookie);
                     res.send({ success: true, roomDB: roomDB });
-                    return [2 /*return*/];
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_1 = _b.sent();
+                    res.send({ error: error_1.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     });
@@ -66,7 +76,7 @@ function addRoom(req, res) {
 exports.addRoom = addRoom;
 function getRoom(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var existingRoom, roomDB, error_1;
+        var existingRoom, roomDB, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -82,8 +92,8 @@ function getRoom(req, res) {
                     res.send({ success: true, roomDB: roomDB });
                     return [3 /*break*/, 3];
                 case 2:
-                    error_1 = _a.sent();
-                    res.send({ error: error_1.message });
+                    error_2 = _a.sent();
+                    res.send({ error: error_2.message });
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
