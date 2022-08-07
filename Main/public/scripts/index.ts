@@ -55,8 +55,6 @@ async function handleCreateMember(roomDB, role) {
 }
 
 
-
-
 async function HandleEnterRoom(ev: any) {
 	ev.preventDefault();
 	try {

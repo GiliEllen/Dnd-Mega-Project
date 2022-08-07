@@ -39,6 +39,8 @@ exports.__esModule = true;
 exports.getRoomID = exports.getRoomUsers = exports.renderUserMainPage = exports.userLogin = exports.handleRegister = exports.updateNotes = exports.getUserFromCookies = void 0;
 var usersModel_1 = require("../models/usersModel");
 var jwt_simple_1 = require("jwt-simple");
+var bcrypt_1 = require("bcrypt");
+var saltRounds = 10;
 function getUserFromCookies(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var secret, userId, decodedUserId, userID, userDB, error_1;
@@ -83,7 +85,7 @@ function updateNotes(req, res) {
 exports.updateNotes = updateNotes;
 function handleRegister(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, username, password, email, rePassword, error, user, cookie, secret, JWTCookie, error_2;
+        var _a, username, password, email, rePassword, error, salt, hash, user, cookie, secret, JWTCookie, error_2;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -92,7 +94,9 @@ function handleRegister(req, res) {
                     error = usersModel_1.UserValidation.validate({ username: username, password: password, email: email, repeatPassword: rePassword }).error;
                     if (error)
                         throw error;
-                    user = new usersModel_1["default"]({ username: username, password: password, email: email });
+                    salt = bcrypt_1["default"].genSaltSync(saltRounds);
+                    hash = bcrypt_1["default"].hashSync(password, salt);
+                    user = new usersModel_1["default"]({ username: username, password: hash, email: email });
                     return [4 /*yield*/, user.save()];
                 case 1:
                     _b.sent();
@@ -101,7 +105,7 @@ function handleRegister(req, res) {
                     if (!secret)
                         throw new Error("Couldn't find secret");
                     JWTCookie = jwt_simple_1["default"].encode(cookie, secret);
-                    res.cookie('memberId', JWTCookie);
+                    res.cookie('userId', JWTCookie);
                     res.send({ register: true, user: user });
                     return [3 /*break*/, 3];
                 case 2:
@@ -116,33 +120,42 @@ function handleRegister(req, res) {
 exports.handleRegister = handleRegister;
 function userLogin(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, password, email, user, cookie, secret, JWTCookie, error_3;
+        var _a, password, email, userDB, isMatch, cookie, secret, JWTCookie, error_3;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _b.trys.push([0, 2, , 3]);
+                    _b.trys.push([0, 3, , 4]);
                     _a = req.body, password = _a.password, email = _a.email;
-                    return [4 /*yield*/, usersModel_1["default"].findOne({ password: password, email: email })];
+                    return [4 /*yield*/, usersModel_1["default"].findOne({ email: email })];
                 case 1:
-                    user = _b.sent();
-                    if (!user) {
+                    userDB = _b.sent();
+                    if (!userDB)
+                        throw new Error("User with that email can't be found");
+                    if (!userDB.password)
+                        throw new Error("No password in DB");
+                    return [4 /*yield*/, bcrypt_1["default"].compare(password, userDB.password)];
+                case 2:
+                    isMatch = _b.sent();
+                    if (!isMatch)
+                        throw new Error("Email or password do not match");
+                    if (!userDB) {
                         res.send({ login: false });
                     }
                     else {
-                        cookie = { userID: user._id };
+                        cookie = { userID: userDB._id };
                         secret = process.env.JWT_SECRET;
                         if (!secret)
                             throw new Error("Couldn't find secret");
                         JWTCookie = jwt_simple_1["default"].encode(cookie, secret);
                         res.cookie('userId', JWTCookie);
-                        res.send({ login: true, user: user });
+                        res.send({ login: true, userDB: userDB });
                     }
-                    return [3 /*break*/, 3];
-                case 2:
+                    return [3 /*break*/, 4];
+                case 3:
                     error_3 = _b.sent();
                     res.send({ error: error_3.message });
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });

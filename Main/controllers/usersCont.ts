@@ -1,7 +1,7 @@
-import RoomModel from './../models/roomModel';
-import MemberModel from '../models/memberModel';
 import UserModel, { UserValidation } from '../models/usersModel';
 import jwt from 'jwt-simple';
+import bcrypt from 'bcrypt';
+const saltRounds = 10;
 
 export async function getUserFromCookies(req, res) {
 	try {
@@ -33,7 +33,10 @@ export async function handleRegister(req, res) {
 		const { error } = UserValidation.validate({ username, password, email, repeatPassword: rePassword });
 		if (error) throw error;
 
-		const user = new UserModel({ username, password, email });
+		const salt = bcrypt.genSaltSync(saltRounds);
+        const hash = bcrypt.hashSync(password, salt);
+
+		const user = new UserModel({ username, password: hash, email });
 		await user.save();
 
 		//sending cookie
@@ -41,7 +44,7 @@ export async function handleRegister(req, res) {
 		const secret = process.env.JWT_SECRET;
 		if (!secret) throw new Error("Couldn't find secret");
 		const JWTCookie = jwt.encode(cookie, secret);
-		res.cookie('memberId', JWTCookie);
+		res.cookie('userId', JWTCookie);
 		
 		res.send({ register: true, user });
 	} catch (error) {
@@ -53,18 +56,22 @@ export async function userLogin(req, res) {
 	try {
 		const { password, email  } = req.body;
 
-		const user = await UserModel.findOne({ password, email });
+		const userDB = await UserModel.findOne({ email });
+		if (!userDB) throw new Error("User with that email can't be found")
+        if (!userDB.password) throw new Error("No password in DB");
 
-		if (!user) {
+        const isMatch = await bcrypt.compare(password, userDB.password);
+        if (!isMatch) throw new Error("Email or password do not match");
+		if (!userDB) {
 			res.send({ login: false });
 		} else {
 			//sending cookie
-			const cookie = { userID: user._id };
+			const cookie = { userID: userDB._id };
 			const secret = process.env.JWT_SECRET;
 			if (!secret) throw new Error("Couldn't find secret");
 			const JWTCookie = jwt.encode(cookie, secret);
 			res.cookie('userId', JWTCookie);
-			res.send({ login: true, user });
+			res.send({ login: true, userDB });
 		}
 	} catch (error) {
 		res.send({ error: error.message });
