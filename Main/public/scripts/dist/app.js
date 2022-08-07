@@ -870,6 +870,41 @@ function sendThisLoot(loot, membersToSendLootArray) {
         });
     });
 }
+function loadUserLootBody() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, renderUserLoot()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function renderUserLoot() {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, userLoot, data, existingLoot, html;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getMemberFromCookies()];
+                case 1:
+                    memberDB = _a.sent();
+                    userLoot = document.querySelector('#userLoot');
+                    return [4 /*yield*/, axios.post('/loot/find-All-dm-loot', { memberDB: memberDB })];
+                case 2:
+                    data = (_a.sent()).data;
+                    existingLoot = data.existingLoot;
+                    html = '';
+                    existingLoot.forEach(function (lootObj) {
+                        html += "<div class=\"lootCard\">\n\t\t\t\t\t\t<h3>" + lootObj.name + "</h3>\n\t\t\t\t\t\t<img src=\"" + lootObj.url + "\">\n\t\t\t</div>";
+                    });
+                    userLoot.innerHTML = html;
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 if (worldMapIcon) {
     worldMapIcon.addEventListener('click', function (event) {
         mapsDiv.classList.add('active');

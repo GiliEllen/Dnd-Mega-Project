@@ -534,6 +534,27 @@ async function sendThisLoot(loot, membersToSendLootArray) {
 	const sentLoot = await handleLinkMemberAndHandout(loot, membersToSendLootArray);
 }
 
+async function loadUserLootBody() {
+	await renderUserLoot();
+}
+async function renderUserLoot() {
+	const memberDB = await getMemberFromCookies();
+	const userLoot = document.querySelector('#userLoot');
+	//@ts-ignore
+	const { data } = await axios.post('/loot/find-All-dm-loot', { memberDB });
+	const { existingLoot } = data;
+
+	let html = '';
+	existingLoot.forEach((lootObj) => {
+		html += `<div class="lootCard">
+						<h3>${lootObj.name}</h3>
+						<img src="${lootObj.url}">
+			</div>`;
+	});
+	userLoot.innerHTML = html;
+}
+
+
 if (worldMapIcon) {
 	worldMapIcon.addEventListener('click', (event) => {
 		mapsDiv.classList.add('active');
