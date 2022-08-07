@@ -36,20 +36,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.uploadCurrentdMap = exports.uploadWorldMap = exports.getMaps = void 0;
+exports.getMap = exports.uploadCurrentdMap = exports.uploadWorldMap = exports.getMaps = void 0;
 var mapsModel_1 = require("../models/mapsModel");
 function getMaps(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var memberRoom, maps, error_1;
+        var memberDB, maps, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     console.log('helo');
-                    memberRoom = req.body.memberRoom;
-                    if (!memberRoom)
+                    memberDB = req.body.memberDB;
+                    if (!memberDB)
                         throw new Error('didnt get roomID');
-                    return [4 /*yield*/, mapsModel_1["default"].findOne({ 'roomID': memberRoom })];
+                    return [4 /*yield*/, mapsModel_1["default"].findOne({ 'roomID': memberDB.room._id })];
                 case 1:
                     maps = _a.sent();
                     if (!maps)
@@ -69,31 +69,33 @@ function getMaps(req, res) {
 exports.getMaps = getMaps;
 function uploadWorldMap(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, mapUrl, roomID, roomDB, maps, mapsDB, updatedMap, error_2;
+        var _a, mapUrl, memberDB, mapDB, maps, worldmapDB, worldmapDB, error_2;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 6, , 7]);
-                    _a = req.body, mapUrl = _a.mapUrl, roomID = _a.roomID;
+                    _a = req.body, mapUrl = _a.mapUrl, memberDB = _a.memberDB;
                     if (!mapUrl)
                         throw new Error('didnt get URL');
-                    if (!roomID)
+                    if (!memberDB)
                         throw new Error('didnt get roomID');
-                    return [4 /*yield*/, mapsModel_1["default"].findOne({ roomID: roomID })];
+                    return [4 /*yield*/, mapsModel_1["default"].findOne({ 'room.name': memberDB.room.name })];
                 case 1:
-                    roomDB = _b.sent();
-                    if (!!roomDB) return [3 /*break*/, 3];
-                    maps = new mapsModel_1["default"]({ roomID: roomID, worldMap: mapUrl });
+                    mapDB = _b.sent();
+                    if (!!mapDB) return [3 /*break*/, 3];
+                    maps = new mapsModel_1["default"]({ room: memberDB.room, worldMap: mapUrl });
                     return [4 /*yield*/, maps.save()];
                 case 2:
-                    mapsDB = _b.sent();
+                    worldmapDB = _b.sent();
+                    res.send({ worldmapDB: worldmapDB });
                     return [3 /*break*/, 5];
                 case 3:
-                    if (!roomDB) return [3 /*break*/, 5];
-                    roomDB.worldMap = mapUrl;
-                    return [4 /*yield*/, roomDB.save()];
+                    if (!mapDB) return [3 /*break*/, 5];
+                    mapDB.worldMap = mapUrl;
+                    return [4 /*yield*/, mapDB.save()];
                 case 4:
-                    updatedMap = _b.sent();
+                    worldmapDB = _b.sent();
+                    res.send({ worldmapDB: worldmapDB });
                     _b.label = 5;
                 case 5: return [3 /*break*/, 7];
                 case 6:
@@ -106,33 +108,36 @@ function uploadWorldMap(req, res) {
     });
 }
 exports.uploadWorldMap = uploadWorldMap;
+//currentMapDB
 function uploadCurrentdMap(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, mapUrl, roomID, roomDB, maps, mapsDB, updatedMap, error_3;
+        var _a, mapUrl, memberDB, mapDB, maps, currentMapDB, currentMapDB, error_3;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 6, , 7]);
-                    _a = req.body, mapUrl = _a.mapUrl, roomID = _a.roomID;
+                    _a = req.body, mapUrl = _a.mapUrl, memberDB = _a.memberDB;
                     if (!mapUrl)
                         throw new Error('didnt get URL');
-                    if (!roomID)
+                    if (!memberDB)
                         throw new Error('didnt get roomID');
-                    return [4 /*yield*/, mapsModel_1["default"].findOne({ roomID: roomID })];
+                    return [4 /*yield*/, mapsModel_1["default"].findOne({ 'room.name': memberDB.room.name })];
                 case 1:
-                    roomDB = _b.sent();
-                    if (!!roomDB) return [3 /*break*/, 3];
-                    maps = new mapsModel_1["default"]({ roomID: roomID, currentMap: mapUrl });
+                    mapDB = _b.sent();
+                    if (!!mapDB) return [3 /*break*/, 3];
+                    maps = new mapsModel_1["default"]({ room: memberDB.room, currentMap: mapUrl });
                     return [4 /*yield*/, maps.save()];
                 case 2:
-                    mapsDB = _b.sent();
+                    currentMapDB = _b.sent();
+                    res.send({ currentMapDB: currentMapDB });
                     return [3 /*break*/, 5];
                 case 3:
-                    if (!roomDB) return [3 /*break*/, 5];
-                    roomDB.currentMap = mapUrl;
-                    return [4 /*yield*/, roomDB.save()];
+                    if (!mapDB) return [3 /*break*/, 5];
+                    mapDB.currentMap = mapUrl;
+                    return [4 /*yield*/, mapDB.save()];
                 case 4:
-                    updatedMap = _b.sent();
+                    currentMapDB = _b.sent();
+                    res.send({ currentMapDB: currentMapDB });
                     _b.label = 5;
                 case 5: return [3 /*break*/, 7];
                 case 6:
@@ -145,3 +150,30 @@ function uploadCurrentdMap(req, res) {
     });
 }
 exports.uploadCurrentdMap = uploadCurrentdMap;
+function getMap(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var memberDB, MapDB, error_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    memberDB = req.body.memberDB;
+                    if (!memberDB)
+                        throw new Error('didnt get memberDB');
+                    return [4 /*yield*/, mapsModel_1["default"].findOne({ 'room.name': memberDB.room.name })];
+                case 1:
+                    MapDB = _a.sent();
+                    if (!MapDB)
+                        throw new Error('could not find maps');
+                    res.send({ MapDB: MapDB });
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_4 = _a.sent();
+                    res.send({ error: error_4.message });
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getMap = getMap;

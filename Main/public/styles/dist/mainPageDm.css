@@ -4,6 +4,57 @@ body {
   background-color: #181632;
   position: relative;
 }
+body .fa-solid:hover {
+  cursor: pointer;
+}
+
+.mapsDiv {
+  display: none;
+  position: fixed;
+  height: 600px;
+  width: 600px;
+  background-color: #201d3e;
+  border: 2px solid #46416e;
+  border-radius: 30px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  align-items: center;
+  justify-content: center;
+}
+.mapsDiv .fa-xmark {
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  color: #716331;
+  font-size: 1.5rem;
+}
+.mapsDiv .fa-xmark:hover {
+  cursor: pointer;
+}
+.mapsDiv__Wrapper {
+  width: 90%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+}
+.mapsDiv__Wrapper img {
+  width: 100%;
+}
+.mapsDiv__Wrapper #worldMapID, .mapsDiv__Wrapper #currentMapID {
+  display: none;
+}
+.mapsDiv__Wrapper #worldMapID.active, .mapsDiv__Wrapper #currentMapID.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mapsDiv.active {
+  display: flex;
+}
 
 .session {
   width: 840px;

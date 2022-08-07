@@ -6,5 +6,6 @@ var router = express_1["default"].Router();
 router
     .post('/upload-world-map', mapsCont_1.uploadWorldMap)
     .post('/upload-current-map', mapsCont_1.uploadCurrentdMap)
-    .post('/get-room-map', mapsCont_1.getMaps);
+    .post('/get-room-map', mapsCont_1.getMaps)
+    .post('/getMap', mapsCont_1.getMap);
 exports["default"] = router;

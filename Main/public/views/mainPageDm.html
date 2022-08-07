@@ -19,7 +19,11 @@
 </head>
 
 <body onload="loadMainPageDM()">
-    
+    <div class="mapsDiv">
+        <i class="fa-solid fa-xmark" id="closeDiv"></i>
+        <div class="mapsDiv__Wrapper"></div>
+    </div>
+
     <div class="session">
         <div class="session__headers">
             <h1 id="dmName">Hello USER</h1>
@@ -67,15 +71,11 @@
                     <h4>Loot</h4>
                 </div>
             </a>
-            <!-- <label for="infoDump">Write here your notes:</label> -->
-            <!-- <form onsubmit="handleSaveNotes(event)">
-                <input type="text" name="infoDump" id="infoDump">
-                <button type="submit">Save</button>
-            </form> -->
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="../scripts/dist/app.js"></script>
+    <script src="../scripts/dist/maps.js"></script>
 
 </body>
 

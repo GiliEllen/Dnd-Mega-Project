@@ -1,6 +1,13 @@
 //@ts-ignore
 const socket = io();
 
+const worldMap = document.querySelector('.worldMap');
+const currentMap = document.querySelector('.currentMap');
+const mapsDiv = document.querySelector('.mapsDiv');
+const closeDiv = document.querySelector('#closeDiv');
+const worldMapIcon = document.querySelector('.fa-map');
+const currentMapIcon = document.querySelector('.fa-map-location');
+
 async function getMemberFromCookies() {
 	try {
 		//@ts-ignore
@@ -21,31 +28,17 @@ async function loadBodyDMHndouts() {
 async function loadMainPageDM() {
 	// renderButtonsHandoutsLoot(userID);
 	try {
+		const mapsDivWrapper = document.querySelector('.mapsDiv__Wrapper');
 		const memberDB = await getMemberFromCookies();
 		renderDmName(memberDB);
 		renderMembersNamesAndHitPoints();
 		sessionStorage.setItem(`memberName`, `${memberDB.user.username}`);
 		sessionStorage.setItem(`memberRole`, `${memberDB.role}`);
+		console.log(`trying to get maps`);
 		// const memberRoom = memberDB.room._id;
-		// const worldData = await getMapsFromDB(memberRoom);
-		// const worldMapUrl = worldData.worldMap;
-		// const worldMapDiv: HTMLDivElement = document.querySelector('.worldMap');
-		// worldMapDiv.innerHTML = `<div class="worldMap">world map 
-		// 		<form onsubmit="handleEditWorldMap(event)">
-		// 			<input type="url" name="worldMapUpload" >
-		// 			<button type="submit"> Upload a New Map</button>
-		// 		</form>
-		// 		<img src="${worldMapUrl}" alt="pic of map">
-        // 	</div>`;
-		// const currentMapUrl = worldData.currentMap;
-		// const currentMapDiv: HTMLDivElement = document.querySelector('.currentMap');
-		// currentMapDiv.innerHTML = `<div class="currentMap">current map
-		// 		<form onsubmit="handleEditCurrentMap(event)">
-		// 			<input type='url' name='currentMapUpload' >
-		// 			<button type="submit"> Upload a New Map</button>
-		// 		</form>
-		// 		<img src="${currentMapUrl}" alt="pic of map">
-       	// 	 </div>`;
+		const mapDB = await handleGetMap();
+		mapsDivWrapper.innerHTML += `<img src="${mapDB.worldMap}" id="worldMapID">
+		<img src="${mapDB.currentMap}" id="currentMapID">`;
 	} catch (error) {
 		console.error(error);
 	}
@@ -57,10 +50,10 @@ async function loadBodyDMLoot() {
 	renderMemberToSendExistingLoot();
 }
 
-async function getMapsFromDB(memberRoom: string) {
+async function getMapsFromDB(memberDB) {
 	try {
 		//@ts-ignore
-		const { data } = await axios.post('/maps/get-room-map', { memberRoom });
+		const { data } = await axios.post('/maps/get-room-map', { memberDB });
 		const { maps } = data;
 		return maps;
 	} catch (error) {
@@ -100,51 +93,39 @@ function renderUserName(memberDB) {
 	userName.innerHTML = `Hello ${memberDB.user.username}!`;
 }
 
-async function handleSaveNotes(ev) {
-	ev.preventDefault();
-	try {
-		const updatedNotes = ev.target.infoDump.value;
-		//@ts-ignore
-		const { data } = await axios.post('/users/updateNotes', { userID, updatedNotes });
-		console.log(data);
-	} catch (error) {
-		console.log(error);
-	}
-}
+// function renderButtonsHandoutsLoot(userID) {
+// 	const buttonContainer = document.querySelector('#buttonContainer');
+// 	const sendHandouts = document.createElement('a');
+// 	const sendLoot = document.createElement('a');
 
-function renderButtonsHandoutsLoot(userID) {
-	const buttonContainer = document.querySelector('#buttonContainer');
-	const sendHandouts = document.createElement('a');
-	const sendLoot = document.createElement('a');
+// 	sendHandouts.href = `handoutsDm.html?${userID}"`;
+// 	sendHandouts.innerHTML = `<button>Send Handouts</button>`;
+// 	buttonContainer.appendChild(sendHandouts);
 
-	sendHandouts.href = `handoutsDm.html?${userID}"`;
-	sendHandouts.innerHTML = `<button>Send Handouts</button>`;
-	buttonContainer.appendChild(sendHandouts);
+// 	sendLoot.href = `lootDm.html?${userID}"`;
+// 	sendLoot.innerHTML = `<button>Send Loot</button>`;
+// 	buttonContainer.appendChild(sendLoot);
+// }
 
-	sendLoot.href = `lootDm.html?${userID}"`;
-	sendLoot.innerHTML = `<button>Send Loot</button>`;
-	buttonContainer.appendChild(sendLoot);
-}
+// function handleChooseHandouts(event) {
+// 	event.preventDefault();
+// 	const handoutType = event.submitter.id;
+// 	if (handoutType === 'creatingHandout') {
+// 		renderCreateHandout();
+// 	} else if (handoutType === 'creatingHandout') {
+// 		chooseHandout();
+// 	}
+// }
 
-function handleChooseHandouts(event) {
-	event.preventDefault();
-	const handoutType = event.submitter.id;
-	if (handoutType === 'creatingHandout') {
-		renderCreateHandout();
-	} else if (handoutType === 'creatingHandout') {
-		chooseHandout();
-	}
-}
-
-function renderCreateHandout() {
-	try {
-	} catch (error) {
-		console.log(error);
-	}
-}
-function chooseHandout() {
-	const root = document.querySelector('#root');
-}
+// function renderCreateHandout() {
+// 	try {
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// }
+// function chooseHandout() {
+// 	const root = document.querySelector('#root');
+// }
 function getMemberIDByParams() {
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
@@ -341,27 +322,25 @@ async function loadUserMainPage() {
 		sessionStorage.setItem(`memberRole`, `${memberDB.role}`);
 		sessionStorage.setItem(`memberHitPoints`, `${memberDB.hitPoints}`);
 		socket.emit('getUserRole', sessionStorage.getItem(`memberRole`));
-		console.log(memberDB)
+		console.log(memberDB);
 		const roomID = memberDB.room._id;
 		const maps = await getMapsFromDB(roomID);
 		const worldMapUrl = maps.worldMap;
 		const currentMapUrl = maps.currentMap;
-		const worldMap: HTMLDivElement = document.querySelector('.worldMap')
-		worldMap.innerHTML=
-				`	<div class="worldMapImg"> 
-					<img src="${worldMapUrl}" alt="pic of map">
-					<button onclick="closeWorldMap(event)">X</button>
-				</div>
-				<i class="fa-solid fa-map"></i>
-            	<h4>World Map</h4>`;
-		const currentMap: HTMLDivElement = document.querySelector('.currentMap');
-		currentMap.innerHTML = 
-			`<div class="currentMapImg"> 
-				<img src="${currentMapUrl}" alt="pic of map">
-				<button onclick="closeCurrentMap(event)">X</button> 
-			</div>
-			<i class="fa-solid fa-map-location"></i>
-            <h4>Current Map</h4>`;
+		const worldMap: HTMLDivElement = document.querySelector('.worldMap');
+		// worldMap.innerHTML = `	<div class="worldMapImg">
+		// 			<img src="${worldMapUrl}" alt="pic of map">
+		// 			<button onclick="closeWorldMap(event)">X</button>
+		// 		</div>
+		// 		<i class="fa-solid fa-map"></i>
+		//     	<h4>World Map</h4>`;
+		// const currentMap: HTMLDivElement = document.querySelector('.currentMap');
+		// currentMap.innerHTML = `<div class="currentMapImg">
+		// 		<img src="${currentMapUrl}" alt="pic of map">
+		// 		<button onclick="closeCurrentMap(event)">X</button>
+		// 	</div>
+		// 	<i class="fa-solid fa-map-location"></i>
+		//     <h4>Current Map</h4>`;
 	} catch (error) {
 		console.error(error);
 	}
@@ -370,28 +349,13 @@ async function loadUserMainPage() {
 async function handleEditWorldMap(event) {
 	event.preventDefault();
 	try {
-		const member = await getMemberFromCookies();
-		const roomID = member.room._id;
+		const memberDB = await getMemberFromCookies();
 		const mapUrl = event.target.worldMapUpload.value;
-		const worldMapDiv: HTMLDivElement = document.querySelector('.worldMap');
-		// worldMapDiv.innerHTML = `<div class="worldMap">world map 
-		// 		<form onsubmit="handleEditWorldMap(event)">
-		// 			<input type="url" name="worldMapUpload" >
-		// 			<button type="submit"> Upload a New Map</button>
-		// 		</form>
-		// 		<div class="worldMapImg"> <img src="${mapUrl}" alt="pic of map"> </div>
-		// 		<i class="fa-solid fa-map"></i>
-        //     	<h4>World Map</h4>
-        // 	</div>`;
-		worldMapDiv.innerHTML ='helo'
-		`<div class="worldMapImg"> 
-			<img src="${mapUrl}" alt="pic of map">
-			<button onclick="closeWorldMap(event)">X</button> 
-		</div>
-		<i class="fa-solid fa-map-location"></i>
-		<h4>World Map</h4>`;
+		const mapsDivWrapper = document.querySelector('.mapsDiv__Wrapper');
 		//@ts-ignore
-		const { data } = await axios.post('/maps/upload-world-map', { mapUrl, roomID });
+		const { data } = await axios.post('/maps/upload-world-map', { mapUrl, memberDB });
+		const { worldmapDB } = data;
+		console.log(worldmapDB);
 	} catch (error) {
 		console.error(error);
 	}
@@ -400,27 +364,19 @@ async function handleEditWorldMap(event) {
 async function handleEditCurrentMap(event) {
 	event.preventDefault();
 	try {
-		const member = await getMemberFromCookies();
-		const roomID = member.room._id;
+		const memberDB = await getMemberFromCookies();
 		const mapUrl = event.target.currentMapUpload.value;
-		const currentMapDiv: HTMLDivElement = document.querySelector('.currentMap');
-		currentMapDiv.innerHTML = `<div class="currentMap">current map
-				<form onsubmit="handleEditCurrentMap(event)">
-					<input type='url' name='currentMapUpload' >
-					<button type="submit"> Upload a New Map</button>
-				</form>
-				<div class="currentMapImg"> <img src="${mapUrl}" alt="pic of map"> </div>
-			<i class="fa-solid fa-map-location"></i>
-            <h4>Current Map</h4>;
-       		 </div>`;
+		const mapsDivWrapper = document.querySelector('.mapsDiv__Wrapper');
 		//@ts-ignore
-		const { data } = await axios.post('/maps/upload-current-map', { mapUrl, roomID });
+		const { data } = await axios.post('/maps/upload-current-map', { mapUrl, memberDB });
+		const { currentMapDB } = data;
+		console.log(currentMapDB);
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-async function loadUserHandoutBody(){
+async function loadUserHandoutBody() {
 	await renderUserHandout();
 }
 
@@ -432,15 +388,14 @@ async function renderUserHandout() {
 	const { existingHandouts } = data;
 
 	let html = '';
-		existingHandouts.forEach((handoutObj) => {
-			html += `<div class="handoutCard">
+	existingHandouts.forEach((handoutObj) => {
+		html += `<div class="handoutCard">
 						<h3>${handoutObj.name}</h3>
 						<img src="${handoutObj.url}">
 			</div>`;
-		});
-		userHandouts.innerHTML = html;
+	});
+	userHandouts.innerHTML = html;
 }
-
 
 async function renderMembersToSendNewLoot() {
 	const userListNewLoot = document.querySelector('#userListNewLoot');
@@ -590,26 +545,38 @@ async function handleSendExistingLoot(event) {
 async function sendThisLoot(loot, membersToSendLootArray) {
 	const sentLoot = await handleLinkMemberAndHandout(loot, membersToSendLootArray);
 }
-function openWorldMap(){
-	const worldMap: HTMLDivElement = document.querySelector('.worldMapImg');
-	worldMap.style.display = 'flex'
+
+if (worldMapIcon) {
+	worldMapIcon.addEventListener('click', (event) => {
+		mapsDiv.classList.add('active');
+		const worldMapID = document.querySelector('#worldMapID');
+		worldMapID.classList.add('active');
+	});
+}
+if (currentMapIcon) {
+	currentMapIcon.addEventListener('click', (event) => {
+		mapsDiv.classList.add('active');
+		const currentMapID = document.querySelector('#currentMapID');
+		currentMapID.classList.add('active');
+	});
+}
+if (mapsDiv) {
+	mapsDiv.addEventListener('click', (event) => {
+		const worldMapID = document.querySelector('#worldMapID');
+		const currentMapID = document.querySelector('#currentMapID');
+
+		if (event.target.id === 'closeDiv') {
+			mapsDiv.classList.remove('active');
+			worldMapID.classList.remove('active')
+			currentMapID.classList.remove('active')
+
+		}
+	});
 }
 
-function openCurrentMap(){
-	const currentMap: HTMLDivElement = document.querySelector('.currentMapImg');
-	currentMap.style.display = 'flex'
-}
-
-function closeWorldMap(event){
-	event.preventDefault()
-	console.log('why no work')
-	const worldMap: HTMLDivElement =document.querySelector('.worldMapImg');
-	console.log(worldMap)
-	worldMap.style.display = 'none'
-}
-
-function closeCurrentMap(event){
-	event.preventDefault()
-	const currentMap: HTMLDivElement = document.querySelector('.currentMapImg');
-	currentMap.style.display = 'none'
+async function handleGetMap() {
+	const memberDB = await getMemberFromCookies();
+	const { data } = await axios.post('/maps/getMap', { memberDB });
+	const { MapDB } = data;
+	return MapDB;
 }

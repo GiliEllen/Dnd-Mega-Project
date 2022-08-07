@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 import Joi from 'joi';
 
 const mapsSchema = new mongoose.Schema({
-    roomID:
+    room:
     {
-        type:String,
+        type:Object,
         required:true,
         unique:true
     },

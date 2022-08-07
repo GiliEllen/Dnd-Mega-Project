@@ -2,8 +2,8 @@
 exports.__esModule = true;
 var mongoose_1 = require("mongoose");
 var mapsSchema = new mongoose_1["default"].Schema({
-    roomID: {
-        type: String,
+    room: {
+        type: Object,
         required: true,
         unique: true
     },
