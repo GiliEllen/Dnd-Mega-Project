@@ -1,3 +1,7 @@
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -104,12 +108,6 @@ function loadUserMainBody() {
                 case 0: return [4 /*yield*/, getMemberFromCookies()];
                 case 1:
                     memberDB = _a.sent();
-                    renderUserName(memberDB);
-                    renderUserOwnHitpoints(memberDB);
-                    sessionStorage.setItem("memberName", "" + memberDB.user.username);
-                    sessionStorage.setItem("memberRole", "" + memberDB.role);
-                    sessionStorage.setItem("memberHitPoints", "" + memberDB.hitPoints);
-                    socket.emit('getUserRole', sessionStorage.getItem("memberRole"));
                     return [2 /*return*/];
             }
         });
@@ -538,7 +536,7 @@ function handleChangeHitPoints(event) {
 }
 function loadUserMainPage() {
     return __awaiter(this, void 0, void 0, function () {
-        var memberDB, pageTitle, infoFromDB, roomID, maps, worldMapUrl, currentMapUrl, worldMap, currentMap, error_10;
+        var memberDB, roomID, maps, worldMapUrl, currentMapUrl, worldMap, currentMap, error_10;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -546,10 +544,13 @@ function loadUserMainPage() {
                     return [4 /*yield*/, getMemberFromCookies()];
                 case 1:
                     memberDB = _a.sent();
-                    pageTitle = document.querySelector('.title');
-                    pageTitle.innerHTML = "Welcome " + memberDB.user.username;
-                    infoFromDB = document.querySelector('.infoFromDB');
-                    infoFromDB.innerHTML = " \n\t\t\tname:" + memberDB.user.username + "\n\t\t\trole:" + memberDB.role;
+                    renderUserName(memberDB);
+                    renderUserOwnHitpoints(memberDB);
+                    sessionStorage.setItem("memberName", "" + memberDB.user.username);
+                    sessionStorage.setItem("memberRole", "" + memberDB.role);
+                    sessionStorage.setItem("memberHitPoints", "" + memberDB.hitPoints);
+                    socket.emit('getUserRole', sessionStorage.getItem("memberRole"));
+                    console.log(memberDB);
                     roomID = memberDB.room._id;
                     return [4 /*yield*/, getMapsFromDB(roomID)];
                 case 2:
@@ -557,9 +558,11 @@ function loadUserMainPage() {
                     worldMapUrl = maps.worldMap;
                     currentMapUrl = maps.currentMap;
                     worldMap = document.querySelector('.worldMap');
-                    worldMap.innerHTML = "<div class=\"worldMap\">world map \n\t\t\t\t<form onsubmit=\"handleEditWorldMap(event)\">\n\t\t\t\t\t<input type=\"url\" name=\"worldMapUpload\" >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + worldMapUrl + "\" alt=\"pic of map\">\n        \t</div>";
+                    worldMap.innerHTML =
+                        "\t<div class=\"worldMapImg\"> \n\t\t\t\t\t<img src=\"" + worldMapUrl + "\" alt=\"pic of map\">\n\t\t\t\t\t<button onclick=\"closeWorldMap(event)\">X</button>\n\t\t\t\t</div>\n\t\t\t\t<i class=\"fa-solid fa-map\"></i>\n            \t<h4>World Map</h4>";
                     currentMap = document.querySelector('.currentMap');
-                    currentMap.innerHTML = "<div class=\"currentMap\">current map\n\t\t\t\t<form onsubmit=\"handleEditCurrentMap(event)\">\n\t\t\t\t\t<input type='url' name='currentMapUpload' >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + currentMapUrl + "\" alt=\"pic of map\">\n       \t\t </div>";
+                    currentMap.innerHTML =
+                        "<div class=\"currentMapImg\"> \n\t\t\t\t<img src=\"" + currentMapUrl + "\" alt=\"pic of map\">\n\t\t\t\t<button onclick=\"closeCurrentMap(event)\">X</button> \n\t\t\t</div>\n\t\t\t<i class=\"fa-solid fa-map-location\"></i>\n            <h4>Current Map</h4>";
                     return [3 /*break*/, 4];
                 case 3:
                     error_10 = _a.sent();
@@ -586,7 +589,16 @@ function handleEditWorldMap(event) {
                     roomID = member.room._id;
                     mapUrl = event.target.worldMapUpload.value;
                     worldMapDiv = document.querySelector('.worldMap');
-                    worldMapDiv.innerHTML = "<div class=\"worldMap\">world map \n\t\t\t\t<form onsubmit=\"handleEditWorldMap(event)\">\n\t\t\t\t\t<input type=\"url\" name=\"worldMapUpload\" >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + mapUrl + "\" alt=\"pic of map\">\n        \t</div>";
+                    // worldMapDiv.innerHTML = `<div class="worldMap">world map 
+                    // 		<form onsubmit="handleEditWorldMap(event)">
+                    // 			<input type="url" name="worldMapUpload" >
+                    // 			<button type="submit"> Upload a New Map</button>
+                    // 		</form>
+                    // 		<div class="worldMapImg"> <img src="${mapUrl}" alt="pic of map"> </div>
+                    // 		<i class="fa-solid fa-map"></i>
+                    //     	<h4>World Map</h4>
+                    // 	</div>`;
+                    worldMapDiv.innerHTML = 'helo'(__makeTemplateObject(["<div class=\"worldMapImg\"> \n\t\t\t<img src=\"", "\" alt=\"pic of map\">\n\t\t\t<button onclick=\"closeWorldMap(event)\">X</button> \n\t\t</div>\n\t\t<i class=\"fa-solid fa-map-location\"></i>\n\t\t<h4>World Map</h4>"], ["<div class=\"worldMapImg\"> \n\t\t\t<img src=\"", "\" alt=\"pic of map\">\n\t\t\t<button onclick=\"closeWorldMap(event)\">X</button> \n\t\t</div>\n\t\t<i class=\"fa-solid fa-map-location\"></i>\n\t\t<h4>World Map</h4>"]), mapUrl);
                     return [4 /*yield*/, axios.post('/maps/upload-world-map', { mapUrl: mapUrl, roomID: roomID })];
                 case 3:
                     data = (_a.sent()).data;
@@ -616,7 +628,7 @@ function handleEditCurrentMap(event) {
                     roomID = member.room._id;
                     mapUrl = event.target.currentMapUpload.value;
                     currentMapDiv = document.querySelector('.currentMap');
-                    currentMapDiv.innerHTML = "<div class=\"currentMap\">current map\n\t\t\t\t<form onsubmit=\"handleEditCurrentMap(event)\">\n\t\t\t\t\t<input type='url' name='currentMapUpload' >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<img src=\"" + mapUrl + "\" alt=\"pic of map\">\n       \t\t </div>";
+                    currentMapDiv.innerHTML = "<div class=\"currentMap\">current map\n\t\t\t\t<form onsubmit=\"handleEditCurrentMap(event)\">\n\t\t\t\t\t<input type='url' name='currentMapUpload' >\n\t\t\t\t\t<button type=\"submit\"> Upload a New Map</button>\n\t\t\t\t</form>\n\t\t\t\t<div class=\"currentMapImg\"> <img src=\"" + mapUrl + "\" alt=\"pic of map\"> </div>\n\t\t\t<i class=\"fa-solid fa-map-location\"></i>\n            <h4>Current Map</h4>;\n       \t\t </div>";
                     return [4 /*yield*/, axios.post('/maps/upload-current-map', { mapUrl: mapUrl, roomID: roomID })];
                 case 3:
                     data = (_a.sent()).data;
@@ -629,4 +641,24 @@ function handleEditCurrentMap(event) {
             }
         });
     });
+}
+function openWorldMap() {
+    var worldMap = document.querySelector('.worldMapImg');
+    worldMap.style.display = 'flex';
+}
+function openCurrentMap() {
+    var currentMap = document.querySelector('.currentMapImg');
+    currentMap.style.display = 'flex';
+}
+function closeWorldMap(event) {
+    event.preventDefault();
+    console.log('why no work');
+    var worldMap = document.querySelector('.worldMapImg');
+    console.log(worldMap);
+    worldMap.style.display = 'none';
+}
+function closeCurrentMap(event) {
+    event.preventDefault();
+    var currentMap = document.querySelector('.currentMapImg');
+    currentMap.style.display = 'none';
 }

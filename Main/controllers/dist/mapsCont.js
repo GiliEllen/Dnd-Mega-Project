@@ -45,6 +45,7 @@ function getMaps(req, res) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
+                    console.log('helo');
                     memberRoom = req.body.memberRoom;
                     if (!memberRoom)
                         throw new Error('didnt get roomID');
@@ -52,7 +53,7 @@ function getMaps(req, res) {
                 case 1:
                     maps = _a.sent();
                     if (!maps)
-                        throw new Error('couldnot find maps');
+                        throw new Error('could not find maps');
                     console.log(maps);
                     res.send({ success: true, maps: maps });
                     return [3 /*break*/, 3];

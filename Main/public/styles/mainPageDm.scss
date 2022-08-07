@@ -142,11 +142,54 @@ body {
         justify-content: center;
         align-items: center;
         color: rgb(158, 152, 128);
+        
+        .currentMapImg{
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 210px;
+            background-color: rgb(32, 29, 62);
+            border: 2px solid rgb(70, 65, 110);
+            border-radius: 30px;
+            padding: 30px;
+            img{
+                height: 550px;
+                border-radius: 15px;
+            }
+            button{
+                height: 10px;
+                background-color: rgb(32, 29, 62);
+                border: none;
+                color:  rgb(113, 99, 49);
+                
+            }
+        }
+        .worldMapImg{
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 210px;
+            background-color: rgb(32, 29, 62);
+            border: 2px solid rgb(70, 65, 110);
+            border-radius: 30px;
+            padding: 30px;
+            img{
+                height: 550px;
+                border-radius: 15px;
+            }
+            button{
+                height: 10px;
+                background-color: rgb(32, 29, 62);
+                border: none;
+                color:  rgb(113, 99, 49);
+            }
+        }
 
         &:any-link {
             text-decoration-line: none;
             color: rgb(158, 152, 128);
         }
+        
     }
 
     // .notes {

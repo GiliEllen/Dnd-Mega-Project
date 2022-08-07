@@ -116,6 +116,46 @@ body {
   align-items: center;
   color: #9e9880;
 }
+.session .grid_item .currentMapImg {
+  display: none;
+  position: fixed;
+  top: 60px;
+  left: 210px;
+  background-color: #201d3e;
+  border: 2px solid #46416e;
+  border-radius: 30px;
+  padding: 30px;
+}
+.session .grid_item .currentMapImg img {
+  height: 550px;
+  border-radius: 15px;
+}
+.session .grid_item .currentMapImg button {
+  height: 10px;
+  background-color: #201d3e;
+  border: none;
+  color: #716331;
+}
+.session .grid_item .worldMapImg {
+  display: none;
+  position: fixed;
+  top: 60px;
+  left: 210px;
+  background-color: #201d3e;
+  border: 2px solid #46416e;
+  border-radius: 30px;
+  padding: 30px;
+}
+.session .grid_item .worldMapImg img {
+  height: 550px;
+  border-radius: 15px;
+}
+.session .grid_item .worldMapImg button {
+  height: 10px;
+  background-color: #201d3e;
+  border: none;
+  color: #716331;
+}
 .session .grid_item:any-link {
   text-decoration-line: none;
   color: #9e9880;

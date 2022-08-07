@@ -40,11 +40,15 @@
                     </div>
                 </div>
             </div>
-            <div class="worldMap grid_item">
+            <div onclick="openWorldMap()" class="worldMap grid_item" >
+                <div class="worldMapImg"> 
+					<img src="" alt="pic of map">
+					<button onclick="closeWorldMap(event)">X</button>
+				</div>
                 <i class="fa-solid fa-map"></i>
                 <h4>World Map</h4>
             </div>
-            <div class="currentMap grid_item">
+            <div  onclick="openCurrentMap()" class="currentMap grid_item">
                 <i class="fa-solid fa-map-location"></i>
                 <h4>Current Map</h4>
             </div>
@@ -62,24 +66,6 @@
                 </div>
             </a>
         </div>
-<body onload = "loadMainPageUser()">
-    <div class="rapper">
-        <div class="title">home</div>
-        <div class="maps">
-            <div onclick="handleWorldMapOpen()" class="worldMap">
-                <i class="fa-solid fa-map"></i>
-                <h3>World Map</h3>
-            </div>
-            <div onclick="handleCurrentMapOpen()" class="currentMap">
-                <i class="fa-solid fa-map-location"></i>
-                <h3>current Map</h3>
-            </div>
-        </div>
-        <form onsubmit="handleChangeHitPoints(event)">
-            <h3>user info</h3>
-            <div class="userInfo">
-                <input name="hitInput" type="number">
-            </div>
             <button type="submit">Click Here To update hit</button>
         </form> -->
     </div>
