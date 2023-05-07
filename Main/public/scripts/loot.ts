@@ -6,7 +6,7 @@ const newLootForm = document.querySelector('#newLootForm') as HTMLFormElement;
 const chooseAndSendLoot = document.querySelector('#chooseAndSendLoot') as HTMLDivElement;
 const existingLootForm = document.querySelector('#existingLootForm') as HTMLFormElement;
 
-createAndSendLoot.addEventListener('click', (event) => {
+createAndSendLoot.addEventListener('click', (event:any) => {
 	createAndSendLoot.classList.add('active');
 	newLootForm.classList.add('active');
 
@@ -18,7 +18,7 @@ createAndSendLoot.addEventListener('click', (event) => {
 		newLootForm.classList.remove('active');
 	}
 });
-chooseAndSendLoot.addEventListener('click', (event) => {
+chooseAndSendLoot.addEventListener('click', (event:any) => {
 	chooseAndSendLoot.classList.add('active');
 	existingLootForm.classList.add('active');
 

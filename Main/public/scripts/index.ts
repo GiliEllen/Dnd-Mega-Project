@@ -262,7 +262,7 @@ function handleErrorRoom(error) {
 	errorRootNewRoom.innerHTML = 'The password should contain at least 1 uppercase character';
 	if (error.includes('"password" length must be less than or equal to 16 characters long'))
 	errorRootNewRoom.innerHTML = 'password length must be less than or equal to 16 characters long';
-	if (error.includes('"repeatPassword" must be [ref:password]')) errorRoot.innerHTML = "Password doesn't match";
+	if (error.includes('"repeatPassword" must be [ref:password]')) errorRootNewRoom.innerHTML = "Password doesn't match";
 
 }
 

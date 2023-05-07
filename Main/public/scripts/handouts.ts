@@ -6,7 +6,7 @@ const newHandoutForm = document.querySelector('#newHandoutForm') as HTMLFormElem
 const chooseAndSend = document.querySelector('#chooseAndSend') as HTMLDivElement;
 const existingHandoutsForm = document.querySelector('#existingHandoutsForm') as HTMLFormElement;
 
-createAndSend.addEventListener('click', (event) => {
+createAndSend.addEventListener('click', (event:any) => {
 	createAndSend.classList.add('active');
 	newHandoutForm.classList.add('active');
 
@@ -18,7 +18,7 @@ createAndSend.addEventListener('click', (event) => {
 		newHandoutForm.classList.remove('active');
 	}
 });
-chooseAndSend.addEventListener('click', (event) => {
+chooseAndSend.addEventListener('click', (event:any) => {
 	chooseAndSend.classList.add('active');
 	existingHandoutsForm.classList.add('active');
 

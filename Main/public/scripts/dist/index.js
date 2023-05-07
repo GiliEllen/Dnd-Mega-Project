@@ -407,7 +407,7 @@ function handleErrorRoom(error) {
     if (error.includes('"password" length must be less than or equal to 16 characters long'))
         errorRootNewRoom.innerHTML = 'password length must be less than or equal to 16 characters long';
     if (error.includes('"repeatPassword" must be [ref:password]'))
-        errorRoot.innerHTML = "Password doesn't match";
+        errorRootNewRoom.innerHTML = "Password doesn't match";
 }
 function handleErrorEnterRoom(error) {
     var errorRootExistingRoom = document.querySelector('.errorRootExistingRoom');
