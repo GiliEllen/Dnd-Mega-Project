@@ -5,7 +5,9 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "find": "netstat -ano | findstr 3000"
+    "find": "netstat -ano | findstr 3000",
+    "build": "tsc",
+    "start": "node ./dist/application.js"
   },
   "keywords": [],
   "author": "Gili",
