@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.findAllCheckedHandouts = exports.findAllHandouts = exports.sendHandout = exports.Linkhandout = exports.createHandout = void 0;
 var handoutsModel_1 = require("../models/handoutsModel");
-var memberHandoutsModel_1 = require("../models/memberHandoutsModel");
+var MemberHandoutsModel_1 = require("./../models/MemberHandoutsModel");
 function createHandout(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var _a, nameOfHandout, imgURL, memberDB, handout, handoutDB, error_1;
@@ -78,7 +78,7 @@ function Linkhandout(req, res) {
                     membersToSendHandoutsArray.forEach(function (member) {
                         sendHandout(member, handoutDB_1);
                     });
-                    return [4 /*yield*/, memberHandoutsModel_1["default"].find({ 'handout.name': handoutDB_1.name })];
+                    return [4 /*yield*/, MemberHandoutsModel_1["default"].find({ 'handout.name': handoutDB_1.name })];
                 case 1:
                     sentHandouts = _b.sent();
                     if (!sentHandouts.length)
@@ -101,7 +101,7 @@ function sendHandout(member, handout) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    linkedHandout = new memberHandoutsModel_1["default"]({ member: member, handout: handout });
+                    linkedHandout = new MemberHandoutsModel_1["default"]({ member: member, handout: handout });
                     return [4 /*yield*/, linkedHandout.save()];
                 case 1:
                     linkedHandoutDB = _a.sent();

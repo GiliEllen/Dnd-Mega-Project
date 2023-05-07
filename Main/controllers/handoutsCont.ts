@@ -1,5 +1,5 @@
 import HandoutsModel from '../models/handoutsModel';
-import MemberHandoutsModel from '../models/memberHandoutsModel';
+import MemberHandoutsModel from './../models/MemberHandoutsModel';
 
 export async function createHandout(req, res) {
 	try {

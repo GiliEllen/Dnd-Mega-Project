@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cors());
 
 const mongodb_uri = process.env.MONGODB_URI;
-
+ 
 mongoose
 	.connect(mongodb_uri)
 	.then((res) => {
