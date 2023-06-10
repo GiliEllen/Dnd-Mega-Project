@@ -34,9 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var newRoomForm = document.querySelector('#NewRoomForm');
-var newRoomName = document.querySelector('#roomName');
-var adiv = document.querySelector('div');
+var newRoomForm = document.querySelector("#NewRoomForm");
+var newRoomName = document.querySelector("#roomName");
+var adiv = document.querySelector("div");
 var isWorldMapClicked = false;
 var isCurrentMapClicked = false;
 var isUserInfoClicked = false;
@@ -47,7 +47,7 @@ function getUserFromCookies() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
+                    return [4 /*yield*/, axios.get("/users/get-user-from-cookies")];
                 case 1:
                     data = (_a.sent()).data;
                     userDB = data.userDB;
@@ -73,7 +73,10 @@ function HandleCreateNewRoom(ev) {
                     _a.trys.push([1, 3, , 4]);
                     newRoom = ev.target.elements.roomName.value;
                     newRoomPassword = ev.target.elements.roomPass.value;
-                    return [4 /*yield*/, axios.post('/room/new-room', { newRoom: newRoom, newRoomPassword: newRoomPassword })];
+                    return [4 /*yield*/, axios.post("/room/new-room", {
+                            newRoom: newRoom,
+                            newRoomPassword: newRoomPassword
+                        })];
                 case 2:
                     data = (_a.sent()).data;
                     roomDB = data.roomDB, error = data.error;
@@ -81,7 +84,7 @@ function HandleCreateNewRoom(ev) {
                         handleErrorRoom(error);
                     }
                     else {
-                        role = 'dm';
+                        role = "dm";
                         handleCreateMember(roomDB, role);
                     }
                     return [3 /*break*/, 4];
@@ -104,18 +107,22 @@ function handleCreateMember(roomDB, role) {
                     return [4 /*yield*/, getUserFromCookies()];
                 case 1:
                     userDB = _a.sent();
-                    return [4 /*yield*/, axios.post('/member/create-Member', { roomDB: roomDB, userDB: userDB, role: role })];
+                    return [4 /*yield*/, axios.post("/member/create-Member", {
+                            roomDB: roomDB,
+                            userDB: userDB,
+                            role: role
+                        })];
                 case 2:
                     data = (_a.sent()).data;
                     if (!data)
-                        throw new Error('Could not create member');
+                        throw new Error("Could not create member");
                     memberDB = data.memberDB;
                     if (!memberDB)
-                        throw new Error('Could extraxt member from data');
-                    if (memberDB.role === 'dm') {
+                        throw new Error("Could extraxt member from data");
+                    if (memberDB.role === "dm") {
                         window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
                     }
-                    else if (memberDB.role === 'user') {
+                    else if (memberDB.role === "user") {
                         window.location.href = "../views/mainPageUser.html?memberID=" + memberDB._id;
                     }
                     return [3 /*break*/, 4];
@@ -140,11 +147,15 @@ function HandleEnterRoom(ev) {
                     _a.trys.push([1, 4, , 5]);
                     existingRoom = ev.target.elements.existingRoomName.value;
                     existingRoomPass = ev.target.elements.existingRoomPass.value;
-                    return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
+                    return [4 /*yield*/, axios.get("/users/get-user-from-cookies")];
                 case 2:
                     data = (_a.sent()).data;
                     userDB = data.userDB;
-                    return [4 /*yield*/, axios.post('/member/FindMemberByRoom', { existingRoom: existingRoom, existingRoomPass: existingRoomPass, userDB: userDB })];
+                    return [4 /*yield*/, axios.post("/member/FindMemberByRoom", {
+                            existingRoom: existingRoom,
+                            existingRoomPass: existingRoomPass,
+                            userDB: userDB
+                        })];
                 case 3:
                     data = (_a.sent()).data;
                     success = data.success, memberDB = data.memberDB, error = data.error, roomDB = data.roomDB;
@@ -153,10 +164,10 @@ function HandleEnterRoom(ev) {
                     if (error)
                         handleErrorMember(error);
                     if (success) {
-                        if (memberDB.role === 'dm') {
+                        if (memberDB.role === "dm") {
                             window.location.href = "../views/mainPageDm.html?memberID=" + memberDB._id;
                         }
-                        else if (memberDB.role === 'user') {
+                        else if (memberDB.role === "user") {
                             window.location.href = "../views/mainPageUser.html?memberID=" + memberDB._id;
                         }
                     }
@@ -172,20 +183,20 @@ function HandleEnterRoom(ev) {
 }
 function handleErrorMember(error) {
     console.log(error);
-    var roomRoot = document.querySelector('#roomRoot');
-    if (error.includes('Error01')) {
-        var yesRoomNoUser = document.querySelector('.yesRoomNoUser');
-        yesRoomNoUser.style.display = 'inline';
-        var RoomForm = document.querySelector('#RoomForm');
-        RoomForm.style.display = 'none';
+    var roomRoot = document.querySelector("#roomRoot");
+    if (error.includes("Error01")) {
+        var yesRoomNoUser = document.querySelector(".yesRoomNoUser");
+        yesRoomNoUser.style.display = "inline";
+        var RoomForm = document.querySelector("#RoomForm");
+        RoomForm.style.display = "none";
     }
 }
 function handleDeleteThis(event) {
     try {
-        var yesRoomNoUser = document.querySelector('.yesRoomNoUser');
-        yesRoomNoUser.style.display = 'none';
-        var RoomForm = document.querySelector('#RoomForm');
-        RoomForm.style.display = 'flex';
+        var yesRoomNoUser = document.querySelector(".yesRoomNoUser");
+        yesRoomNoUser.style.display = "none";
+        var RoomForm = document.querySelector("#RoomForm");
+        RoomForm.style.display = "flex";
     }
     catch (error) {
         console.log(error);
@@ -205,13 +216,18 @@ function handleRegister(event) {
                     password = event.target.password.value;
                     rePassword = event.target.rePassword.value;
                     email = event.target.email.value;
-                    return [4 /*yield*/, axios.post('/users/register', { username: username, password: password, email: email, rePassword: rePassword })];
+                    return [4 /*yield*/, axios.post("/users/register", {
+                            username: username,
+                            password: password,
+                            email: email,
+                            rePassword: rePassword
+                        })];
                 case 2:
                     data = (_a.sent()).data;
                     console.log(data);
                     register = data.register, user = data.user, error = data.error;
                     if (register) {
-                        window.location.href = '../views/room.html';
+                        window.location.href = "../views/room.html";
                     }
                     if (error)
                         throw handleError(error);
@@ -239,8 +255,8 @@ function handleLogin(event) {
                     email = event.target.email.value;
                     password = event.target.password.value;
                     if (!email || !password)
-                        throw new Error('Missing either email or password');
-                    return [4 /*yield*/, axios.post('/users/login', { password: password, email: email })];
+                        throw new Error("Missing either email or password");
+                    return [4 /*yield*/, axios.post("/users/login", { password: password, email: email })];
                 case 2:
                     data = (_a.sent()).data;
                     login = data.login, user = data.user, error = data.error;
@@ -248,7 +264,7 @@ function handleLogin(event) {
                     if (error)
                         handleError(error);
                     if (login) {
-                        window.location.href = '../views/room.html';
+                        window.location.href = "../views/room.html";
                     }
                     return [3 /*break*/, 4];
                 case 3:
@@ -262,20 +278,20 @@ function handleLogin(event) {
 }
 function handleWorldMapOpen() {
     try {
-        var worldMap = document.querySelector('.worldMap');
-        var currentMap = document.querySelector('.currentMap');
+        var worldMap = document.querySelector(".worldMap");
+        var currentMap = document.querySelector(".currentMap");
         if (!isWorldMapClicked) {
-            worldMap.classList.add('worldMapOpen');
+            worldMap.classList.add("worldMapOpen");
             isWorldMapClicked = true;
             if (isWorldMapClicked) {
-                currentMap.classList.remove('currentMapOpen');
-                currentMap.style.display = 'none';
+                currentMap.classList.remove("currentMapOpen");
+                currentMap.style.display = "none";
                 isCurrentMapClicked = false;
             }
         }
         else {
-            worldMap.classList.remove('worldMapOpen');
-            currentMap.style.display = 'inline';
+            worldMap.classList.remove("worldMapOpen");
+            currentMap.style.display = "inline";
             isWorldMapClicked = false;
         }
     }
@@ -285,20 +301,20 @@ function handleWorldMapOpen() {
 }
 function handleCurrentMapOpen() {
     try {
-        var worldMap = document.querySelector('.worldMap');
-        var currentMap = document.querySelector('.currentMap');
+        var worldMap = document.querySelector(".worldMap");
+        var currentMap = document.querySelector(".currentMap");
         if (!isCurrentMapClicked) {
-            currentMap.classList.add('currentMapOpen');
+            currentMap.classList.add("currentMapOpen");
             isCurrentMapClicked = true;
             if (isCurrentMapClicked) {
-                worldMap.classList.remove('worldMapOpen');
-                worldMap.style.display = 'none';
+                worldMap.classList.remove("worldMapOpen");
+                worldMap.style.display = "none";
                 isWorldMapClicked = false;
             }
         }
         else {
-            currentMap.classList.remove('currentMapOpen');
-            worldMap.style.display = 'inline';
+            currentMap.classList.remove("currentMapOpen");
+            worldMap.style.display = "inline";
             isCurrentMapClicked = false;
         }
     }
@@ -311,16 +327,16 @@ function handleUserInfoOpen() {
         var userInfo, infoFromDB;
         return __generator(this, function (_a) {
             try {
-                userInfo = document.querySelector('.userInfo');
-                infoFromDB = document.querySelector('.infoFromDB');
+                userInfo = document.querySelector(".userInfo");
+                infoFromDB = document.querySelector(".infoFromDB");
                 if (!isUserInfoClicked) {
-                    userInfo.classList.add('userInfoOpen');
-                    infoFromDB.style.display = 'inline';
+                    userInfo.classList.add("userInfoOpen");
+                    infoFromDB.style.display = "inline";
                     isUserInfoClicked = true;
                 }
                 else {
-                    userInfo.classList.remove('userInfoOpen');
-                    infoFromDB.style.display = 'none';
+                    userInfo.classList.remove("userInfoOpen");
+                    infoFromDB.style.display = "none";
                     isUserInfoClicked = false;
                 }
             }
@@ -336,11 +352,11 @@ function loadRoom() {
         var data, userDB, roomHeader;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios.get('/users/get-user-from-cookies')];
+                case 0: return [4 /*yield*/, axios.get("/users/get-user-from-cookies")];
                 case 1:
                     data = (_a.sent()).data;
                     userDB = data.userDB;
-                    roomHeader = document.querySelector('.room_header');
+                    roomHeader = document.querySelector(".room_header");
                     roomHeader.innerHTML = "<h1>Hello " + userDB.username + "!</h1><h2>what would you like to do?</h2>";
                     return [2 /*return*/];
             }
@@ -354,15 +370,15 @@ function handleAddUserToRoom(event) {
             switch (_a.label) {
                 case 0:
                     event.preventDefault();
-                    console.log('trying to add user to this room');
-                    existingRoominput = document.querySelector('#existingRoomName');
+                    console.log("trying to add user to this room");
+                    existingRoominput = document.querySelector("#existingRoomName");
                     existingRoom = existingRoominput.value;
-                    return [4 /*yield*/, axios.post('/room/findRoom', { existingRoom: existingRoom })];
+                    return [4 /*yield*/, axios.post("/room/findRoom", { existingRoom: existingRoom })];
                 case 1:
                     data = (_a.sent()).data;
                     roomDB = data.roomDB;
                     console.log(roomDB);
-                    role = 'user';
+                    role = "user";
                     handleCreateMember(roomDB, role);
                     return [2 /*return*/];
             }
@@ -372,47 +388,67 @@ function handleAddUserToRoom(event) {
 function getMemberIdByParams() {
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
-    var memberID = urlParams.get('memberID');
+    var memberID = urlParams.get("memberID");
     return memberID;
 }
 function handleError(error) {
-    var errorRoot = document.querySelector('.errorRoot');
+    var errorRoot = document.querySelector(".errorRoot");
     if (error.includes("User with that email can't be found"))
         errorRoot.innerHTML = "User with that email can't be found";
-    if (error.includes('Email or password do not match'))
-        errorRoot.innerHTML = 'Email or password do not match';
+    if (error.includes("Email or password do not match"))
+        errorRoot.innerHTML = "Email or password do not match";
     if (error.includes('"password" length must be at least 6 characters long'))
-        errorRoot.innerHTML = 'The password length must be at least 6 characters long';
+        errorRoot.innerHTML =
+            "The password length must be at least 6 characters long";
     if (error.includes('"password" should contain at least 1 special character'))
-        errorRoot.innerHTML = 'The password should contain at least 1 special character';
+        errorRoot.innerHTML =
+            "The password should contain at least 1 special character";
     if (error.includes('"password" should contain at least 1 lowercase character'))
-        errorRoot.innerHTML = 'The password should contain at least 1 lowercase character';
+        errorRoot.innerHTML =
+            "The password should contain at least 1 lowercase character";
     if (error.includes('"password" should contain at least 1 uppercase character'))
-        errorRoot.innerHTML = 'The password should contain at least 1 uppercase character';
+        errorRoot.innerHTML =
+            "The password should contain at least 1 uppercase character";
     if (error.includes('"password" length must be less than or equal to 16 characters long'))
-        errorRoot.innerHTML = 'password length must be less than or equal to 16 characters long';
+        errorRoot.innerHTML =
+            "password length must be less than or equal to 16 characters long";
     if (error.includes('"repeatPassword" must be [ref:password]'))
         errorRoot.innerHTML = "Password doesn't match";
 }
 function handleErrorRoom(error) {
-    var errorRootNewRoom = document.querySelector('.errorRootNewRoom');
+    var errorRootNewRoom = document.querySelector(".errorRootNewRoom");
     if (error.includes('"password" length must be at least 6 characters long'))
-        errorRootNewRoom.innerHTML = 'The password length must be at least 6 characters long';
+        errorRootNewRoom.innerHTML =
+            "The password length must be at least 6 characters long";
     if (error.includes('"password" should contain at least 1 special character'))
-        errorRootNewRoom.innerHTML = 'The password should contain at least 1 special character';
+        errorRootNewRoom.innerHTML =
+            "The password should contain at least 1 special character";
     if (error.includes('"password" should contain at least 1 lowercase character'))
-        errorRootNewRoom.innerHTML = 'The password should contain at least 1 lowercase character';
+        errorRootNewRoom.innerHTML =
+            "The password should contain at least 1 lowercase character";
     if (error.includes('"password" should contain at least 1 uppercase character'))
-        errorRootNewRoom.innerHTML = 'The password should contain at least 1 uppercase character';
+        errorRootNewRoom.innerHTML =
+            "The password should contain at least 1 uppercase character";
     if (error.includes('"password" length must be less than or equal to 16 characters long'))
-        errorRootNewRoom.innerHTML = 'password length must be less than or equal to 16 characters long';
+        errorRootNewRoom.innerHTML =
+            "password length must be less than or equal to 16 characters long";
     if (error.includes('"repeatPassword" must be [ref:password]'))
         errorRootNewRoom.innerHTML = "Password doesn't match";
 }
 function handleErrorEnterRoom(error) {
-    var errorRootExistingRoom = document.querySelector('.errorRootExistingRoom');
+    var errorRootExistingRoom = document.querySelector(".errorRootExistingRoom");
     if (error.includes("Cannot read properties of null (reading 'name')"))
         errorRootExistingRoom.innerHTML = "Couldn't find this room";
-    if (error.includes('Error02'))
+    if (error.includes("Error02"))
         errorRootExistingRoom.innerHTML = "Passwords don't match";
 }
+var i = {};
+i.am = ['Fullstack Developer', 'Front-end Developer'];
+i.love = ['Art', 'Music', 'Programming', 'Cats & Dogs'];
+i.workWith = ['Html', 'Css', 'Sass', 'JavaScript', 'Typescript', 'React.js',
+    'React Native', 'Node.js', 'Express', 'MongoDB', 'MySQL', 'Redux',
+    'Git', "Github", 'aws'];
+i.amGoodAt = ['Writing clean code', 'Responsive development',
+    'Following Ui/Ux designs', "Learning fast", "Quick thinking",
+    "Code-review"];
+i.aspire = ["To inspire others", "Advance and learn more!"];
